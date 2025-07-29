@@ -1,0 +1,86 @@
+# System files
+# ------------
+Icon
+**/.DS_Store
+
+
+# Kirby media files
+# -----------------
+/media/*
+!/media/index.html
+
+
+# Kirby content files
+# -------------------
+/content/
+
+# Lock files
+# ----------
+.lock
+
+
+# Node and NPM
+node_modules/
+
+# Editors
+# (sensitive workspace files)
+# ---------------------------
+*.sublime-workspace
+/.vscode
+/.idea
+
+
+# -------------SECURITY-------------
+# NEVER publish these files via Git!
+# -------------SECURITY-------------
+
+# Cache Files
+# -----------
+/site/cache/*
+!/site/cache/index.html
+
+# Accounts
+# --------
+/site/accounts/*
+!/site/accounts/index.html
+
+# Sessions
+# --------
+/site/sessions/*
+!/site/sessions/index.html
+
+# License
+# -------
+/site/config/.license
+
+
+# -----------------
+# NMC Docker Devops
+# -----------------
+# id.env file for Docker mount
+/id.env
+
+# Logs (exclude everything in these folders)
+# ------------------------------------------
+# Git does not track empty folders so use an ! override with an empty .gitkeep file to keep the folder
+php-logs/*
+!php-logs/.gitkeep 
+
+apache-logs/*
+!apache-logs/.gitkeep 
+
+letsencrypt-logs/*
+!letsencrypt-logs/.gitkeep 
+
+certs/*
+!certs/.gitkeep 
+
+# PHP Composer (used to upgrade Kirby and plugins)
+# ------------------------------------------------    
+composer.phar
+ 
+site/logs/retour/log.sqlite
+
+# Loader.io Key File
+# ------------------------------------------------   
+loaderio-82629827e176b079ba6b35685c2605da.txt
