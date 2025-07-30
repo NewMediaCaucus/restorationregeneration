@@ -1,0 +1,16 @@
+services:
+  webserver:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    image: restorationregeneration-dev
+    container_name: restorationregeneration-dev-container
+    ports:
+      - "8888:80"
+    volumes:
+      - .:/var/www/html/
+      - ./custom-php.dev.ini:/etc/php/8.3/apache2/conf.d/custom-php.ini
+      - ./php-logs:/var/log/php-logs
+      - ./apache-logs:/var/log/apache2
+    env_file:
+      - ./id.env

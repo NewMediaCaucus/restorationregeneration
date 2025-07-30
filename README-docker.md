@@ -67,8 +67,8 @@ Example for Windows Users:
 Example for Mac and Linux Users:
 ```docker compose -f docker-compose.dev.yml up -d```
 
-This should now be serving this repo on http://localhost:8080
-You'll notice our development port is 8080. If you need to change it for yourself, just edit the ports line in your docker-compose.dev.yml
+This should now be serving this repo on http://localhost:8888
+You'll notice our development port is 8888. If you need to change it for yourself, just edit the ports line in your docker-compose.dev.yml
 
 ### Stopping and deleting your DEV containers with the Docker Compose down command
 
@@ -96,10 +96,10 @@ The beauty of Docker is only one developer has to set this up and everybody else
 
 ATTN: This should only be run on a staging or prod server. It won't harm your dev setup, it just won't work.
 
-```cd /home/nmcdev```
+```cd /home/restorationregeneration```
 
 ```sudo docker compose -f docker-compose.prod.yml up --build -d```
 
 You will be prompted for the nmcdev password.
 
-Upon successful start, you should see two containers running: "certbot" and "nmc-website-prod-container".
+Upon successful start, you should see two containers running: "certbot" and "restorationregeneration-prod-container".
