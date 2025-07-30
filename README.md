@@ -1,6 +1,6 @@
 # Branches
 
-Always name a feature branch "feature-<description>". For example, "feature-add-textarea-charcount".
+Always name a feature branch "feature/<description>". For example, "feature/add-textarea-charcount".
 
 # The restoration/regeneration website
 
