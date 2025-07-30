@@ -1,12 +1,14 @@
 # Our Kirby Content Folder
 
 The Kirby content folder is created by cloning our content github repo
-Repo URL: https://github.com/NewMediaCaucus/restorationregeneration
--content
+Repo URL: https://github.com/NewMediaCaucus/restorationregeneration-content
+Note: This repo is private, so you'll need GitHub permissions to access it.
 
-You should clone it from _inside your restorationregeneration folder_ using:
+IMPORTANT: You should clone it from _inside your restorationregeneration folder_ using:
 
 `git clone <REPOSITORY_URL> content`
+
+Example: `git clone https://github.com/NewMediaCaucus/restorationregeneration-content content`
 
 This will clone using the folder name of "content" which is what kirby is looking for.
 
