@@ -27,9 +27,24 @@ You're going to generate an id.env file for your computer. We have id.env in .gi
 
 Double-click the *create-id-mac.command* file provided in this repo.
 
+**Note**: If you get a permission error when trying to run the file, you may need to make it executable first by running:
+
+```bash
+chmod +x create-id-mac.command
+```
+
 This will create your id.env file.
 
 You may need to enter your username and password to run this.
+
+**Alternative method using terminal:**
+If you prefer to run the script from the terminal, you can use:
+
+```bash
+./create-id-mac.command
+```
+
+Make sure you're in the project directory when running this command.
 
 ### Linux Users
 
@@ -55,7 +70,9 @@ Windows Users:
 ```sudo docker compose -f docker-compose.windows-dev.yml up --build -d```
 
 Mac and Linux Users:
-```sudo docker compose -f docker-compose.dev.yml up --build -d```
+```docker compose -f docker-compose.dev.yml up --build -d```
+
+**Note**: If you get a permission error, you may need to use `sudo` before the docker commands, or ensure your user is in the docker group.
 
 ### Build and start your DEV containers from images you already have
 
