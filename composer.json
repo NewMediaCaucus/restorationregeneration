@@ -1,0 +1,11 @@
+{
+    "require": {
+        "getkirby/plainkit": "^5.0",
+        "thathoff/kirby-git-content": "^5.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "getkirby/composer-installer": true
+        }
+    }
+}

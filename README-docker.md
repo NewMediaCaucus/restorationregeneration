@@ -27,9 +27,24 @@ You're going to generate an id.env file for your computer. We have id.env in .gi
 
 Double-click the *create-id-mac.command* file provided in this repo.
 
+**Note**: If you get a permission error when trying to run the file, you may need to make it executable first by running:
+
+```bash
+chmod +x create-id-mac.command
+```
+
 This will create your id.env file.
 
 You may need to enter your username and password to run this.
+
+**Alternative method using terminal:**
+If you prefer to run the script from the terminal, you can use:
+
+```bash
+./create-id-mac.command
+```
+
+Make sure you're in the project directory when running this command.
 
 ### Linux Users
 
@@ -55,7 +70,9 @@ Windows Users:
 ```sudo docker compose -f docker-compose.windows-dev.yml up --build -d```
 
 Mac and Linux Users:
-```sudo docker compose -f docker-compose.dev.yml up --build -d```
+```docker compose -f docker-compose.dev.yml up --build -d```
+
+**Note**: If you get a permission error, you may need to use `sudo` before the docker commands, or ensure your user is in the docker group.
 
 ### Build and start your DEV containers from images you already have
 
@@ -67,8 +84,8 @@ Example for Windows Users:
 Example for Mac and Linux Users:
 ```docker compose -f docker-compose.dev.yml up -d```
 
-This should now be serving this repo on http://localhost:8080
-You'll notice our development port is 8080. If you need to change it for yourself, just edit the ports line in your docker-compose.dev.yml
+This should now be serving this repo on http://localhost:8888
+You'll notice our development port is 8888. If you need to change it for yourself, just edit the ports line in your docker-compose.dev.yml
 
 ### Stopping and deleting your DEV containers with the Docker Compose down command
 
@@ -96,10 +113,10 @@ The beauty of Docker is only one developer has to set this up and everybody else
 
 ATTN: This should only be run on a staging or prod server. It won't harm your dev setup, it just won't work.
 
-```cd /home/nmcdev```
+```cd /home/restorationregeneration```
 
 ```sudo docker compose -f docker-compose.prod.yml up --build -d```
 
 You will be prompted for the nmcdev password.
 
-Upon successful start, you should see two containers running: "certbot" and "nmc-website-prod-container".
+Upon successful start, you should see two containers running: "certbot" and "restorationregeneration-prod-container".
