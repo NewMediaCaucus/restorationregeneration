@@ -478,6 +478,120 @@ a:hover {
 }
 
 /* ==========================================================================
+   Location Styles
+   ========================================================================== */
+
+.event-location {
+  margin-top: var(--spacing-lg);
+}
+
+.location-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.address-with-pin {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+}
+
+.location-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2px;
+}
+
+.map-pin-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary);
+}
+
+.address-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.street-text {
+  line-height: 1.4;
+}
+
+.city-state-zip {
+  line-height: 1.4;
+}
+
+.address-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xs);
+  margin: calc(-1 * var(--spacing-xs));
+}
+
+.address-link:hover {
+  background-color: var(--color-bg-tertiary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.address-link:hover .map-pin-icon {
+  color: var(--color-primary-dark);
+}
+
+.location-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  margin: calc(-1 * var(--spacing-sm));
+}
+
+.location-link:hover {
+  background-color: var(--color-bg-tertiary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.location-link:hover .map-pin-icon {
+  color: var(--color-primary-dark);
+}
+
+.building-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.building-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.external-link-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--color-primary);
+  opacity: 0.7;
+}
+
+.building-link:hover .external-link-icon {
+  opacity: 1;
+}
+
+/* ==========================================================================
    Footer Styles
    ========================================================================== */
 

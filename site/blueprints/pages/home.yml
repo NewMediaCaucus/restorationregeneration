@@ -28,6 +28,15 @@ sections:
         type: textarea
         size: large
         placeholder: "Description of the symposium theme..."
+      registration:
+        label: Registration
+        type: textarea
+        size: large
+        placeholder: "Registration information and process details..."
+      registration_link:
+        label: Registration Link
+        type: url
+        placeholder: "https://..."
       about_new_media_caucus:
         label: About New Media Caucus
         type: textarea
@@ -43,11 +52,6 @@ sections:
         type: textarea
         size: large
         placeholder: "Information about travel arrangements and lodging options..."
-      registration:
-        label: Registration
-        type: textarea
-        size: large
-        placeholder: "Registration information and process details..."
       submission_calls:
         label: Submission Calls
         type: textarea
@@ -99,25 +103,25 @@ sections:
             type: text
             size: medium
             placeholder: "Memorial Union"
+          building_url:
+            label: Building URL
+            type: url
+            placeholder: "https://..."
           room_number:
             label: Room Number
             type: text
             size: small
             placeholder: "Room 123"
-      registration_link:
-        label: Registration Link
-        type: url
-        placeholder: "https://..."
-      sponsors:
-        label: Sponsors
+      partners:
+        label: Partners
         type: structure
         fields:
           name:
-            label: Sponsor Name
+            label: Partner Name
             type: text
             size: medium
           logo:
-            label: Sponsor Logo
+            label: Partner Logo
             type: files
             multiple: false
             query: "page.images"
@@ -131,29 +135,4 @@ sections:
         label: Contact Email
         type: email
         placeholder: "contact@example.com"
-      social_media:
-        label: Social Media
-        type: structure
-        fields:
-          platform:
-            label: Platform
-            type: select
-            options:
-              twitter: Twitter
-              facebook: Facebook
-              instagram: Instagram
-              linkedin: LinkedIn
-              youtube: YouTube
-          url:
-            label: URL
-            type: url
-            placeholder: "https://..."
-      seo_description:
-        label: SEO Description
-        type: textarea
-        size: small
-        placeholder: "Brief description for search engines..."
-      seo_keywords:
-        label: SEO Keywords
-        type: tags
-        placeholder: "Add keywords separated by commas..." 
+
