@@ -272,18 +272,22 @@ Make sure your web server points to the project root directory.
 ### macOS Common Issues
 
 #### 1. "php not found" error
+
 - Make sure PHP is installed: `brew install php`
 - Check your PATH: `echo $PATH`
 
 #### 2. "Permission denied" when moving composer
+
 - Use the user directory method: `mv composer.phar ~/bin/composer`
 - Or use sudo if you have access: `sudo mv composer.phar /usr/local/bin/composer`
 
 #### 3. "Project directory is not empty" error
+
 - Use `composer require getkirby/plainkit` instead of `composer create-project`
 - Or create the project in a new directory
 
 #### 4. "Composer plugin is blocked" error
+
 ```bash
 composer config allow-plugins.getkirby/composer-installer true
 ```
@@ -291,31 +295,37 @@ composer config allow-plugins.getkirby/composer-installer true
 ### Windows Common Issues
 
 #### 1. "php is not recognized" error
+
 - Make sure PHP is installed and added to PATH
 - Restart Command Prompt/PowerShell after adding to PATH
 - Check if PHP is in PATH: `echo %PATH%`
 
 #### 2. "composer is not recognized" error
+
 - Make sure Composer is installed and added to PATH
 - Restart Command Prompt/PowerShell after installation
 - Try running: `php composer.phar` instead of `composer`
 
 #### 3. "Project directory is not empty" error
+
 - Use `composer require getkirby/plainkit` instead of `composer create-project`
 - Or create the project in a new directory
 
 #### 4. "Composer plugin is blocked" error
+
 ```cmd
 composer config allow-plugins.getkirby/composer-installer true
 ```
 
 #### 5. SSL/TLS errors on Windows
+
 - Update your Windows certificates
 - Or use: `composer config --global disable-tls true`
 
 ### Useful Commands
 
 #### macOS
+
 ```bash
 # Check PHP version
 php --version
@@ -337,6 +347,7 @@ composer update
 ```
 
 #### Windows
+
 ```cmd
 # Check PHP version
 php --version
@@ -384,6 +395,63 @@ your-project/
 4. **Install plugins**: Use `composer require` to add Kirby plugins
 5. **Set up development environment**: Configure your local development setup
 
+## Installing Kirby Plugins
+
+### Installing Plugins via Composer
+
+Kirby plugins can be installed using Composer. Here are some common plugins and how to install them:
+
+#### Kirby Git Content Plugin
+
+The kirby-git-content plugin tracks changes to content in a Git repository, automatically committing content changes.
+
+**Installation:**
+
+```bash
+composer require thathoff/kirby-git-content
+```
+
+**What it does:**
+
+- Tracks changes to Kirby content in a Git repository
+- Automatically commits content changes to Git
+- Provides version control for your site content
+- Compatible with Kirby 3.6+, 4.0+, and 5.0+
+
+**Plugin details:**
+
+- **Version**: v5.3.0 (latest)
+
+- **License**: MIT License
+- **Location**: `site/plugins/git-content`
+- **Dependencies**: czproject/git-php
+
+#### Finding and Installing Plugins
+
+**Search for plugins:**
+
+```bash
+composer search kirby-plugin-name
+```
+
+**Install any plugin:**
+
+```bash
+composer require vendor/plugin-name
+```
+
+**Check installed plugins:**
+
+```bash
+composer show
+```
+
+**Update plugins:**
+
+```bash
+composer update
+```
+
 ## Resources
 
 - [Kirby Documentation](https://getkirby.com/docs)
@@ -392,4 +460,4 @@ your-project/
 
 ---
 
-**Note**: This guide covers both macOS and Windows installations. The steps are similar but use different commands and tools appropriate for each operating system. 
+**Note**: This guide covers both macOS and Windows installations. The steps are similar but use different commands and tools appropriate for each operating system.

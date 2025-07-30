@@ -203,6 +203,65 @@
             "install-path": "./semver"
         },
         {
+            "name": "czproject/git-php",
+            "version": "v4.5.0",
+            "version_normalized": "4.5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/czproject/git-php.git",
+                "reference": "3ea910e188849d5e239d65167010c05196310915"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/czproject/git-php/zipball/3ea910e188849d5e239d65167010c05196310915",
+                "reference": "3ea910e188849d5e239d65167010c05196310915",
+                "shasum": ""
+            },
+            "require": {
+                "php": "8.0 - 8.4"
+            },
+            "require-dev": {
+                "nette/tester": "^2.4"
+            },
+            "time": "2025-06-10T18:32:14+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Pecha",
+                    "email": "janpecha@email.cz"
+                }
+            ],
+            "description": "Library for work with Git repository in PHP.",
+            "keywords": [
+                "git"
+            ],
+            "support": {
+                "issues": "https://github.com/czproject/git-php/issues",
+                "source": "https://github.com/czproject/git-php/tree/v4.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.janpecha.cz/donate/git-php/",
+                    "type": "other"
+                },
+                {
+                    "url": "https://donate.stripe.com/7sIcO2a9maTSg2A9AA",
+                    "type": "stripe"
+                }
+            ],
+            "install-path": "../czproject/git-php"
+        },
+        {
             "name": "filp/whoops",
             "version": "2.18.3",
             "version_normalized": "2.18.3.0",
@@ -1285,6 +1344,61 @@
                 }
             ],
             "install-path": "../symfony/yaml"
+        },
+        {
+            "name": "thathoff/kirby-git-content",
+            "version": "v5.3.0",
+            "version_normalized": "5.3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thathoff/kirby-git-content.git",
+                "reference": "03cc582d274d4dd1fb7d54f3d88f60621bb829b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thathoff/kirby-git-content/zipball/03cc582d274d4dd1fb7d54f3d88f60621bb829b9",
+                "reference": "03cc582d274d4dd1fb7d54f3d88f60621bb829b9",
+                "shasum": ""
+            },
+            "require": {
+                "czproject/git-php": "^4.4.0",
+                "getkirby/composer-installer": "^1.2"
+            },
+            "require-dev": {
+                "getkirby/cms": "^3.6.0|^4.0.0|^5.0.0"
+            },
+            "time": "2025-05-24T12:31:41+00:00",
+            "type": "kirby-plugin",
+            "extra": {
+                "installer-name": "git-content",
+                "kirby-cms-path": false
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Thathoff\\GitContent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Denhoff",
+                    "email": "markus@denhoff.com"
+                },
+                {
+                    "name": "reinorange GmbH",
+                    "email": "info@reinorange.com"
+                }
+            ],
+            "description": "Plugin to track changes to content in a git repository.",
+            "support": {
+                "issues": "https://github.com/thathoff/kirby-git-content/issues",
+                "source": "https://github.com/thathoff/kirby-git-content"
+            },
+            "install-path": "../../site/plugins/git-content"
         }
     ],
     "dev": true,

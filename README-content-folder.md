@@ -20,7 +20,7 @@ This will clone using the folder name of "content" which is what kirby is lookin
 Git LFS is the Git Large File Storage.
 You can install it via [github.com](https://git-lfs.com/).
 
-You need to have a `.gitattributes` file for Git LFS. I created one that looks roughly like this so you shouldn't need to make one but check and make sure. 
+You need to have a `.gitattributes` file for Git LFS. I created one that looks roughly like this so you shouldn't need to make one but check and make sure.
 
 ```
 *.zip filter=lfs diff=lfs merge=lfs -text

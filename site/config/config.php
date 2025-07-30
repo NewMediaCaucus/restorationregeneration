@@ -1,13 +1,6 @@
 <?php
 
-return [
-  'debug' => true,
-  'panel' => [
-    'install' => true
-  ],
-  'hooks' => [
-    'route:before' => function ($route, $path, $method) {
-      // Add any custom route handling here
-    }
-  ]
-];
+# This vanilla config file is not used.
+# See the domain-specific config files in the same directory for the actual configs.
+
+return [];
