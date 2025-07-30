@@ -32,10 +32,10 @@ You need to have a `.gitattributes` file for Git LFS. I created one that looks r
 ```
 
 ### Staging and Live
-These servers have the restorationregeneration-content repo set as a remote using https with a key.
-https://<github_key_goes_here>@github.com/NewMediaCaucus/restorationregeneration-content.git
+These servers have the restorationregeneration-content repo set as a remote using https with a Personal Access Token PAT.
+https://<github_PAT_goes_here>@github.com/NewMediaCaucus/restorationregeneration-content.git
 
-Example: `git remote add origin https://<github_key_goes_here>@github.com/NewMediaCaucus/restorationregeneration-content.git`
+Example: `git remote add origin https://<github_PAT_goes_here>@github.com/NewMediaCaucus/restorationregeneration-content.git`
 
 ### The Kirby kirby-git-content plugin
 The kirby-git-content plugin will commit new changes to the local content folder repo when an editor makes a change on PROD.

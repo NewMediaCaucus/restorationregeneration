@@ -48,7 +48,13 @@ Make sure you're in the project directory when running this command.
 
 ### Linux Users
 
+Make the create-id-linux.sh file executable
+The ```+x``` is for eXecutable.
+
+```chmod +x create-id-linux.sh```
+
 Run *create-id-linux.sh* from the terminal.
+```./create-id-linux.sh```
 
 This will create your id.env file. 
 You may need to run this as sudo.
@@ -97,6 +103,66 @@ Mac and Linux Users:
 
 ## Docker on Staging and Production
 
+### Installing Docker on Ubuntu
+
+#### Method 1: Official Docker Installation (Recommended)
+
+**1. Update package index and install prerequisites:**
+```bash
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
+```
+
+**2. Add Docker's official GPG key:**
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+
+**3. Add Docker repository:**
+```bash
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+**4. Update package index again:**
+```bash
+sudo apt update
+```
+
+**5. Install Docker Engine:**
+```bash
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
+
+**6. Add your user to the docker group (so you don't need sudo):**
+```bash
+sudo usermod -aG docker $USER
+```
+
+**7. Start and enable Docker service:**
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+**8. Verify installation:**
+```bash
+docker --version
+docker run hello-world
+```
+
+#### Method 2: Quick Install Using Convenience Script
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+```
+
+**After installation:**
+- **Log out and back in** for the docker group membership to take effect
+- **Or run:** `newgrp docker` to start a new shell with docker group
+
+
 ### Building and running the production (also known as prod) containers
 
 The production containers are setup to be the production (prod) environment.
@@ -113,7 +179,7 @@ The beauty of Docker is only one developer has to set this up and everybody else
 
 ATTN: This should only be run on a staging or prod server. It won't harm your dev setup, it just won't work.
 
-```cd /home/restorationregeneration```
+```cd /home/rrnmc/restorationregeneration```
 
 ```sudo docker compose -f docker-compose.prod.yml up --build -d```
 

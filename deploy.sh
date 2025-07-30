@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directory where your application is deployed
-DEPLOY_DIR="/home/restorationregeneration/restorationregeneration"
+DEPLOY_DIR="/home/rrnmc/restorationregeneration"
 
 # Navigate to the deployment directory
 cd $DEPLOY_DIR || exit
