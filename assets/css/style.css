@@ -447,7 +447,7 @@ a:hover {
 /* Small Mobile (up to 479px) */
 @media (max-width: 479px) {
   .container {
-    padding: 0 var(--spacing-xs);
+    padding: 0 var(--spacing-lg);
   }
 
   .section {

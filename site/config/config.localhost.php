@@ -6,7 +6,7 @@ return [
     'vue' => [
       'compiler' => false
     ],
-    'install' => true
+    'install' => false
   ],
   'roots' => [
     'content' => __DIR__ . '/../../content'
