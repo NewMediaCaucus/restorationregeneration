@@ -41,13 +41,13 @@ class NeuralRegeneration3D {
       },
       // Purple Mystical
       {
-        neuron: 0x9C27B0,
-        dendrite: 0xAC37C0,
-        axon: 0x8C17A0,
-        synapse: 0xCC47D0,
-        signal: 0xFF80FF,
+        neuron: 0x8B5CF6,
+        dendrite: 0xA78BFA,
+        axon: 0x7C3AED,
+        synapse: 0xC084FC,
+        signal: 0xDDD6FE,
         background: 0xFFFFFF,
-        glow: 0x9C27B0
+        glow: 0x8B5CF6
       },
       // Orange Warm
       {
@@ -71,7 +71,7 @@ class NeuralRegeneration3D {
       }
     ];
     
-    this.currentPaletteIndex = 0;
+    this.currentPaletteIndex = 2; // Purple Mystical palette
     this.colors = this.colorPalettes[this.currentPaletteIndex];
     
     this.setupThreeJS();
@@ -88,7 +88,7 @@ class NeuralRegeneration3D {
     
     // Camera
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / 800, 0.1, 1000);
-    this.camera.position.set(0, 0, 50);
+    this.camera.position.set(0, 0, 10);
     
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ 
@@ -180,9 +180,9 @@ class NeuralRegeneration3D {
     
     // Add independent rotation animation for each sphere
     sphere.rotationSpeed = {
-      x: (Math.random() - 0.5) * 0.05, // Much faster rotation
-      y: (Math.random() - 0.5) * 0.05,
-      z: (Math.random() - 0.5) * 0.05
+      x: (Math.random() - 0.5) * 0.02, // Much faster rotation
+      y: (Math.random() - 0.5) * 0.02,
+      z: (Math.random() - 0.5) * 0.02
     };
     
     // Add random rotation direction (some clockwise, some counter-clockwise)
