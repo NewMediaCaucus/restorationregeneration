@@ -75,6 +75,8 @@ class NeuralRegeneration {
     
     this.currentPaletteIndex = 0;
     this.colors = this.colorPalettes[this.currentPaletteIndex];
+    console.log('Initial palette index:', this.currentPaletteIndex); // Debug log
+    console.log('Initial colors:', this.colors); // Debug log
     
     this.initializeNeurons();
     this.animate();
@@ -129,7 +131,9 @@ class NeuralRegeneration {
       connections: 0,
       maxConnections: Math.floor(Math.random() * 3) + 2,
       fadeIn: 0, // Fade-in progress (0 to 1)
-      fadeInDuration: 60 // Frames to complete fade-in
+      fadeInDuration: 60, // Frames to complete fade-in
+      shrinking: false, // Whether neuron is shrinking
+      shrinkStartAge: 0 // Age when shrinking started
     };
   }
   
@@ -222,9 +226,28 @@ class NeuralRegeneration {
         neuron.fadeIn += 1 / neuron.fadeInDuration;
       }
       
-      // Grow neuron
-      if (neuron.growth < neuron.maxGrowth) {
-        neuron.growth += this.growthRate;
+      // Start shrinking after neuron has been mature for a while
+      if (!neuron.shrinking && neuron.growth >= neuron.maxGrowth && neuron.age > 900) {
+        neuron.shrinking = true;
+        neuron.shrinkStartAge = neuron.age;
+      }
+      
+      // Grow or shrink neuron
+      if (neuron.shrinking) {
+        // Shrink neuron
+        neuron.growth -= this.growthRate * 0.5; // Slower shrinking
+        if (neuron.growth <= 0) {
+          // Remove neuron when fully shrunk
+          const index = this.neurons.indexOf(neuron);
+          if (index > -1) {
+            this.neurons.splice(index, 1);
+          }
+        }
+      } else {
+        // Grow neuron
+        if (neuron.growth < neuron.maxGrowth) {
+          neuron.growth += this.growthRate;
+        }
       }
       
       // Add dendrites as neuron grows
@@ -334,7 +357,7 @@ class NeuralRegeneration {
     
           // Draw connections (static, no activation)
       for (const connection of this.connections) {
-        this.ctx.strokeStyle = 'hsla(200, 80%, 60%, 0.3)';
+        this.ctx.strokeStyle = this.colors.neuron;
         this.ctx.lineWidth = connection.strength * 1; // Half as thick
         this.ctx.lineCap = 'round'; // Rounded ends
         this.ctx.beginPath();
@@ -345,21 +368,16 @@ class NeuralRegeneration {
     
     // Draw neurons (static, no activation)
     for (const neuron of this.neurons) {
-      // Apply fade-in effect
-      const alpha = neuron.fadeIn;
-      const neuronColor = this.colors.neuron.replace(/hsla?\([^)]+\)/, `hsla(200, 80%, 60%, ${alpha})`);
-      
-      // Draw neuron body with fade-in
-      this.ctx.fillStyle = neuronColor;
+      // Draw neuron body with fade-in and shrinking
+      this.ctx.fillStyle = this.colors.neuron;
       this.ctx.beginPath();
-      this.ctx.arc(neuron.x, neuron.y, neuron.radius, 0, Math.PI * 2);
+      this.ctx.arc(neuron.x, neuron.y, neuron.radius * neuron.growth, 0, Math.PI * 2);
       this.ctx.fill();
       
-      // Draw dendrites with fade-in
+      // Draw dendrites with fade-in and shrinking
       for (const dendrite of neuron.dendrites) {
-        const dendriteColor = this.colors.dendrite.replace(/hsla?\([^)]+\)/, `hsla(220, 70%, 70%, ${alpha})`);
-        this.ctx.strokeStyle = dendriteColor;
-        this.ctx.lineWidth = 1; // Half as thick
+        this.ctx.strokeStyle = this.colors.dendrite;
+        this.ctx.lineWidth = 1 * neuron.growth; // Scale with growth
         this.ctx.lineCap = 'round'; // Rounded ends
         this.ctx.beginPath();
         this.ctx.moveTo(neuron.x, neuron.y);
@@ -367,11 +385,10 @@ class NeuralRegeneration {
         this.ctx.stroke();
       }
       
-      // Draw axon with fade-in
+      // Draw axon with fade-in and shrinking
       if (neuron.axon) {
-        const axonColor = this.colors.axon.replace(/hsla?\([^)]+\)/, `hsla(180, 80%, 50%, ${alpha})`);
-        this.ctx.strokeStyle = axonColor;
-        this.ctx.lineWidth = 1.5; // Half as thick
+        this.ctx.strokeStyle = this.colors.axon;
+        this.ctx.lineWidth = 1.5 * neuron.growth; // Scale with growth
         this.ctx.lineCap = 'round'; // Rounded ends
         this.ctx.beginPath();
         this.ctx.moveTo(neuron.x, neuron.y);
@@ -398,18 +415,14 @@ class NeuralRegeneration {
     const buttonSize = 40;
     const margin = 20;
     
-    // Button background
+    // Button background (using rectangle instead of roundRect for compatibility)
     this.ctx.fillStyle = 'hsla(0, 0%, 20%, 0.9)';
-    this.ctx.beginPath();
-    this.ctx.roundRect(margin, margin, buttonSize, buttonSize, 8);
-    this.ctx.fill();
+    this.ctx.fillRect(margin, margin, buttonSize, buttonSize);
     
     // Button border
     this.ctx.strokeStyle = 'hsla(0, 0%, 100%, 0.3)';
     this.ctx.lineWidth = 1;
-    this.ctx.beginPath();
-    this.ctx.roundRect(margin, margin, buttonSize, buttonSize, 8);
-    this.ctx.stroke();
+    this.ctx.strokeRect(margin, margin, buttonSize, buttonSize);
     
     // Button icon (color palette)
     this.ctx.fillStyle = this.colors.neuron;
@@ -486,6 +499,8 @@ class NeuralRegeneration {
   nextPalette() {
     this.currentPaletteIndex = (this.currentPaletteIndex + 1) % this.colorPalettes.length;
     this.colors = this.colorPalettes[this.currentPaletteIndex];
+    console.log('Palette changed to index:', this.currentPaletteIndex); // Debug log
+    console.log('New colors:', this.colors); // Debug log
   }
   
   reset() {
@@ -523,8 +538,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
+      console.log('Canvas clicked at:', x, y); // Debug log
+      
       // Check if click is in button area (20,20 to 60,60)
       if (x >= 20 && x <= 60 && y >= 20 && y <= 60) {
+        console.log('Button clicked!'); // Debug log
         animation.nextPalette();
       }
     });
