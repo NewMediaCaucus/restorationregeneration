@@ -25,5 +25,5 @@
 <body>
   <!-- Neural Regeneration Header Animation -->
   <div class="header-animation">
-    <canvas id="neural-regeneration-canvas" height="800"></canvas>
+    <canvas id="neural-regeneration-canvas"></canvas>
   </div>

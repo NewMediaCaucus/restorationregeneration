@@ -9,13 +9,22 @@ class NeuralRegeneration3D {
     
     // Neural system
     this.neurons = [];
-    this.maxNeurons = 30; // Multiple spheres for full effect
+    this.maxNeurons = 80; // Multiple spheres for full effect
     this.connections = [];
     this.maxConnections = 80; // Connections between neurons
     
     // Growth system
     this.growthTime = 0;
     this.growthRate = 0.02;
+    
+    // Background transition system
+    this.backgroundTransition = {
+      startTime: Date.now(),
+      duration: 120000, // 120 seconds
+      nightColor: new THREE.Color(0x000000), // Black
+      morningColor: new THREE.Color(0x2D1B3D), // Dark orange
+      currentPhase: 0 // 0: night->morning, 1: morning->night
+    };
     
     // Color palettes
     this.colorPalettes = [
@@ -41,12 +50,12 @@ class NeuralRegeneration3D {
       },
       // Purple Mystical
       {
-        neuron: 0x8B5CF6,
+        neuron: 0xFFFFFF,
         dendrite: 0xA78BFA,
-        axon: 0x7C3AED,
+        axon: 0x50fa7b,
         synapse: 0xC084FC,
         signal: 0xDDD6FE,
-        background: 0xFFFFFF,
+        background: 0x000000,
         glow: 0x8B5CF6
       },
       // Orange Warm
@@ -88,7 +97,7 @@ class NeuralRegeneration3D {
     
     // Camera
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / 800, 0.1, 1000);
-    this.camera.position.set(0, 0, 10);
+    this.camera.position.set(0, 0, 16);
     
     // Renderer
     this.renderer = new THREE.WebGLRenderer({ 
@@ -96,7 +105,7 @@ class NeuralRegeneration3D {
       antialias: true,
       alpha: true 
     });
-    this.renderer.setSize(window.innerWidth, 800);
+    this.resizeCanvas();
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
@@ -110,7 +119,7 @@ class NeuralRegeneration3D {
     this.controls.enableZoom = true;
     this.controls.enablePan = false;
     this.controls.autoRotate = true;
-    this.controls.autoRotateSpeed = 0.5;
+    this.controls.autoRotateSpeed = 3.0;
   }
   
   setupLighting() {
@@ -154,7 +163,7 @@ class NeuralRegeneration3D {
     } else if (this.width >= 768) {
       this.height = 600;
     } else if (this.width >= 480) {
-      this.height = 240;
+      this.height = 380;
     } else {
       this.height = 400;
     }
@@ -232,12 +241,11 @@ class NeuralRegeneration3D {
   }
 
   createNeuron(x, y, z) {
-    const geometry = new THREE.SphereGeometry(0.67, 16, 16);
-    const material = new THREE.MeshPhongMaterial({ 
+    const geometry = new THREE.SphereGeometry(0.4, 16, 16);
+    const material = new THREE.MeshLambertMaterial({ 
       color: this.colors.neuron,
       transparent: false,
-      opacity: 1.0,
-      shininess: 100
+      opacity: 1.0
     });
     
     const sphere = new THREE.Mesh(geometry, material);
@@ -247,9 +255,9 @@ class NeuralRegeneration3D {
     
     // Add independent rotation animation for each sphere
     sphere.rotationSpeed = {
-      x: (Math.random() - 0.5) * 0.02, // Much faster rotation
-      y: (Math.random() - 0.5) * 0.02,
-      z: (Math.random() - 0.5) * 0.02
+      x: (Math.random() - 0.5) * 0.01, // Much faster rotation
+      y: (Math.random() - 0.5) * 0.01,
+      z: (Math.random() - 0.5) * 0.01
     };
     
     // Add random rotation direction (some clockwise, some counter-clockwise)
@@ -269,6 +277,7 @@ class NeuralRegeneration3D {
       axon: null,
       growth: 0,
       maxGrowth: Math.random() * 0.5 + 0.5,
+      growthRate: Math.random() * this.growthRate * 0.8 + this.growthRate * 0.2, // Individual growth rate
       age: 0,
       connections: 0,
       maxConnections: Math.floor(Math.random() * 3) + 2,
@@ -289,7 +298,7 @@ class NeuralRegeneration3D {
       Math.cos(phi)
     );
     
-    const length = Math.random() * 8 + 4;
+    const length = Math.random() * 4 + 2;
     const spherePosition = neuron.mesh.position;
     const endPoint = new THREE.Vector3(
       spherePosition.x + direction.x * length,
@@ -320,7 +329,7 @@ class NeuralRegeneration3D {
       Math.cos(phi)
     );
     
-    const length = Math.random() * 12 + 8;
+    const length = Math.random() * 6 + 4;
     const spherePosition = neuron.mesh.position;
     const endPoint = new THREE.Vector3(
       spherePosition.x + direction.x * length,
@@ -381,16 +390,7 @@ class NeuralRegeneration3D {
       
       // Only start rotating after the sphere is fully grown
       if (neuron.growth >= neuron.maxGrowth) {
-        // ROTATION DEBUGGING
-        if (neuron.age % 60 === 0) { // Every second at 60fps
-          console.log('=== ROTATION DEBUG ===');
-          console.log('Neuron age:', neuron.age);
-          console.log('Growth:', neuron.growth, '/', neuron.maxGrowth);
-          console.log('Rotation speeds:', neuron.mesh.rotationSpeed);
-          console.log('Rotation directions:', neuron.mesh.rotationDirection);
-          console.log('Current rotation:', neuron.mesh.rotation.x.toFixed(3), neuron.mesh.rotation.y.toFixed(3), neuron.mesh.rotation.z.toFixed(3));
-          console.log('=====================');
-        }
+
         
         // Rotate the neuron sphere independently
         neuron.mesh.rotation.x += neuron.mesh.rotationSpeed.x * neuron.mesh.rotationDirection.x;
@@ -403,9 +403,8 @@ class NeuralRegeneration3D {
         }
         
         // Count rotations (roughly 10 rotations)
-        const rotationTime = 600; // Time for 10 rotations
+        const rotationTime = 1200; // Time for 10 rotations
         if (neuron.age - neuron.rotationStartTime > rotationTime) {
-          console.log('=== NEURON BLINKED AWAY ===');
           // Blink away the neuron and its dendrites/axons
           this.scene.remove(neuron.mesh);
           for (let dendrite of neuron.dendrites) {
@@ -427,7 +426,7 @@ class NeuralRegeneration3D {
       
               // Only grow, never shrink
         if (neuron.growth < neuron.maxGrowth) {
-          neuron.growth += this.growthRate;
+          neuron.growth += neuron.growthRate;
         }
       
       // Scale neuron based on growth
@@ -452,15 +451,15 @@ class NeuralRegeneration3D {
       // Grow dendrites
       for (let dendrite of neuron.dendrites) {
         if (dendrite.currentLength < dendrite.length) {
-          dendrite.currentLength += 0.3;
+          dendrite.currentLength += 0.15;
           
           // Create or update dendrite mesh
           if (!dendrite.mesh) {
-            const geometry = this.createTaperedCylinder(dendrite.currentLength, 0.05, 8);
+            const geometry = this.createTaperedCylinder(dendrite.currentLength, 0.025, 8);
             const material = new THREE.MeshPhongMaterial({ 
               color: this.colors.dendrite,
               transparent: true,
-              opacity: 0.7
+              opacity: 1
             });
             dendrite.mesh = new THREE.Mesh(geometry, material);
             dendrite.mesh.castShadow = true;
@@ -469,7 +468,7 @@ class NeuralRegeneration3D {
             neuron.mesh.add(dendrite.mesh);
           } else {
             dendrite.mesh.geometry.dispose();
-            dendrite.mesh.geometry = this.createTaperedCylinder(dendrite.currentLength, 0.05, 8);
+            dendrite.mesh.geometry = this.createTaperedCylinder(dendrite.currentLength, 0.025, 8);
           }
           
           // Position dendrite relative to sphere center (0,0,0 in sphere's local coordinates)
@@ -488,15 +487,15 @@ class NeuralRegeneration3D {
       
       // Grow axon
       if (neuron.axon && neuron.axon.currentLength < neuron.axon.length) {
-        neuron.axon.currentLength += 0.4;
+        neuron.axon.currentLength += 0.2;
         
         // Create or update axon mesh
         if (!neuron.axon.mesh) {
-          const geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.08, 8);
+                      const geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.04, 8);
           const material = new THREE.MeshPhongMaterial({ 
             color: this.colors.axon,
             transparent: true,
-            opacity: 0.8
+            opacity: 1
           });
           neuron.axon.mesh = new THREE.Mesh(geometry, material);
           neuron.axon.mesh.castShadow = true;
@@ -505,7 +504,7 @@ class NeuralRegeneration3D {
           neuron.mesh.add(neuron.axon.mesh);
         } else {
           neuron.axon.mesh.geometry.dispose();
-          neuron.axon.mesh.geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.08, 8);
+                      neuron.axon.mesh.geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.04, 8);
         }
         
         // Position axon relative to sphere center (0,0,0 in sphere's local coordinates)
@@ -584,9 +583,39 @@ class NeuralRegeneration3D {
     }
   }
   
+  updateBackgroundTransition() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - this.backgroundTransition.startTime;
+    const progress = (elapsed % this.backgroundTransition.duration) / this.backgroundTransition.duration;
+    
+    let currentColor;
+    if (progress <= 0.5) {
+      // First half: fade from black to half-bright
+      const fadeProgress = progress * 2; // 0 to 1
+      currentColor = new THREE.Color().lerpColors(
+        this.backgroundTransition.nightColor,
+        this.backgroundTransition.morningColor,
+        fadeProgress
+      );
+    } else {
+      // Second half: fade from half-bright back to black
+      const fadeProgress = (progress - 0.5) * 2; // 0 to 1
+      currentColor = new THREE.Color().lerpColors(
+        this.backgroundTransition.morningColor,
+        this.backgroundTransition.nightColor,
+        fadeProgress
+      );
+    }
+    
+    this.scene.background = currentColor;
+  }
+
   animate() {
     if (this.isRunning) {
       this.growthTime++;
+      
+      // Update background transition
+      this.updateBackgroundTransition();
       
       // Add new neurons
       this.addNeurons();
@@ -652,8 +681,7 @@ class NeuralRegeneration3D {
       }
     }
     
-    console.log('3D Palette changed to index:', this.currentPaletteIndex);
-    console.log('New 3D colors:', this.colors);
+
   }
   
   reset() {
@@ -712,7 +740,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Check if click is in button area (top-left corner)
       if (x >= 20 && x <= 60 && y >= 20 && y <= 60) {
-        console.log('3D Button clicked!');
         animation.nextPalette();
       }
     });
