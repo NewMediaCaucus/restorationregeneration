@@ -1,0 +1,23 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.PRODUCTION_SSH_KEY }}
+
+    - name: Pull latest changes on staging server
+      run: |
+        ssh -o StrictHostKeyChecking=no rrnmc@rr.shimmeringtrashpile.com 'cd /home/rrnmc/restorationregeneration && git pull origin main && sudo docker compose -f docker-compose.prod.yml up -d --build'
