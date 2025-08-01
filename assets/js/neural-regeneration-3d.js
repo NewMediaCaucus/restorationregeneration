@@ -168,8 +168,8 @@ class NeuralRegeneration3D {
     const geometry = new THREE.SphereGeometry(1, 16, 16);
     const material = new THREE.MeshPhongMaterial({ 
       color: this.colors.neuron,
-      transparent: true,
-      opacity: 0.8,
+      transparent: false,
+      opacity: 1.0,
       shininess: 100
     });
     
@@ -178,11 +178,18 @@ class NeuralRegeneration3D {
     sphere.castShadow = true;
     sphere.receiveShadow = true;
     
-    // Add rotation animation
+    // Add independent rotation animation for each sphere
     sphere.rotationSpeed = {
-      x: (Math.random() - 0.5) * 0.02,
-      y: (Math.random() - 0.5) * 0.02,
-      z: (Math.random() - 0.5) * 0.02
+      x: (Math.random() - 0.5) * 0.05, // Much faster rotation
+      y: (Math.random() - 0.5) * 0.05,
+      z: (Math.random() - 0.5) * 0.05
+    };
+    
+    // Add random rotation direction (some clockwise, some counter-clockwise)
+    sphere.rotationDirection = {
+      x: Math.random() > 0.5 ? 1 : -1,
+      y: Math.random() > 0.5 ? 1 : -1,
+      z: Math.random() > 0.5 ? 1 : -1
     };
     
     return {
@@ -305,46 +312,66 @@ class NeuralRegeneration3D {
     for (let neuron of this.neurons) {
       neuron.age++;
       
-      // Rotate the neuron sphere
-      neuron.mesh.rotation.x += neuron.mesh.rotationSpeed.x;
-      neuron.mesh.rotation.y += neuron.mesh.rotationSpeed.y;
-      neuron.mesh.rotation.z += neuron.mesh.rotationSpeed.z;
-      
-      // Start shrinking after neuron has been mature for a while
-      if (!neuron.shrinking && neuron.growth >= neuron.maxGrowth && neuron.age > 600) {
-        neuron.shrinking = true;
-        neuron.shrinkStartAge = neuron.age;
-      }
-      
-      // Grow or shrink neuron
-      if (neuron.shrinking) {
-        neuron.growth -= this.growthRate * 0.5;
-        if (neuron.growth <= 0) {
+      // Only start rotating after the sphere is fully grown
+      if (neuron.growth >= neuron.maxGrowth) {
+        // ROTATION DEBUGGING
+        if (neuron.age % 60 === 0) { // Every second at 60fps
+          console.log('=== ROTATION DEBUG ===');
+          console.log('Neuron age:', neuron.age);
+          console.log('Growth:', neuron.growth, '/', neuron.maxGrowth);
+          console.log('Rotation speeds:', neuron.mesh.rotationSpeed);
+          console.log('Rotation directions:', neuron.mesh.rotationDirection);
+          console.log('Current rotation:', neuron.mesh.rotation.x.toFixed(3), neuron.mesh.rotation.y.toFixed(3), neuron.mesh.rotation.z.toFixed(3));
+          console.log('=====================');
+        }
+        
+        // Rotate the neuron sphere independently
+        neuron.mesh.rotation.x += neuron.mesh.rotationSpeed.x * neuron.mesh.rotationDirection.x;
+        neuron.mesh.rotation.y += neuron.mesh.rotationSpeed.y * neuron.mesh.rotationDirection.y;
+        neuron.mesh.rotation.z += neuron.mesh.rotationSpeed.z * neuron.mesh.rotationDirection.z;
+        
+        // Count rotations (approximate based on time)
+        if (!neuron.rotationStartTime) {
+          neuron.rotationStartTime = neuron.age;
+        }
+        
+        // Count rotations (roughly 10 rotations)
+        const rotationTime = 600; // Time for 10 rotations
+        if (neuron.age - neuron.rotationStartTime > rotationTime) {
+          console.log('=== NEURON BLINKED AWAY ===');
+          // Blink away the neuron and its dendrites/axons
+          this.scene.remove(neuron.mesh);
+          for (let dendrite of neuron.dendrites) {
+            if (dendrite.mesh) {
+              this.scene.remove(dendrite.mesh);
+            }
+          }
+          if (neuron.axon && neuron.axon.mesh) {
+            this.scene.remove(neuron.axon.mesh);
+          }
+          
+          // Remove from neurons array
           const index = this.neurons.indexOf(neuron);
           if (index > -1) {
-            this.scene.remove(neuron.mesh);
             this.neurons.splice(index, 1);
           }
         }
-      } else {
+      }
+      
+              // Only grow, never shrink
         if (neuron.growth < neuron.maxGrowth) {
           neuron.growth += this.growthRate;
         }
-      }
       
       // Scale neuron based on growth
       const scale = neuron.growth;
       neuron.mesh.scale.setScalar(scale);
       
-      // Debug sphere growth
-      if (neuron.age % 100 === 0) {
-        console.log('Neuron growth:', neuron.growth, '/', neuron.maxGrowth, 'at age:', neuron.age);
-      }
+
       
       // Add dendrites only after sphere is fully grown
       if (neuron.growth >= neuron.maxGrowth && neuron.dendrites.length < 4) {
         if (Math.random() < 0.02) {
-          console.log('Creating dendrite for neuron at:', neuron.mesh.position);
           const dendrite = this.createDendrite(neuron);
           neuron.dendrites.push(dendrite);
         }
@@ -352,7 +379,6 @@ class NeuralRegeneration3D {
       
       // Add axon only after sphere is fully grown
       if (neuron.growth >= neuron.maxGrowth && !neuron.axon) {
-        console.log('Creating axon for neuron at:', neuron.mesh.position);
         neuron.axon = this.createAxon(neuron);
       }
       
@@ -371,27 +397,25 @@ class NeuralRegeneration3D {
             });
             dendrite.mesh = new THREE.Mesh(geometry, material);
             dendrite.mesh.castShadow = true;
-            this.scene.add(dendrite.mesh);
+            
+            // Add dendrite as child of the sphere so it rotates with it
+            neuron.mesh.add(dendrite.mesh);
           } else {
             dendrite.mesh.geometry.dispose();
             dendrite.mesh.geometry = new THREE.CylinderGeometry(0.05, 0.05, dendrite.currentLength, 8);
           }
           
-          // Position dendrite - start from sphere center and grow outward like a light beam
-          const sphereOrigin = dendrite.sphereOrigin;
-          const currentEndPoint = new THREE.Vector3(
-            sphereOrigin.x + dendrite.direction.x * dendrite.currentLength,
-            sphereOrigin.y + dendrite.direction.y * dendrite.currentLength,
-            sphereOrigin.z + dendrite.direction.z * dendrite.currentLength
+          // Position dendrite relative to sphere center (0,0,0 in sphere's local coordinates)
+          dendrite.mesh.position.set(0, 0, 0);
+          
+          // Calculate end point in sphere's local coordinates
+          const localEndPoint = new THREE.Vector3(
+            dendrite.direction.x * dendrite.currentLength,
+            dendrite.direction.y * dendrite.currentLength,
+            dendrite.direction.z * dendrite.currentLength
           );
           
-          console.log('Dendrite growth:', dendrite.currentLength, '/', dendrite.length);
-          console.log('Sphere origin:', sphereOrigin);
-          console.log('Current end point:', currentEndPoint);
-          
-          // Position the cylinder starting from sphere center, extending to current end point
-          dendrite.mesh.position.copy(sphereOrigin);
-          dendrite.mesh.lookAt(currentEndPoint);
+          dendrite.mesh.lookAt(localEndPoint);
         }
       }
       
@@ -409,23 +433,25 @@ class NeuralRegeneration3D {
           });
           neuron.axon.mesh = new THREE.Mesh(geometry, material);
           neuron.axon.mesh.castShadow = true;
-          this.scene.add(neuron.axon.mesh);
+          
+          // Add axon as child of the sphere so it rotates with it
+          neuron.mesh.add(neuron.axon.mesh);
         } else {
           neuron.axon.mesh.geometry.dispose();
           neuron.axon.mesh.geometry = new THREE.CylinderGeometry(0.08, 0.08, neuron.axon.currentLength, 8);
         }
         
-        // Position axon - start from sphere center and grow outward like a light beam
-        const sphereOrigin = neuron.axon.sphereOrigin;
-        const currentEndPoint = new THREE.Vector3(
-          sphereOrigin.x + neuron.axon.direction.x * neuron.axon.currentLength,
-          sphereOrigin.y + neuron.axon.direction.y * neuron.axon.currentLength,
-          sphereOrigin.z + neuron.axon.direction.z * neuron.axon.currentLength
+        // Position axon relative to sphere center (0,0,0 in sphere's local coordinates)
+        neuron.axon.mesh.position.set(0, 0, 0);
+        
+        // Calculate end point in sphere's local coordinates
+        const localEndPoint = new THREE.Vector3(
+          neuron.axon.direction.x * neuron.axon.currentLength,
+          neuron.axon.direction.y * neuron.axon.currentLength,
+          neuron.axon.direction.z * neuron.axon.currentLength
         );
         
-        // Position the cylinder starting from sphere center, extending to current end point
-        neuron.axon.mesh.position.copy(sphereOrigin);
-        neuron.axon.mesh.lookAt(currentEndPoint);
+        neuron.axon.mesh.lookAt(localEndPoint);
       }
     }
   }
@@ -616,8 +642,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
-      console.log('3D Canvas clicked at:', x, y);
       
       // Check if click is in button area (top-left corner)
       if (x >= 20 && x <= 60 && y >= 20 && y <= 60) {
