@@ -2,6 +2,17 @@
 
 return [
   'debug' => true,
+  'cache' => [
+    'pages' => [
+      'active' => false
+    ],
+    'templates' => [
+      'active' => false
+    ],
+    'data' => [
+      'active' => false
+    ]
+  ],
   'panel' => [
     'vue' => [
       'compiler' => false

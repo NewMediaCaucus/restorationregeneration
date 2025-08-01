@@ -5,8 +5,13 @@ return [
   'url'   => 'https://rr.shimmeringtrashpile.com',
   'cache' => [
     'pages' => [
-      'active' => true,
-      'ignore' => fn($page) => $page->title()->value() === 'Home'
+      'active' => false
+    ],
+    'templates' => [
+      'active' => false
+    ],
+    'data' => [
+      'active' => false
     ]
   ],
   'panel' => [
