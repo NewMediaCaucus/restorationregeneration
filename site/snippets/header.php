@@ -21,7 +21,5 @@
 <body>
   <!-- Game of Life Header Animation -->
   <div class="header-animation">
-    <div class="container">
-      <canvas id="game-of-life-canvas" width="1440" height="400"></canvas>
-    </div>
+    <canvas id="game-of-life-canvas" width="1440" height="400"></canvas>
   </div>
