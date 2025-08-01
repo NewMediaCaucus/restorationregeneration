@@ -1,29 +1,6 @@
 <?php snippet('header') ?>
 
 <main class="home-page">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <?php if ($page->hero_title()->isNotEmpty()): ?>
-        <h1 class="hero-title"><?= $page->hero_title() ?></h1>
-      <?php endif ?>
-
-      <?php if ($page->hero_subtitle()->isNotEmpty()): ?>
-        <h2 class="hero-subtitle"><?= $page->hero_subtitle() ?></h2>
-      <?php endif ?>
-
-      <?php if ($page->dates_subtitle()->isNotEmpty()): ?>
-        <h3 class="dates-subtitle"><?= $page->dates_subtitle() ?></h3>
-      <?php endif ?>
-
-      <?php if ($page->hero_image()->isNotEmpty()): ?>
-        <div class="hero-image">
-          <?= $page->hero_image()->toFile() ?>
-        </div>
-      <?php endif ?>
-    </div>
-  </section>
-
   <!-- Welcome Section -->
   <?php if ($page->welcome()->isNotEmpty()): ?>
     <section class="welcome section">

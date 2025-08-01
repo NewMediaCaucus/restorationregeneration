@@ -676,6 +676,90 @@ a:hover {
 }
 
 /* ==========================================================================
+   Header Animation Styles
+   ========================================================================== */
+
+.header-animation {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-color: var(--color-bg-primary);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#neural-regeneration-canvas {
+  display: block;
+  width: 100%;
+  max-width: none;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: var(--spacing-2xl) 0 var(--spacing-xl);
+  color: var(--color-text-inverse);
+}
+
+.hero-overlay .hero-title {
+  color: var(--color-text-inverse);
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 4.5rem;
+  line-height: 1.1;
+}
+
+.hero-overlay .hero-subtitle {
+  color: var(--color-text-inverse);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-overlay .dates-subtitle {
+  color: var(--color-text-inverse);
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-overlay .hero-image {
+  margin-top: var(--spacing-lg);
+}
+
+/* Responsive adjustments for the animation */
+/* All breakpoints handled by JavaScript */
+
+/* Responsive hero title sizes */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .hero-overlay .hero-title {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 1023px) and (min-width: 768px) {
+  .hero-overlay .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+  .hero-overlay .hero-title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .hero-overlay .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+/* ==========================================================================
    Print Styles
    ========================================================================== */
 
