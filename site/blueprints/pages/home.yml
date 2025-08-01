@@ -68,6 +68,11 @@ sections:
         label: Event Date
         type: date
         format: "YYYY-MM-DD"
+      memory_game_enabled:
+        label: Enable Memory Game
+        type: toggle
+        text: "Show the Memory Match game in the Save the Date section"
+        default: false
       university_name:
         label: University Name
         type: text

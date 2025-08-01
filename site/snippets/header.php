@@ -28,6 +28,12 @@
 
   <!-- Dynamic Animation Loader -->
   <script src="<?= url('assets/js/animation-loader.js') ?>" defer></script>
+  
+  <!-- Countdown Timer -->
+  <script src="<?= url('assets/js/countdown-timer.js') ?>" defer></script>
+  
+  <!-- Memory Game -->
+  <script src="<?= url('assets/js/memory-game.js') ?>" defer></script>
 </head>
 
 <body>
