@@ -38,7 +38,7 @@
   <?php endif ?>
 
   <!-- Save the Date Section -->
-  <?php if ($page->save_the_date()->isNotEmpty() || $page->event_date()->isNotEmpty() || $page->timesweeper_enabled()->isTrue()): ?>
+  <?php if ($page->save_the_date()->isNotEmpty() || $page->event_date()->isNotEmpty() || $page->memory_game_enabled()->isTrue()): ?>
     <section class="save-the-date section">
       <div class="container">
         <h2>Save the Date</h2>
@@ -51,7 +51,7 @@
               </div>
             </div>
           <?php endif ?>
-          
+
           <!-- Countdown Block -->
           <?php if ($page->event_date()->isNotEmpty()): ?>
             <div class="save-the-date-block countdown-block">
@@ -69,7 +69,7 @@
               </div>
             </div>
           <?php endif ?>
-          
+
           <!-- Memory Game Block -->
           <?php if ($page->memory_game_enabled()->isTrue()): ?>
             <div class="save-the-date-block game-block">
