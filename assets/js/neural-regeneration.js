@@ -166,24 +166,33 @@ class NeuralRegeneration {
   
   // Initialize starting neurons
   initializeNeurons() {
-    // Add initial neurons in a network pattern
+    // Add initial neurons in a network pattern, keeping away from edges
     const centerX = this.width / 2;
     const centerY = this.height / 2;
+    const margin = 50;
+    const maxDistance = Math.min(this.width, this.height) / 2 - margin;
     
     for (let i = 0; i < 8; i++) {
       const angle = (i / 8) * Math.PI * 2;
-      const distance = Math.random() * 100 + 50;
+      const distance = Math.random() * maxDistance + 50;
       const x = centerX + Math.cos(angle) * distance;
       const y = centerY + Math.sin(angle) * distance;
-      this.neurons.push(this.createNeuron(x, y));
+      
+      // Ensure neuron is within safe bounds
+      const safeX = Math.max(margin, Math.min(this.width - margin, x));
+      const safeY = Math.max(margin, Math.min(this.height - margin, y));
+      
+      this.neurons.push(this.createNeuron(safeX, safeY));
     }
   }
   
   // Add new neurons periodically
   addNeurons() {
     if (this.neurons.length < this.maxNeurons && Math.random() < 0.03) {
-      const x = Math.random() * this.width;
-      const y = Math.random() * this.height;
+      // Keep neurons 50px away from edges
+      const margin = 50;
+      const x = margin + Math.random() * (this.width - 2 * margin);
+      const y = margin + Math.random() * (this.height - 2 * margin);
       this.neurons.push(this.createNeuron(x, y));
     }
   }
