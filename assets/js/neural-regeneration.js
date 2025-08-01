@@ -83,7 +83,20 @@ class NeuralRegeneration {
   // Resize canvas to browser width
   resizeCanvas() {
     this.width = window.innerWidth;
-    this.height = 800; // Fixed height to prevent squashing
+    
+    // Responsive height based on screen size
+    if (this.width >= 1440) {
+      this.height = 800;
+    } else if (this.width >= 1024) {
+      this.height = 700;
+    } else if (this.width >= 768) {
+      this.height = 600;
+    } else if (this.width >= 480) {
+      this.height = 240; // 240px for 480px breakpoint
+    } else {
+      this.height = 400;
+    }
+    
     this.canvas.width = this.width;
     this.canvas.height = this.height;
   }
@@ -114,7 +127,9 @@ class NeuralRegeneration {
       age: 0,
       active: false,
       connections: 0,
-      maxConnections: Math.floor(Math.random() * 3) + 2
+      maxConnections: Math.floor(Math.random() * 3) + 2,
+      fadeIn: 0, // Fade-in progress (0 to 1)
+      fadeInDuration: 60 // Frames to complete fade-in
     };
   }
   
@@ -201,6 +216,11 @@ class NeuralRegeneration {
   updateNeuralGrowth() {
     for (let neuron of this.neurons) {
       neuron.age++;
+      
+      // Fade in neuron
+      if (neuron.fadeIn < 1) {
+        neuron.fadeIn += 1 / neuron.fadeInDuration;
+      }
       
       // Grow neuron
       if (neuron.growth < neuron.maxGrowth) {
@@ -325,15 +345,20 @@ class NeuralRegeneration {
     
     // Draw neurons (static, no activation)
     for (const neuron of this.neurons) {
-      // Draw neuron body (always blue, no activation)
-      this.ctx.fillStyle = this.colors.neuron;
+      // Apply fade-in effect
+      const alpha = neuron.fadeIn;
+      const neuronColor = this.colors.neuron.replace(/hsla?\([^)]+\)/, `hsla(200, 80%, 60%, ${alpha})`);
+      
+      // Draw neuron body with fade-in
+      this.ctx.fillStyle = neuronColor;
       this.ctx.beginPath();
       this.ctx.arc(neuron.x, neuron.y, neuron.radius, 0, Math.PI * 2);
       this.ctx.fill();
       
-      // Draw dendrites
+      // Draw dendrites with fade-in
       for (const dendrite of neuron.dendrites) {
-        this.ctx.strokeStyle = this.colors.dendrite;
+        const dendriteColor = this.colors.dendrite.replace(/hsla?\([^)]+\)/, `hsla(220, 70%, 70%, ${alpha})`);
+        this.ctx.strokeStyle = dendriteColor;
         this.ctx.lineWidth = 1; // Half as thick
         this.ctx.lineCap = 'round'; // Rounded ends
         this.ctx.beginPath();
@@ -342,9 +367,10 @@ class NeuralRegeneration {
         this.ctx.stroke();
       }
       
-      // Draw axon
+      // Draw axon with fade-in
       if (neuron.axon) {
-        this.ctx.strokeStyle = this.colors.axon;
+        const axonColor = this.colors.axon.replace(/hsla?\([^)]+\)/, `hsla(180, 80%, 50%, ${alpha})`);
+        this.ctx.strokeStyle = axonColor;
         this.ctx.lineWidth = 1.5; // Half as thick
         this.ctx.lineCap = 'round'; // Rounded ends
         this.ctx.beginPath();
