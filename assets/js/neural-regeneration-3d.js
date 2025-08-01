@@ -164,8 +164,75 @@ class NeuralRegeneration3D {
     this.renderer.setSize(this.width, this.height);
   }
   
+  createTaperedCylinder(length, maxRadius, segments = 8) {
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    const indices = [];
+    const uvs = [];
+    
+    // Create vertices for tapered cylinder with late taper
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      const x = Math.cos(angle);
+      const z = Math.sin(angle);
+      
+      // Top end (point) - taper starts at 80% of length
+      const taperStart = length * 0.8;
+      const topRadius = (length/2 <= taperStart) ? maxRadius : 0;
+      vertices.push(0, length/2, 0);
+      uvs.push(0.5, 1);
+      
+      // Just before taper (thick)
+      const beforeTaperRadius = maxRadius;
+      vertices.push(x * beforeTaperRadius, taperStart/2, z * beforeTaperRadius);
+      uvs.push(i / segments, 0.9);
+      
+      // Middle (thickest)
+      const middleRadius = maxRadius;
+      vertices.push(x * middleRadius, 0, z * middleRadius);
+      uvs.push(i / segments, 0.5);
+      
+      // Just after taper (thick)
+      vertices.push(x * beforeTaperRadius, -taperStart/2, z * beforeTaperRadius);
+      uvs.push(i / segments, 0.1);
+      
+      // Bottom end (point) - taper starts at 80% of length
+      const bottomRadius = (length/2 <= taperStart) ? maxRadius : 0;
+      vertices.push(0, -length/2, 0);
+      uvs.push(0.5, 0);
+    }
+    
+    // Create indices for triangles
+    for (let i = 0; i < segments; i++) {
+      const base = i * 5;
+      
+      // Top triangles
+      indices.push(base, (base + 5) % (segments * 5), base + 1);
+      indices.push(base + 1, (base + 5) % (segments * 5), (base + 6) % (segments * 5));
+      
+      // Upper middle triangles
+      indices.push(base + 1, (base + 6) % (segments * 5), base + 2);
+      indices.push(base + 2, (base + 6) % (segments * 5), (base + 7) % (segments * 5));
+      
+      // Lower middle triangles
+      indices.push(base + 2, (base + 7) % (segments * 5), base + 3);
+      indices.push(base + 3, (base + 7) % (segments * 5), (base + 8) % (segments * 5));
+      
+      // Bottom triangles
+      indices.push(base + 3, (base + 8) % (segments * 5), base + 4);
+      indices.push(base + 4, (base + 8) % (segments * 5), (base + 9) % (segments * 5));
+    }
+    
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
+    
+    return geometry;
+  }
+
   createNeuron(x, y, z) {
-    const geometry = new THREE.SphereGeometry(1, 16, 16);
+    const geometry = new THREE.SphereGeometry(0.67, 16, 16);
     const material = new THREE.MeshPhongMaterial({ 
       color: this.colors.neuron,
       transparent: false,
@@ -389,7 +456,7 @@ class NeuralRegeneration3D {
           
           // Create or update dendrite mesh
           if (!dendrite.mesh) {
-            const geometry = new THREE.CylinderGeometry(0.05, 0.05, dendrite.currentLength, 8);
+            const geometry = this.createTaperedCylinder(dendrite.currentLength, 0.05, 8);
             const material = new THREE.MeshPhongMaterial({ 
               color: this.colors.dendrite,
               transparent: true,
@@ -402,7 +469,7 @@ class NeuralRegeneration3D {
             neuron.mesh.add(dendrite.mesh);
           } else {
             dendrite.mesh.geometry.dispose();
-            dendrite.mesh.geometry = new THREE.CylinderGeometry(0.05, 0.05, dendrite.currentLength, 8);
+            dendrite.mesh.geometry = this.createTaperedCylinder(dendrite.currentLength, 0.05, 8);
           }
           
           // Position dendrite relative to sphere center (0,0,0 in sphere's local coordinates)
@@ -425,7 +492,7 @@ class NeuralRegeneration3D {
         
         // Create or update axon mesh
         if (!neuron.axon.mesh) {
-          const geometry = new THREE.CylinderGeometry(0.08, 0.08, neuron.axon.currentLength, 8);
+          const geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.08, 8);
           const material = new THREE.MeshPhongMaterial({ 
             color: this.colors.axon,
             transparent: true,
@@ -438,7 +505,7 @@ class NeuralRegeneration3D {
           neuron.mesh.add(neuron.axon.mesh);
         } else {
           neuron.axon.mesh.geometry.dispose();
-          neuron.axon.mesh.geometry = new THREE.CylinderGeometry(0.08, 0.08, neuron.axon.currentLength, 8);
+          neuron.axon.mesh.geometry = this.createTaperedCylinder(neuron.axon.currentLength, 0.08, 8);
         }
         
         // Position axon relative to sphere center (0,0,0 in sphere's local coordinates)
