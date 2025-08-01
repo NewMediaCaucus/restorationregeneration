@@ -766,6 +766,266 @@ a:hover {
 }
 
 /* ==========================================================================
+   Save the Date Grid Layout
+   ========================================================================== */
+
+.save-the-date-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.save-the-date-block {
+  padding: var(--spacing-lg);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-primary);
+  transition: var(--transition-normal);
+}
+
+.save-the-date-block:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.text-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.countdown-block {
+  text-align: center;
+}
+
+.game-block {
+  text-align: center;
+}
+
+/* ==========================================================================
+   Countdown Timer Styles
+   ========================================================================== */
+
+.countdown-timer {
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.countdown-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.countdown-single {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-xl);
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-primary);
+  transition: var(--transition-normal);
+  min-width: 120px;
+}
+
+.countdown-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.countdown-number {
+  font-size: var(--font-size-5xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: var(--spacing-xs);
+}
+
+.countdown-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.countdown-date {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Memory Game Styles
+   ========================================================================== */
+
+.memory-game {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.game-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.game-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  font-style: italic;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: var(--color-border-primary);
+  border: 2px solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin: var(--spacing-md) 0;
+}
+
+.game-card {
+  width: 60px;
+  height: 60px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-border-secondary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  user-select: none;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.game-card:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-sm);
+}
+
+.game-card.flipped {
+  transform: rotateY(180deg);
+  background: var(--color-bg-primary);
+}
+
+.game-card.matched {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  transform: rotateY(180deg);
+}
+
+.game-card .card-front,
+.game-card .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+}
+
+.game-card .card-front {
+  background: var(--color-primary);
+  transform: rotateY(0deg);
+}
+
+.game-card .card-back {
+  background: var(--color-bg-primary);
+  transform: rotateY(180deg);
+}
+
+.game-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+}
+
+.game-controls .btn {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Responsive styles */
+@media (max-width: 1023px) {
+  .save-the-date-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .save-the-date-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .countdown-number {
+    font-size: var(--font-size-4xl);
+  }
+  
+  .countdown-item {
+    padding: var(--spacing-lg);
+    min-width: 100px;
+  }
+  
+  .game-card {
+    width: 50px;
+    height: 50px;
+    font-size: var(--font-size-lg);
+  }
+}
+
+@media (max-width: 479px) {
+  .countdown-number {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .countdown-item {
+    padding: var(--spacing-md);
+    min-width: 80px;
+  }
+  
+  .game-card {
+    width: 45px;
+    height: 45px;
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ==========================================================================
    Print Styles
    ========================================================================== */
 
