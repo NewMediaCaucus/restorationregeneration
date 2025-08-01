@@ -723,7 +723,13 @@ a:hover {
 
 .hero-overlay .dates-subtitle {
   color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-overlay .university-name-subtitle {
+  color: var(--color-text-inverse);
+  margin-bottom: var(--spacing-sm);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 

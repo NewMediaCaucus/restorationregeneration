@@ -60,6 +60,7 @@
         </div>
       <?php endif ?>
 
+
       <?php if ($page->event_address()->isNotEmpty()): ?>
         <?php
         // Build Google Maps URL from address components
@@ -89,84 +90,87 @@
         }
         ?>
 
-        <?php if (!empty($googleMapsUrl)): ?>
-          <a href="<?= $googleMapsUrl ?>" target="_blank" class="location-link">
-          <?php endif ?>
 
-          <div class="event-location">
-            <div class="location-details">
-              <?php foreach ($page->event_address()->toStructure() as $address): ?>
-                <?php if ($address->building_name()->isNotEmpty()): ?>
-                  <?php if ($address->building_url()->isNotEmpty()): ?>
-                    <a href="<?= $address->building_url() ?>" target="_blank" class="building-link">
-                      <?= $address->building_name() ?>
-                      <img src="/assets/icons/external-link.svg" alt="External link" class="external-link-icon">
-                    </a>
-                  <?php else: ?>
-                    <?= $address->building_name() ?><br>
+
+        <div class="event-location">
+          <div class="location-details">
+            <?php if ($page->university_name()->isNotEmpty()): ?>
+              <div class="university-name">
+                <strong><?= $page->university_name() ?></strong>
+              </div>
+            <?php endif ?>
+            <?php foreach ($page->event_address()->toStructure() as $address): ?>
+              <?php if ($address->building_name()->isNotEmpty()): ?>
+                <?php if ($address->building_url()->isNotEmpty()): ?>
+                  <a href="<?= $address->building_url() ?>" target="_blank" class="building-link">
+                    <?= $address->building_name() ?>
+                    <img src="/assets/icons/external-link.svg" alt="External link" class="external-link-icon">
+                  </a>
+                <?php else: ?>
+                  <?= $address->building_name() ?><br>
+                <?php endif ?>
+              <?php endif ?>
+              <?php if ($address->room_number()->isNotEmpty()): ?>
+                <?= $address->room_number() ?><br>
+              <?php endif ?>
+              <?php if ($address->street_address()->isNotEmpty()): ?>
+                <?php
+                // Build Google Maps URL from street address
+                $streetAddress = $address->street_address();
+                $city = $address->city()->isNotEmpty() ? $address->city() : '';
+                $state = $address->state()->isNotEmpty() ? $address->state() : '';
+                $zip = $address->zip_code()->isNotEmpty() ? $address->zip_code() : '';
+
+                $googleMapsUrl = '';
+                $addressParts = [];
+
+                if ($streetAddress) {
+                  $addressParts[] = $streetAddress;
+                }
+                if ($city) {
+                  $addressParts[] = $city;
+                }
+                if ($state) {
+                  $addressParts[] = $state;
+                }
+                if ($zip) {
+                  $addressParts[] = $zip;
+                }
+
+                if (!empty($addressParts)) {
+                  $googleMapsUrl = 'https://maps.google.com/?q=' . urlencode(implode(', ', $addressParts));
+                }
+                ?>
+
+                <?php if (!empty($googleMapsUrl)): ?>
+                  <a href="<?= $googleMapsUrl ?>" target="_blank" class="address-link">
                   <?php endif ?>
-                <?php endif ?>
-                <?php if ($address->room_number()->isNotEmpty()): ?>
-                  <?= $address->room_number() ?><br>
-                <?php endif ?>
-                <?php if ($address->street_address()->isNotEmpty()): ?>
-                  <?php
-                  // Build Google Maps URL from street address
-                  $streetAddress = $address->street_address();
-                  $city = $address->city()->isNotEmpty() ? $address->city() : '';
-                  $state = $address->state()->isNotEmpty() ? $address->state() : '';
-                  $zip = $address->zip_code()->isNotEmpty() ? $address->zip_code() : '';
 
-                  $googleMapsUrl = '';
-                  $addressParts = [];
-
-                  if ($streetAddress) {
-                    $addressParts[] = $streetAddress;
-                  }
-                  if ($city) {
-                    $addressParts[] = $city;
-                  }
-                  if ($state) {
-                    $addressParts[] = $state;
-                  }
-                  if ($zip) {
-                    $addressParts[] = $zip;
-                  }
-
-                  if (!empty($addressParts)) {
-                    $googleMapsUrl = 'https://maps.google.com/?q=' . urlencode(implode(', ', $addressParts));
-                  }
-                  ?>
+                  <div class="address-with-pin">
+                    <div class="location-icon">
+                      <img src="/assets/icons/map-pin.svg" alt="Location" class="map-pin-icon">
+                    </div>
+                    <div class="address-details">
+                      <div class="street-text">
+                        <?= $address->street_address() ?>
+                      </div>
+                      <?php if ($address->city()->isNotEmpty()): ?>
+                        <div class="city-state-zip">
+                          <?= $address->city() ?>, <?= $address->state() ?> <?= $address->zip_code() ?>
+                        </div>
+                      <?php endif ?>
+                    </div>
+                  </div>
 
                   <?php if (!empty($googleMapsUrl)): ?>
-                    <a href="<?= $googleMapsUrl ?>" target="_blank" class="address-link">
-                    <?php endif ?>
-
-                    <div class="address-with-pin">
-                      <div class="location-icon">
-                        <img src="/assets/icons/map-pin.svg" alt="Location" class="map-pin-icon">
-                      </div>
-                      <div class="address-details">
-                        <div class="street-text">
-                          <?= $address->street_address() ?>
-                        </div>
-                        <?php if ($address->city()->isNotEmpty()): ?>
-                          <div class="city-state-zip">
-                            <?= $address->city() ?>, <?= $address->state() ?> <?= $address->zip_code() ?>
-                          </div>
-                        <?php endif ?>
-                      </div>
-                    </div>
-
-                    <?php if (!empty($googleMapsUrl)): ?>
-                    </a>
-                  <?php endif ?>
+                  </a>
                 <?php endif ?>
-              <?php endforeach ?>
-            </div>
+              <?php endif ?>
+            <?php endforeach ?>
           </div>
+        </div>
 
-          <?php if (!empty($googleMapsUrl)): ?>
+        <?php if (!empty($googleMapsUrl)): ?>
           </a>
         <?php endif ?>
       <?php endif ?>
