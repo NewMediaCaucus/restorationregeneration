@@ -114,10 +114,11 @@ class NeuralRegeneration3D {
     
     // Controls
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
+    this.controls.enableDamping = false;
     this.controls.dampingFactor = 0.05;
-    this.controls.enableZoom = true;
+    this.controls.enableZoom = false;
     this.controls.enablePan = false;
+    this.controls.enableRotate = false;
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 3.0;
   }
