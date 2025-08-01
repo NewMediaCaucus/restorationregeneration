@@ -64,11 +64,11 @@ sections:
         query: "page.images"
         uploads:
           template: image
-      event_date:
+      event-date:
         label: Event Date
         type: date
         format: "YYYY-MM-DD"
-      memory_game_enabled:
+      memory-game-enabled:
         label: Enable Memory Game
         type: toggle
         text: "Show the Memory Match game in the Save the Date section"
