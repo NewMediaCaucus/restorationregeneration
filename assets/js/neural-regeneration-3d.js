@@ -256,9 +256,9 @@ class NeuralRegeneration3D {
     
     // Add independent rotation animation for each sphere
     sphere.rotationSpeed = {
-      x: (Math.random() - 0.5) * 0.01, // Much faster rotation
-      y: (Math.random() - 0.5) * 0.01,
-      z: (Math.random() - 0.5) * 0.01
+      x: (Math.random() - 0.5) * 0.03, // Faster rotation
+      y: (Math.random() - 0.5) * 0.03,
+      z: (Math.random() - 0.5) * 0.03
     };
     
     // Add random rotation direction (some clockwise, some counter-clockwise)
