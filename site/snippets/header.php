@@ -14,12 +14,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Game of Life Animation -->
-  <script src="<?= url('assets/js/game-of-life.js') ?>" defer></script>
+  <!-- Neural Regeneration Animation -->
+  <script src="<?= url('assets/js/neural-regeneration.js') ?>" defer></script>
 </head>
 
 <body>
-  <!-- Game of Life Header Animation -->
+  <!-- Neural Regeneration Header Animation -->
   <div class="header-animation">
-    <canvas id="game-of-life-canvas" width="1440" height="400"></canvas>
+    <canvas id="neural-regeneration-canvas" height="800"></canvas>
   </div>
