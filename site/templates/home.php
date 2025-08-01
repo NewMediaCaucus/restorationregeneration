@@ -1,0 +1,254 @@
+<?php snippet('header') ?>
+
+<main class="home-page">
+  <!-- Welcome Section -->
+  <?php if ($page->welcome()->isNotEmpty()): ?>
+    <section class="welcome section">
+      <div class="container">
+        <h2>Welcome</h2>
+        <div class="content">
+          <?= $page->welcome()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- Theme Section -->
+  <?php if ($page->theme()->isNotEmpty()): ?>
+    <section class="theme section">
+      <div class="container">
+        <h2>Theme</h2>
+        <div class="content">
+          <?= $page->theme()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- About New Media Caucus Section -->
+  <?php if ($page->about_new_media_caucus()->isNotEmpty()): ?>
+    <section class="about-nmc section">
+      <div class="container">
+        <h2>About New Media Caucus</h2>
+        <div class="content">
+          <?= $page->about_new_media_caucus()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- Save the Date Section -->
+  <?php if ($page->save_the_date()->isNotEmpty()): ?>
+    <section class="save-the-date section">
+      <div class="container">
+        <h2>Save the Date</h2>
+        <div class="content">
+          <?= $page->save_the_date()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- Event Location -->
+  <section class="event-location section">
+    <div class="container">
+      <h2>Event Location</h2>
+
+      <?php if ($page->event_date()->isNotEmpty()): ?>
+        <div class="event-date">
+          <strong>Date:</strong> <?= $page->event_date()->toDate('F j, Y') ?>
+        </div>
+      <?php endif ?>
+
+      <?php if ($page->event_address()->isNotEmpty()): ?>
+        <?php
+        // Build Google Maps URL from address components
+        $googleMapsUrl = '';
+        $addressParts = [];
+
+        foreach ($page->event_address()->toStructure() as $address) {
+          if ($address->street_address()->isNotEmpty()) {
+            $addressParts[] = $address->street_address();
+          }
+          if ($address->city()->isNotEmpty()) {
+            $addressParts[] = $address->city();
+          }
+          if ($address->state()->isNotEmpty()) {
+            $addressParts[] = $address->state();
+          }
+          if ($address->zip_code()->isNotEmpty()) {
+            $addressParts[] = $address->zip_code();
+          }
+          if ($address->building_name()->isNotEmpty()) {
+            $addressParts[] = $address->building_name();
+          }
+        }
+
+        if (!empty($addressParts)) {
+          $googleMapsUrl = 'https://maps.google.com/?q=' . urlencode(implode(', ', $addressParts));
+        }
+        ?>
+
+        <?php if (!empty($googleMapsUrl)): ?>
+          <a href="<?= $googleMapsUrl ?>" target="_blank" class="location-link">
+          <?php endif ?>
+
+          <div class="event-location">
+            <div class="location-details">
+              <?php foreach ($page->event_address()->toStructure() as $address): ?>
+                <?php if ($address->building_name()->isNotEmpty()): ?>
+                  <?php if ($address->building_url()->isNotEmpty()): ?>
+                    <a href="<?= $address->building_url() ?>" target="_blank" class="building-link">
+                      <?= $address->building_name() ?>
+                      <img src="/assets/icons/external-link.svg" alt="External link" class="external-link-icon">
+                    </a>
+                  <?php else: ?>
+                    <?= $address->building_name() ?><br>
+                  <?php endif ?>
+                <?php endif ?>
+                <?php if ($address->room_number()->isNotEmpty()): ?>
+                  <?= $address->room_number() ?><br>
+                <?php endif ?>
+                <?php if ($address->street_address()->isNotEmpty()): ?>
+                  <?php
+                  // Build Google Maps URL from street address
+                  $streetAddress = $address->street_address();
+                  $city = $address->city()->isNotEmpty() ? $address->city() : '';
+                  $state = $address->state()->isNotEmpty() ? $address->state() : '';
+                  $zip = $address->zip_code()->isNotEmpty() ? $address->zip_code() : '';
+
+                  $googleMapsUrl = '';
+                  $addressParts = [];
+
+                  if ($streetAddress) {
+                    $addressParts[] = $streetAddress;
+                  }
+                  if ($city) {
+                    $addressParts[] = $city;
+                  }
+                  if ($state) {
+                    $addressParts[] = $state;
+                  }
+                  if ($zip) {
+                    $addressParts[] = $zip;
+                  }
+
+                  if (!empty($addressParts)) {
+                    $googleMapsUrl = 'https://maps.google.com/?q=' . urlencode(implode(', ', $addressParts));
+                  }
+                  ?>
+
+                  <?php if (!empty($googleMapsUrl)): ?>
+                    <a href="<?= $googleMapsUrl ?>" target="_blank" class="address-link">
+                    <?php endif ?>
+
+                    <div class="address-with-pin">
+                      <div class="location-icon">
+                        <img src="/assets/icons/map-pin.svg" alt="Location" class="map-pin-icon">
+                      </div>
+                      <div class="address-details">
+                        <div class="street-text">
+                          <?= $address->street_address() ?>
+                        </div>
+                        <?php if ($address->city()->isNotEmpty()): ?>
+                          <div class="city-state-zip">
+                            <?= $address->city() ?>, <?= $address->state() ?> <?= $address->zip_code() ?>
+                          </div>
+                        <?php endif ?>
+                      </div>
+                    </div>
+
+                    <?php if (!empty($googleMapsUrl)): ?>
+                    </a>
+                  <?php endif ?>
+                <?php endif ?>
+              <?php endforeach ?>
+            </div>
+          </div>
+
+          <?php if (!empty($googleMapsUrl)): ?>
+          </a>
+        <?php endif ?>
+      <?php endif ?>
+    </div>
+  </section>
+
+  <!-- Registration Section -->
+  <?php if ($page->registration()->isNotEmpty()): ?>
+    <section class="registration section">
+      <div class="container">
+        <h2>Registration</h2>
+        <div class="content">
+          <?= $page->registration()->kt() ?>
+        </div>
+        <?php if ($page->registration_link()->isNotEmpty()): ?>
+          <div class="registration-link">
+            <a href="<?= $page->registration_link() ?>" class="btn btn-primary">Register Now</a>
+          </div>
+        <?php endif ?>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- Travel/Lodging Section -->
+  <?php if ($page->travel_lodging()->isNotEmpty()): ?>
+    <section class="travel-lodging section">
+      <div class="container">
+        <h2>Travel & Lodging</h2>
+        <div class="content">
+          <?= $page->travel_lodging()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+
+  <!-- Submission Calls Section -->
+  <?php if ($page->submission_calls()->isNotEmpty()): ?>
+    <section class="submission-calls section">
+      <div class="container">
+        <h2>Call for Submissions</h2>
+        <div class="content">
+          <?= $page->submission_calls()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+
+  <!-- Sponsors -->
+  <?php if ($page->sponsors()->isNotEmpty()): ?>
+    <section class="sponsors section">
+      <div class="container">
+        <h2>Sponsors</h2>
+        <div class="sponsors-grid">
+          <?php foreach ($page->sponsors()->toStructure() as $sponsor): ?>
+            <div class="sponsor">
+              <?php if ($sponsor->logo()->isNotEmpty()): ?>
+                <div class="sponsor-logo">
+                  <?= $sponsor->logo()->toFile() ?>
+                </div>
+              <?php endif ?>
+              <h3><?= $sponsor->name() ?></h3>
+              <?php if ($sponsor->website()->isNotEmpty()): ?>
+                <a href="<?= $sponsor->website() ?>" target="_blank">Visit Website</a>
+              <?php endif ?>
+            </div>
+          <?php endforeach ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- Contact -->
+  <?php if ($page->contact_email()->isNotEmpty()): ?>
+    <section class="contact section">
+      <div class="container">
+        <h2>Contact</h2>
+        <p>For more information, contact: <a href="mailto:<?= $page->contact_email() ?>"><?= $page->contact_email() ?></a></p>
+      </div>
+    </section>
+  <?php endif ?>
+</main>
+
+<?php snippet('footer') ?>
