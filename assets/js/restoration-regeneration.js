@@ -247,13 +247,18 @@ class RestorationRegeneration {
   }
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  const canvas = document.getElementById('game-of-life-canvas');
+// Initialize the animation when called
+function initializeRestorationRegeneration() {
+  // Prevent double initialization
+  if (window.restorationRegenerationInitialized) {
+    console.log('Restoration Regeneration already initialized, skipping...');
+    return;
+  }
+  
+  const canvas = document.getElementById('regeneration-canvas');
   if (canvas) {
-    // Change canvas ID to match the new animation
-    canvas.id = 'restoration-regeneration-canvas';
-    
+    console.log('Initializing Restoration Regeneration animation');
+    window.restorationRegenerationInitialized = true;
     const animation = new RestorationRegeneration(canvas);
     
     // Make animation globally accessible for controls
@@ -268,5 +273,15 @@ document.addEventListener('DOMContentLoaded', function() {
         animation.reset();
       }
     });
+  } else {
+    console.error('Canvas not found for Restoration Regeneration');
   }
-}); 
+}
+
+// Auto-initialize if DOM is already loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeRestorationRegeneration);
+} else {
+  // DOM is already loaded, initialize immediately
+  initializeRestorationRegeneration();
+} 
