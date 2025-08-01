@@ -41,6 +41,11 @@
         <?php if ($page->dates_subtitle()->isNotEmpty()): ?>
           <h3 class="dates-subtitle"><?= $page->dates_subtitle() ?></h3>
         <?php endif ?>
+        <?php if ($page->university_name()->isNotEmpty()): ?>
+          <h3 class="university-name-subtitle">
+            <?= $page->university_name() ?></h3>
+          </h3>
+        <?php endif ?>
 
         <?php if ($page->hero_image()->isNotEmpty()): ?>
           <div class="hero-image">
