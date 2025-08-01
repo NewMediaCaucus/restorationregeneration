@@ -4,8 +4,8 @@
 
 :root {
   /* Color Palette */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
   --color-primary-light: #dbeafe;
   --color-secondary: #64748b;
   --color-secondary-hover: #475569;
@@ -478,6 +478,55 @@ a:hover {
 }
 
 /* ==========================================================================
+   Event Location Image Styles
+   ========================================================================== */
+
+.event-location-image {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  position: relative;
+}
+
+.event-location-image img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: var(--shadow-md);
+}
+
+/* Location details card overlay for larger screens */
+@media (min-width: 769px) {
+  .event-location {
+    position: relative;
+  }
+
+  .event-location-image {
+    margin-bottom: 0;
+  }
+
+  .location-details {
+    position: absolute;
+    bottom: calc(var(--spacing-lg) + 2rem);
+    left: var(--spacing-lg);
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    z-index: 10;
+    font-size: 0.9rem;
+  }
+
+  .location-details .university-name {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+  }
+
+  .location-details .address-with-pin {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+/* ==========================================================================
    Location Styles
    ========================================================================== */
 
@@ -924,6 +973,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-xl);
+  color: white;
   cursor: pointer;
   transition: var(--transition-fast);
   user-select: none;
@@ -960,7 +1010,7 @@ a:hover {
 }
 
 .game-card .card-front {
-  background: var(--color-primary);
+  background: #1a1a1a;
   transform: rotateY(0deg);
 }
 
@@ -991,16 +1041,16 @@ a:hover {
   .save-the-date-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .countdown-number {
     font-size: var(--font-size-4xl);
   }
-  
+
   .countdown-item {
     padding: var(--spacing-lg);
     min-width: 100px;
   }
-  
+
   .game-card {
     width: 50px;
     height: 50px;
@@ -1012,12 +1062,12 @@ a:hover {
   .countdown-number {
     font-size: var(--font-size-3xl);
   }
-  
+
   .countdown-item {
     padding: var(--spacing-md);
     min-width: 80px;
   }
-  
+
   .game-card {
     width: 45px;
     height: 45px;
