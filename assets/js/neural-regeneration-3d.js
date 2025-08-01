@@ -712,37 +712,28 @@ class NeuralRegeneration3D {
   }
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  const canvas = document.getElementById('neural-regeneration-canvas');
-  if (canvas) {
-    const animation = new NeuralRegeneration3D(canvas);
-    
-    // Make animation globally accessible for controls
-    window.neuralRegeneration3D = animation;
-    
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      if (e.key === ' ') {
-        e.preventDefault();
-        animation.toggle();
-      } else if (e.key === 'r') {
-        animation.reset();
-      } else if (e.key === 'c') {
-        animation.nextPalette();
-      }
-    });
-    
-    // Add canvas click handler for button
-    canvas.addEventListener('click', function(e) {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      // Check if click is in button area (top-left corner)
-      if (x >= 20 && x <= 60 && y >= 20 && y <= 60) {
-        animation.nextPalette();
-      }
-    });
+// Initialize the animation when called
+function initializeNeuralRegeneration() {
+  // Prevent double initialization
+  if (window.neuralRegenerationInitialized) {
+    console.log('Neural Regeneration already initialized, skipping...');
+    return;
   }
-}); 
+  
+  const canvas = document.getElementById('regeneration-canvas');
+  if (canvas) {
+    console.log('Initializing Neural Regeneration 3D animation');
+    window.neuralRegenerationInitialized = true;
+    new NeuralRegeneration3D(canvas);
+  } else {
+    console.error('Canvas not found for Neural Regeneration 3D');
+  }
+}
+
+// Auto-initialize if DOM is already loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeNeuralRegeneration);
+} else {
+  // DOM is already loaded, initialize immediately
+  initializeNeuralRegeneration();
+} 
