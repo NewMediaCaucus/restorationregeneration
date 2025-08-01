@@ -72,7 +72,7 @@ sections:
         label: Enable Memory Game
         type: toggle
         text: "Show the Memory Match game in the Save the Date section"
-        default: false
+        default: true
       university_name:
         label: University Name
         type: text
