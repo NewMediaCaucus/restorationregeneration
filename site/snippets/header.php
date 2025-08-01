@@ -14,8 +14,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Neural Regeneration Animation -->
-  <script src="<?= url('assets/js/neural-regeneration.js') ?>" defer></script>
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Neural Regeneration 3D Animation -->
+  <script src="<?= url('assets/js/neural-regeneration-3d.js') ?>" defer></script>
 </head>
 
 <body>
