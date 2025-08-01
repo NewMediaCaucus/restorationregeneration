@@ -681,82 +681,22 @@ a:hover {
 
 .header-animation {
   position: relative;
-  width: 100vw;
-  height: 800px;
+  width: 100%;
+  height: auto;
   background-color: var(--color-bg-primary);
   overflow: hidden;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
+  margin: 0;
+  padding: 0;
 }
 
 #neural-regeneration-canvas {
   display: block;
-  width: 100vw;
-  height: 800px;
-  object-fit: cover;
+  width: 100%;
   max-width: none;
 }
 
 /* Responsive adjustments for the animation */
-/* Large Desktop (1440px and up) */
-@media (min-width: 1440px) {
-  .header-animation {
-    height: 800px;
-  }
-
-  #neural-regeneration-canvas {
-    height: 800px;
-    max-width: none;
-  }
-}
-
-/* Desktop (1024px to 1439px) */
-@media (max-width: 1439px) and (min-width: 1024px) {
-  .header-animation {
-    height: 700px;
-  }
-
-  #neural-regeneration-canvas {
-    height: 700px;
-    max-width: none;
-  }
-}
-
-/* Tablet (768px to 1023px) */
-@media (max-width: 1023px) and (min-width: 768px) {
-  .header-animation {
-    height: 600px;
-  }
-
-  #neural-regeneration-canvas {
-    height: 600px;
-    max-width: none;
-  }
-}
-
-/* Mobile (480px to 767px) */
-@media (max-width: 767px) and (min-width: 480px) {
-  .header-animation {
-    height: 500px;
-  }
-
-  #neural-regeneration-canvas {
-    height: 500px;
-    max-width: none;
-  }
-}
-
-/* Small Mobile (up to 479px) */
-@media (max-width: 479px) {
-  .header-animation {
-    height: 400px;
-  }
-
-  #neural-regeneration-canvas {
-    height: 400px;
-    max-width: none;
-  }
-}
+/* All breakpoints handled by JavaScript */
 
 /* ==========================================================================
    Print Styles

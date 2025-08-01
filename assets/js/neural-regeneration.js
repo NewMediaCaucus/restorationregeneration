@@ -83,7 +83,7 @@ class NeuralRegeneration {
   // Resize canvas to browser width
   resizeCanvas() {
     this.width = window.innerWidth;
-    this.height = this.canvas.height; // Keep original height
+    this.height = 800; // Fixed height to prevent squashing
     this.canvas.width = this.width;
     this.canvas.height = this.height;
   }
@@ -364,7 +364,7 @@ class NeuralRegeneration {
     
     // Draw control button and growth indicator
     this.drawControlButton();
-    this.drawGrowthIndicator();
+    // this.drawGrowthIndicator();
   }
   
   // Draw control button
@@ -403,16 +403,16 @@ class NeuralRegeneration {
   }
   
   // Draw neural growth indicator
-  drawGrowthIndicator() {
-    const totalGrowth = this.neurons.reduce((sum, neuron) => sum + neuron.growth, 0) / this.neurons.length;
+  // drawGrowthIndicator() {
+  //   const totalGrowth = this.neurons.reduce((sum, neuron) => sum + neuron.growth, 0) / this.neurons.length;
     
-    this.ctx.fillStyle = 'hsla(0, 0%, 20%, 0.8)';
-    this.ctx.fillRect(10, 80, 200, 30);
+  //   this.ctx.fillStyle = 'hsla(0, 0%, 20%, 0.8)';
+  //   this.ctx.fillRect(10, 80, 200, 30);
     
-    this.ctx.fillStyle = 'hsla(0, 0%, 100%, 1)';
-    this.ctx.font = '14px Inter';
-    this.ctx.fillText(`Neural Growth: ${Math.round(totalGrowth * 100)}%`, 20, 100);
-  }
+  //   this.ctx.fillStyle = 'hsla(0, 0%, 100%, 1)';
+  //   this.ctx.font = '14px Inter';
+  //   this.ctx.fillText(`Neural Growth: ${Math.round(totalGrowth * 100)}%`, 20, 100);
+  // }
   
   // Main animation loop
   animate() {
