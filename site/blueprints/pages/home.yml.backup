@@ -57,6 +57,13 @@ sections:
         type: textarea
         size: large
         placeholder: "Information about paper submissions, deadlines, and requirements..."
+      hero_image:
+        label: Hero Image
+        type: files
+        multiple: false
+        query: "page.images"
+        uploads:
+          template: image
       event-date:
         label: Event Date
         type: date
@@ -116,7 +123,15 @@ sections:
         multiple: false
         query: "page.images"
         uploads:
-          template: image
+          template: image        label: Event Location Image
+        type: files
+        multiple: false
+        query: "page.images"
+        uploads:
+          template: image            label: Room Number
+            type: text
+            size: small
+            placeholder: "Room 123"
       partners:
         label: Partners
         type: structure
@@ -131,7 +146,7 @@ sections:
             multiple: false
             query: "page.images"
             uploads:
-          template: image
+              template: image
           website:
             label: Website
             type: url
