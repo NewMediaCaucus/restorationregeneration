@@ -1,8 +1,8 @@
 title: Event
 options:
-  changeSlug: false
-  changeStatus: false
-  changeTitle: false
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
 fields:
   title:
     label: Event Title
@@ -102,7 +102,7 @@ fields:
   presenters:
     label: Presenters
     type: pages
-    query: "page.find('presenters').children"
+    query: "site.index.filterBy('intendedTemplate', 'presenter')"
     multiple: true
     layout: cards
     size: small

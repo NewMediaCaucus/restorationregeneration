@@ -35,6 +35,74 @@
         </div>
       <?php endif ?>
 
+      <!-- Events -->
+      <?php
+      // Debug: Let's see what we're working with
+      $currentPresenterId = $page->id();
+      $currentPresenterUuid = $page->uuid();
+      // Extract just the UUID part without the 'page://' prefix
+      $uuidOnly = str_replace('page://', '', $currentPresenterUuid);
+      $allEvents = $site->index()->filterBy('intendedTemplate', 'event');
+
+      // Manual approach: check each event's presenters field
+      $events = new \Kirby\Cms\Pages();
+      foreach ($allEvents as $event) {
+        if ($event->presenters()->isNotEmpty()) {
+          // Check if the current presenter's UUID is in the presenters field
+          if (str_contains($event->presenters(), $currentPresenterUuid)) {
+            $events->add($event);
+          }
+        }
+      }
+
+      // Debug output
+      echo "<!-- Debug: Current presenter ID: " . $currentPresenterId . " -->";
+      echo "<!-- Debug: Current presenter UUID: " . $currentPresenterUuid . " -->";
+      echo "<!-- Debug: UUID only: " . $uuidOnly . " -->";
+      echo "<!-- Debug: Total events found: " . $allEvents->count() . " -->";
+      echo "<!-- Debug: Events with this presenter: " . $events->count() . " -->";
+
+      // Let's also check what the presenters field contains in each event
+      foreach ($allEvents as $event) {
+        echo "<!-- Debug: Event '" . $event->title() . "' presenters: " . $event->presenters() . " -->";
+      }
+
+      if ($events->count() > 0):
+      ?>
+        <div class="presenter-events">
+          <h2>Events</h2>
+          <div class="events-grid">
+            <?php foreach ($events as $event): ?>
+              <a href="<?= $event->url() ?>" class="event-card">
+                <div class="event-info">
+                  <h3 class="event-name"><?= $event->title() ?></h3>
+                  <?php if ($event->date()->isNotEmpty()): ?>
+                    <div class="event-date">
+                      <?php
+                      $date = new DateTime($event->date());
+                      echo $date->format('F j, Y');
+                      ?>
+                    </div>
+                  <?php endif ?>
+                  <?php if ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                    <div class="event-time">
+                      <?php
+                      $start = new DateTime($event->start_time());
+                      $end = new DateTime($event->end_time());
+                      echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                      ?>
+                    </div>
+                  <?php endif ?>
+                  <?php if ($event->location()->isNotEmpty()): ?>
+                    <div class="event-location"><?= $event->location() ?></div>
+                  <?php endif ?>
+                </div>
+              </a>
+            <?php endforeach ?>
+          </div>
+        </div>
+      <?php endif ?>
+
       <!-- Links -->
       <?php if ($page->links()->isNotEmpty()): ?>
         <div class="presenter-social">
