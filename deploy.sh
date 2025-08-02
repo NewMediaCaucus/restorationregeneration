@@ -9,6 +9,9 @@ cd $DEPLOY_DIR || exit
 # Pull the latest changes from the main branch
 git pull origin main
 
+# Pull Git LFS objects
+git lfs pull
+
 # Update submodules
 # git submodule update --init --recursive
 
