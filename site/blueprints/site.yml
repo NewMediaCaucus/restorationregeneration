@@ -7,24 +7,33 @@ sections:
     image:
       cover: true
     layout: cards
-    size: medium
+    size: small
     limit: 20
     sortBy: page.title asc
-  
-  
   presenters:
     type: pages
     template: presenter
     empty: "No presenters yet"
+    description: "Add presenters for the symposium. Each presenter will have their own page with bio, photo, and social media links."
     image:
       cover: true
       query: "page.headshot.toFile"
     layout: cards
-    size: medium
-    limit: 20
+    size: small
+    limit: 80
     sortBy: page.presenter_name asc 
-
   presenters_info:
     label: Helpful Tip 🦄
     type: info
     text: "When you add a presenter, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
+  events:
+    type: pages
+    template: event
+    empty: "No events yet"
+    description: "Create events for the symposium. Each event can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: cards
+    size: small
+    limit: 80
+    sortBy: page.date asc

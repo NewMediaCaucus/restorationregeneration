@@ -1,8 +1,8 @@
 title: Presenter
 options:
-  changeSlug: false
-  changeStatus: false
-  changeTitle: false
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
 fields:
   headshot:
     label: Headshot Photo
