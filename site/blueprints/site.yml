@@ -27,4 +27,4 @@ sections:
   presenters_info:
     label: Helpful Tip 🦄
     type: info
-    text: "When you click + Add you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
+    text: "When you add a presenter, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
