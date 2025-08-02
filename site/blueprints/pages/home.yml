@@ -23,16 +23,22 @@ sections:
         type: textarea
         size: large
         placeholder: "Welcome message for the symposium..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       theme:
         label: Theme
         type: textarea
         size: large
         placeholder: "Description of the symposium theme..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       registration:
         label: Registration
         type: textarea
         size: large
         placeholder: "Registration information and process details..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       registration_link:
         label: Registration Link
         type: url
@@ -42,21 +48,29 @@ sections:
         type: textarea
         size: large
         placeholder: "Information about the New Media Caucus organization..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       save_the_date:
         label: Save the Date
         type: textarea
         size: medium
         placeholder: "Save the date information and key details..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       travel_lodging:
         label: Travel/Lodging
         type: textarea
         size: large
         placeholder: "Information about travel arrangements and lodging options..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       submission_calls:
         label: Submission Calls
         type: textarea
         size: large
         placeholder: "Information about paper submissions, deadlines, and requirements..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       event-date:
         label: Event Date
         type: date
