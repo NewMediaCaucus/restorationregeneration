@@ -503,9 +503,9 @@ a:hover {
     margin-bottom: 0;
   }
 
-  .location-details {
+  .event-location .location-details {
     position: absolute;
-    bottom: calc(var(--spacing-lg) + 2rem);
+    bottom: calc(var(--spacing-lg) + .4rem);
     left: var(--spacing-lg);
     background: white;
     padding: var(--spacing-lg);
@@ -514,15 +514,18 @@ a:hover {
     max-width: 400px;
     z-index: 10;
     font-size: 0.9rem;
+    color: var(--color-text-primary);
   }
 
-  .location-details .university-name {
+  .event-location .location-details .university-name {
     margin-bottom: var(--spacing-sm);
     font-size: 1rem;
+    color: var(--color-text-primary);
   }
 
-  .location-details .address-with-pin {
+  .event-location .location-details .address-with-pin {
     margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
   }
 }
 
@@ -544,6 +547,13 @@ a:hover {
   display: flex;
   align-items: flex-start;
   gap: var(--spacing-sm);
+}
+
+.address-with-pin .map-pin-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .location-icon {
@@ -1559,6 +1569,26 @@ a:hover {
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--color-text-secondary);
+}
+
+.address-map-link {
+  display: inline-flex;
+  gap: var(--spacing-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.address-map-link:hover {
+  color: var(--color-primary-hover);
+}
+
+.address-map-link .map-pin-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-primary);
 }
 
 .map-link {

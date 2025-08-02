@@ -33,7 +33,7 @@ fields:
       cover: true
       query: "file.url"
     template: image
-  url:
+  location_url:
     label: Location URL
     type: url
     placeholder: "https://..."

@@ -46,47 +46,49 @@
           <div class="description-content">
             <?= $page->description()->kt() ?>
           </div>
+          <!-- Location Website -->
+          <?php if ($page->location_url() !== ''): ?>
+            <div class="location-url">
+              <a href="<?= $page->location_url() ?>" target="_blank" class="location-website-link">
+                <?= $page->location_url() ?>
+                <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15,3 21,3 21,9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            </div>
+          <?php endif ?>
         </div>
       <?php endif ?>
+
 
       <!-- Location Address -->
       <?php if ($page->address()->isNotEmpty()): ?>
         <div class="location-address">
           <h2>Address</h2>
           <div class="address-content">
-            <?= $page->address()->kt() ?>
+            <?php if ($page->map_link() !== ''): ?>
+              <a href="<?= $page->map_link() ?>" target="_blank" class="address-map-link">
+                <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <?= $page->address()->kt() ?>
+              </a>
+            <?php else: ?>
+              <div class="address-with-pin">
+                <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <?= $page->address()->kt() ?>
+              </div>
+            <?php endif ?>
           </div>
         </div>
       <?php endif ?>
 
-      <!-- Location Website -->
-      <?php if ($page->url() !== ''): ?>
-        <div class="location-url">
-          <h2>Website</h2>
-          <a href="<?= $page->url() ?>" target="_blank" class="location-website-link">
-            <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15,3 21,3 21,9" />
-              <line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-            Visit Website
-          </a>
-        </div>
-      <?php endif ?>
-
-      <!-- Location Map Link -->
-      <?php if ($page->map_link() !== ''): ?>
-        <div class="location-map-link">
-          <h2>Get Directions</h2>
-          <a href="<?= $page->map_link() ?>" target="_blank" class="map-link">
-            <svg class="map-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            Open in Google Maps
-          </a>
-        </div>
-      <?php endif ?>
 
       <!-- Location Accessibility -->
       <?php if ($page->accessibility()->isNotEmpty()): ?>
