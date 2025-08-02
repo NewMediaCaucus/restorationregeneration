@@ -1,0 +1,61 @@
+# Protect site directory content
+# Deny access to all files by default
+<RequireAll>
+  Require all denied
+</RequireAll>
+
+# Allow access to public files only
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
+  <RequireAll>
+    Require all granted
+  </RequireAll>
+</FilesMatch>
+
+# Deny access to content files
+<FilesMatch "\.(txt|md|yml|yaml|json|log)$">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</FilesMatch>
+
+# Deny access to blueprints
+<Directory "blueprints">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to config files
+<Directory "config">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to accounts
+<Directory "accounts">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to sessions
+<Directory "sessions">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to cache
+<Directory "cache">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to plugins
+<Directory "plugins">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory> 
