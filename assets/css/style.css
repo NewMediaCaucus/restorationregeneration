@@ -1170,6 +1170,8 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-2xl);
+
 }
 
 .link-item {
