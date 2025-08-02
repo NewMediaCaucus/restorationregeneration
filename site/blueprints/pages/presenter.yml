@@ -1,0 +1,50 @@
+title: Presenter
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  headshot:
+    label: Headshot Photo
+    type: files
+    multiple: false
+    query: "page.images"
+    uploads:
+      template: headshot
+    accept: "image/*"
+    info: "Minimum 960px width required. Images will be cropped to square format."
+    layout: cards
+    size: medium
+    image:
+      cover: true
+      query: "file.url"
+    template: headshot
+  role:
+    label: Professional Title
+    type: text
+    size: medium
+    placeholder: "e.g., Assistant Professor of, Director, Artist"
+  organization:
+    label: Organization
+    type: text
+    size: medium
+    placeholder: "University, Company, or Institution"
+  bio:
+    label: Bio
+    type: textarea
+    size: large
+    placeholder: "Presenter's biography and background..."
+    dragText: false
+    buttons: ['link', 'bold', 'italic']
+    minlength: 20
+    maxlength: 750
+    info: "Minimum 50 characters, maximum 750 characters"
+  links:
+    label: links
+    type: structure
+    fields:
+      url:
+        label: URL
+        type: url
+        placeholder: "https://..."
+        info: "Instagram links will show Instagram icon, others will show globe icon" 

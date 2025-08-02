@@ -1,0 +1,71 @@
+title: Location
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  title:
+    label: Location Name
+    type: text
+    size: large
+    placeholder: "e.g., Main Auditorium, Room 101"
+    required: true
+    info: "This will be used as the page slug"
+  description:
+    label: Description
+    type: textarea
+    size: large
+    placeholder: "Location description, directions, accessibility info..."
+    dragText: false
+    buttons: ['link', 'ul', 'ol', 'bold', 'italic']
+  photo:
+    label: Location Photo
+    type: files
+    multiple: false
+    query: "page.images"
+    uploads:
+      template: image
+    accept: "image/*"
+    info: "Upload a photo of this location"
+    layout: cards
+    size: medium
+    image:
+      cover: true
+      query: "file.url"
+    template: image
+  location_url:
+    label: Location URL
+    type: url
+    placeholder: "https://..."
+    info: "Optional URL for this location (e.g., venue website)"
+  floor:
+    label: Floor
+    type: select
+    options:
+      "1st-floor": "1st Floor"
+      "2nd-floor": "2nd Floor"
+      "3rd-floor": "3rd Floor"
+    info: "Select which floor this location is on"
+  map_link:
+    label: Map Link URL
+    type: url
+    placeholder: "https://maps.google.com/..."
+    info: "Link to Google Maps, Apple Maps, or other mapping service"
+  address:
+    label: Address
+    type: textarea
+    size: medium
+    placeholder: "Street address, building, room number..."
+    info: "Physical address for this location"
+  capacity:
+    label: Capacity
+    type: number
+    size: small
+    placeholder: "e.g., 150"
+    info: "Maximum number of people this location can accommodate"
+  accessibility:
+    label: Accessibility Information
+    type: textarea
+    size: medium
+    placeholder: "Wheelchair access, hearing assistance, etc..."
+    info: "Accessibility features and accommodations" 
