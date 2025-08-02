@@ -14,7 +14,7 @@
               <strong>Date:</strong>
               <?php
               $date = new DateTime($page->date());
-              echo $date->format('F j, Y');
+              echo $date->format('l, F j, Y');
               ?>
             </div>
           <?php endif ?>
@@ -33,7 +33,15 @@
           <?php if ($page->location()->isNotEmpty()): ?>
             <div class="event-location">
               <strong>Location:</strong>
-              <?= $page->location() ?>
+              <?php
+              $location = $page->location()->toPage();
+              if ($location): ?>
+                <a href="<?= $location->url() ?>" class="location-link">
+                  <?= $location->title() ?>
+                </a>
+              <?php else: ?>
+                <?= $page->location() ?>
+              <?php endif ?>
             </div>
           <?php endif ?>
         </div>

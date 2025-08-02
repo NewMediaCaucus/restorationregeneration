@@ -80,7 +80,7 @@
                     <div class="event-date">
                       <?php
                       $date = new DateTime($event->date());
-                      echo $date->format('F j, Y');
+                      echo $date->format('l, F j, Y');
                       ?>
                     </div>
                   <?php endif ?>
@@ -94,7 +94,21 @@
                     </div>
                   <?php endif ?>
                   <?php if ($event->location()->isNotEmpty()): ?>
-                    <div class="event-location"><?= $event->location() ?></div>
+                    <div class="event-location">
+                      <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <?php
+                      $location = $event->location()->toPage();
+                      if ($location): ?>
+                        <a href="<?= $location->url() ?>" class="location-link">
+                          <?= $location->title() ?>
+                        </a>
+                      <?php else: ?>
+                        <?= $event->location() ?>
+                      <?php endif ?>
+                    </div>
                   <?php endif ?>
                 </div>
               </a>

@@ -37,3 +37,15 @@ sections:
     size: small
     limit: 80
     sortBy: page.date asc
+  locations:
+    type: pages
+    template: location
+    empty: "No locations yet"
+    description: "Add locations for the symposium. Each location can have photos, descriptions, and map links."
+    image:
+      cover: true
+      query: "page.photo.toFile"
+    layout: cards
+    size: small
+    limit: 80
+    sortBy: page.title asc
