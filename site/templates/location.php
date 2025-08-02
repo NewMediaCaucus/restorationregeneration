@@ -83,7 +83,7 @@
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
-            Open in Maps
+            Open in Google Maps
           </a>
         </div>
       <?php endif ?>
@@ -100,7 +100,33 @@
 
       <!-- Events at this Location -->
       <?php
-      $events = $site->index()->filterBy('intendedTemplate', 'event')->filterBy('location', $page->id());
+      $allEvents = $site->index()->filterBy('intendedTemplate', 'event');
+
+      // Manual approach: check each event's location field
+      $events = new \Kirby\Cms\Pages();
+      foreach ($allEvents as $event) {
+        if ($event->location()->isNotEmpty()) {
+          // Check if the current location's UUID is in the location field
+          if (str_contains($event->location(), $page->uuid())) {
+            $events->add($event);
+          }
+        }
+      }
+
+      // Sort events by date and time
+      $events = $events->sortBy('date', 'asc');
+
+      // Debug output
+      echo "<!-- Debug: Current location ID: " . $page->id() . " -->";
+      echo "<!-- Debug: Current location UUID: " . $page->uuid() . " -->";
+      echo "<!-- Debug: Total events found: " . $allEvents->count() . " -->";
+      echo "<!-- Debug: Events with this location: " . $events->count() . " -->";
+
+      // Let's also check what the location field contains in each event
+      foreach ($allEvents as $event) {
+        echo "<!-- Debug: Event '" . $event->title() . "' location: " . $event->location() . " -->";
+      }
+
       if ($events->count() > 0):
       ?>
         <div class="location-events">
