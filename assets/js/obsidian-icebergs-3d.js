@@ -33,18 +33,18 @@ class ObsidianIcebergs3D {
     this.deathTimer = 0;
     this.divisionTimer = 0;
     
-    // Obsidian color palette
+    // Obsidian color palette with purple hints
     this.obsidianColors = [
       '#000000', // Pure black
       '#0a0a0a', // Very dark
       '#1a1a1a', // Dark obsidian
-      '#2a2a2a', // Medium dark
-      '#3a3a3a', // Medium obsidian
-      '#4a4a4a', // Light obsidian
-      '#5a5a5a', // Ash gray
-      '#6a6a6a', // Light ash
-      '#7a7a7a', // Very light ash
-      '#8a8a8a'  // Almost white ash
+      '#2a1a2a', // Dark obsidian with purple hint
+      '#3a2a3a', // Medium dark with purple
+      '#4a3a4a', // Medium obsidian with purple
+      '#5a4a5a', // Light obsidian with purple
+      '#6a5a6a', // Light ash with purple
+      '#7a6a7a', // Very light ash with purple
+      '#8a7a8a'  // Almost white ash with purple
     ];
     
     this.currentColorIndex = 0;
@@ -97,7 +97,7 @@ class ObsidianIcebergs3D {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Increased lighting for better visibility
+    // Increased lighting for better visibility with purple hints
     const ambientLight = new THREE.AmbientLight(0x404040, 0.7); // Increased from 0.5 to 0.7
     this.scene.add(ambientLight);
 
@@ -108,7 +108,7 @@ class ObsidianIcebergs3D {
     directionalLight.shadow.mapSize.height = 2048;
     this.scene.add(directionalLight);
 
-    // Add more dramatic point lights
+    // Add more dramatic point lights with purple hints
     const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50); // Increased from 1.2 to 1.5
     pointLight1.position.set(-15, 10, -15);
     this.scene.add(pointLight1);
@@ -127,10 +127,15 @@ class ObsidianIcebergs3D {
     pointLight4.position.set(0, -10, 0);
     this.scene.add(pointLight4);
 
-    // Add a fifth light for dramatic side lighting
-    const pointLight5 = new THREE.PointLight(0xffffff, 0.6, 30);
+    // Add a fifth light for dramatic side lighting with purple hint
+    const pointLight5 = new THREE.PointLight(0xf0f0ff, 0.6, 30); // Slight purple tint
     pointLight5.position.set(20, 5, 0);
     this.scene.add(pointLight5);
+
+    // Add a sixth light with purple accent
+    const pointLight6 = new THREE.PointLight(0xfff0ff, 0.4, 25); // Light purple tint
+    pointLight6.position.set(-20, 5, 0);
+    this.scene.add(pointLight6);
 
     // Handle resize
     window.addEventListener('resize', () => this.onWindowResize());
@@ -345,10 +350,10 @@ class ObsidianIcebergs3D {
   }
 
   createBirthEvent() {
-    // Create birth effect
+    // Create birth effect with purple hint
     const birthGeometry = new THREE.SphereGeometry(2, 8, 8);
     const birthMaterial = new THREE.MeshBasicMaterial({
-      color: this.obsidianColors[9], // Light ash
+      color: 0x8a7a8a, // Light purple-tinged ash
       transparent: true,
       opacity: 0.6
     });
@@ -370,10 +375,10 @@ class ObsidianIcebergs3D {
   }
 
   createDeathEvent(position) {
-    // Create death effect
+    // Create death effect with purple hint
     const deathGeometry = new THREE.SphereGeometry(1, 8, 8);
     const deathMaterial = new THREE.MeshBasicMaterial({
-      color: this.obsidianColors[0], // Black
+      color: 0x2a1a2a, // Dark purple-tinged obsidian
       transparent: true,
       opacity: 0.8
     });
