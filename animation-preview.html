@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+        .animation-container {
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .animation-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .animation-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .controls {
+            margin-top: 15px;
+        }
+        .btn {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #005a87;
+        }
+        .btn.active {
+            background: #28a745;
+        }
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #2e7d32;
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+    <!-- Three.js for 3D animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <h1>Animation Preview</h1>
+    <p>Click the buttons below to preview different animations:</p>
+
+    <div class="animation-container">
+        <div class="animation-title">Animation Preview</div>
+        <div class="animation-description">Select an animation to preview</div>
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <!-- Canvas elements with exact IDs that animations expect -->
+                <canvas id="regeneration-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="regeneration-cycle-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="regeneration-fractal-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="cellular-regeneration-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="neural-regeneration-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="cell-division-canvas" style="display: none;" width="800" height="400"></canvas>
+                <canvas id="game-of-life-canvas" style="display: none;" width="800" height="400"></canvas>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn" onclick="loadAnimation('neural-regeneration-3d.js', 'regeneration-canvas')">Neural 3D</button>
+            <button class="btn" onclick="loadAnimation('regeneration-cycle-3d.js', 'regeneration-cycle-canvas')">Cycle 3D</button>
+            <button class="btn" onclick="loadAnimation('regeneration-fractal-3d.js', 'regeneration-fractal-canvas')">Fractal 3D</button>
+            <button class="btn" onclick="loadAnimation('cellular-regeneration-3d.js', 'cellular-regeneration-canvas')">Cellular 3D</button>
+            <button class="btn" onclick="loadAnimation('neural-regeneration.js', 'neural-regeneration-canvas')">Neural 2D</button>
+            <button class="btn" onclick="loadAnimation('cell-division.js', 'cell-division-canvas')">Cell Division</button>
+            <button class="btn" onclick="loadAnimation('game-of-life.js', 'game-of-life-canvas')">Game of Life</button>
+        </div>
+        <div id="status-message"></div>
+    </div>
+
+    <script>
+        let currentAnimation = null;
+        let currentScript = null;
+        let currentCanvas = null;
+
+        function showMessage(message, type = 'error') {
+            const messageDiv = document.getElementById('status-message');
+            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function clearMessage() {
+            const messageDiv = document.getElementById('status-message');
+            messageDiv.innerHTML = '';
+        }
+
+        function hideAllCanvases() {
+            const canvases = document.querySelectorAll('canvas');
+            canvases.forEach(canvas => {
+                canvas.style.display = 'none';
+            });
+        }
+
+        function setupCanvas(canvas) {
+            // Set canvas dimensions
+            canvas.width = 800;
+            canvas.height = 400;
+            
+            // Set display size
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            
+            console.log('Canvas setup:', canvas.id, 'dimensions:', canvas.width, 'x', canvas.height);
+        }
+
+        function loadAnimation(scriptName, canvasId) {
+            clearMessage();
+            
+            // Hide all canvases
+            hideAllCanvases();
+            
+            // Show and setup the target canvas
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                canvas.style.display = 'block';
+                setupCanvas(canvas);
+                currentCanvas = canvas;
+                console.log('Showing canvas:', canvasId);
+            } else {
+                showMessage(`Canvas ${canvasId} not found`, 'error');
+                return;
+            }
+            
+            // Remove previous script
+            if (currentScript) {
+                currentScript.remove();
+            }
+
+            // Clear the canvas
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Load the new animation
+            loadScript('assets/js/' + scriptName).then(() => {
+                console.log('Animation script loaded:', scriptName);
+                showMessage(`Animation loaded successfully: ${scriptName}`, 'success');
+                
+                // Give the animation time to initialize
+                setTimeout(() => {
+                    console.log('Animation should be running now');
+                }, 500);
+            }).catch((error) => {
+                showMessage(`Failed to load script: ${error.message}`, 'error');
+                console.error('Script loading error:', error);
+            });
+        }
+
+        // Helper function to load scripts dynamically
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error(`Failed to load ${src}`));
+                document.head.appendChild(script);
+                currentScript = script;
+            });
+        }
+
+        // Setup all canvases when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvases = document.querySelectorAll('canvas');
+            canvases.forEach(canvas => {
+                setupCanvas(canvas);
+            });
+        });
+
+        // Load the first animation by default
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadAnimation('neural-regeneration-3d.js', 'regeneration-canvas');
+            }, 1000); // Give Three.js time to load
+        });
+    </script>
+</body>
+</html> 
