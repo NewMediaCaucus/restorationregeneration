@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #2e7d32;
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            color: #d32f2f;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebGL Support Test</h1>
+    
+    <div class="test-container">
+        <h2>WebGL Detection</h2>
+        <div id="webgl-status"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Three.js Test</h2>
+        <div id="threejs-status"></div>
+        <canvas id="test-canvas" width="400" height="300"></canvas>
+    </div>
+
+    <div class="test-container">
+        <h2>2D Animation Test</h2>
+        <div id="2d-status"></div>
+        <canvas id="2d-canvas" width="400" height="300"></canvas>
+    </div>
+
+    <script>
+        // Test 1: WebGL Support
+        function testWebGL() {
+            const statusDiv = document.getElementById('webgl-status');
+            
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                
+                if (gl) {
+                    statusDiv.innerHTML = '<div class="success">✅ WebGL is supported and working!</div>';
+                    console.log('WebGL supported');
+                } else {
+                    statusDiv.innerHTML = '<div class="error">❌ WebGL is not supported in this browser</div>';
+                    console.log('WebGL not supported');
+                }
+            } catch (e) {
+                statusDiv.innerHTML = '<div class="error">❌ WebGL error: ' + e.message + '</div>';
+                console.error('WebGL error:', e);
+            }
+        }
+
+        // Test 2: Three.js
+        function testThreeJS() {
+            const statusDiv = document.getElementById('threejs-status');
+            
+            // Load Three.js
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+            script.onload = () => {
+                try {
+                    const canvas = document.getElementById('test-canvas');
+                    const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+                    
+                    if (renderer) {
+                        statusDiv.innerHTML = '<div class="success">✅ Three.js WebGL renderer created successfully!</div>';
+                        console.log('Three.js working');
+                    } else {
+                        statusDiv.innerHTML = '<div class="error">❌ Three.js WebGL renderer failed</div>';
+                    }
+                } catch (e) {
+                    statusDiv.innerHTML = '<div class="error">❌ Three.js error: ' + e.message + '</div>';
+                    console.error('Three.js error:', e);
+                }
+            };
+            script.onerror = () => {
+                statusDiv.innerHTML = '<div class="error">❌ Failed to load Three.js</div>';
+            };
+            document.head.appendChild(script);
+        }
+
+        // Test 3: 2D Canvas
+        function test2DCanvas() {
+            const statusDiv = document.getElementById('2d-status');
+            const canvas = document.getElementById('2d-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (ctx) {
+                // Draw a simple animation
+                let frame = 0;
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw a moving circle
+                    ctx.fillStyle = 'hsl(' + (frame * 2) + ', 70%, 50%)';
+                    ctx.beginPath();
+                    ctx.arc(200 + Math.sin(frame * 0.1) * 100, 150, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    frame++;
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+                statusDiv.innerHTML = '<div class="success">✅ 2D Canvas is working!</div>';
+            } else {
+                statusDiv.innerHTML = '<div class="error">❌ 2D Canvas not supported</div>';
+            }
+        }
+
+        // Run tests when page loads
+        window.addEventListener('load', () => {
+            testWebGL();
+            testThreeJS();
+            test2DCanvas();
+        });
+    </script>
+</body>
+</html> 
