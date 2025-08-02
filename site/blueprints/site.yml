@@ -1,0 +1,30 @@
+title: Site
+sections:
+  pages:
+    type: pages
+    template: home
+    empty: "No pages yet"
+    image:
+      cover: true
+    layout: cards
+    size: medium
+    limit: 20
+    sortBy: page.title asc
+  
+  
+  presenters:
+    type: pages
+    template: presenter
+    empty: "No presenters yet"
+    image:
+      cover: true
+      query: "page.headshot.toFile"
+    layout: cards
+    size: medium
+    limit: 20
+    sortBy: page.presenter_name asc 
+
+  presenters_info:
+    label: Helpful Tip 🦄
+    type: info
+    text: "When you click + Add you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
