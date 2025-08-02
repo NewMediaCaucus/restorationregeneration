@@ -1754,7 +1754,7 @@ a:hover {
 /* Responsive adjustments for static header */
 @media (max-width: 1439px) and (min-width: 1024px) {
   .static-header {
-    height: 180px;
+    height: 360px;
   }
 
   .static-header .hero-overlay .hero-title {
@@ -1764,7 +1764,7 @@ a:hover {
 
 @media (max-width: 1023px) and (min-width: 768px) {
   .static-header {
-    height: 160px;
+    height: 320px;
   }
 
   .static-header .hero-overlay .hero-title {
