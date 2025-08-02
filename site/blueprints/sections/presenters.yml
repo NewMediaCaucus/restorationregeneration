@@ -1,0 +1,11 @@
+name: Presenters
+type: pages
+template: presenter
+empty: "No presenters yet"
+image:
+  cover: true
+  query: "page.headshot.toFile"
+layout: cards
+size: medium
+limit: 20
+sortBy: page.name asc 

@@ -1,0 +1,33 @@
+title: Headshot
+accept: image/*
+options:
+  template: headshot
+  changeName: false
+  changeSort: false
+  changeTemplate: false
+  delete: true
+  replace: true
+  update: true
+fields:
+  alt:
+    label: Alt Text
+    type: text
+    placeholder: "Presenter's name and description"
+    info: "Important for accessibility. Ex: 'Lillian Schwartz, digital artist and professor'"
+  caption:
+    label: Caption
+    type: textarea
+    size: small
+    placeholder: "Optional caption or description"
+  credits:
+    label: Photo Credits
+    type: text
+    placeholder: "Photographer name"
+    info: "Credit the photographer if applicable"
+  crop:
+    label: Crop Settings
+    type: crop
+    width: 400
+    height: 400
+    ratio: "1/1"
+    info: "Crop to square format for consistent headshot display" 
