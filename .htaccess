@@ -1,5 +1,91 @@
-# Kirby routing
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*) index.php [QSA,L] 
+# Kirby .htaccess
+# https://getkirby.com/docs/guide/urls
+
+# Deny access to sensitive files
+<FilesMatch "\.(txt|md|yml|yaml|json)$">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</FilesMatch>
+
+# Deny access to sensitive directories
+<RequireAll>
+  Require all denied
+</RequireAll>
+
+# Allow access to the site directory
+<Directory "site">
+  <RequireAll>
+    Require all granted
+  </RequireAll>
+</Directory>
+
+# Allow access to assets
+<Directory "assets">
+  <RequireAll>
+    Require all granted
+  </RequireAll>
+</Directory>
+
+# Allow access to media
+<Directory "media">
+  <RequireAll>
+    Require all granted
+  </RequireAll>
+</Directory>
+
+# Deny access to kirby folder
+<Directory "kirby">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to .git folder
+<Directory ".git">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</Directory>
+
+# Deny access to site folder contents (except public files)
+<Directory "site">
+  <FilesMatch "\.(txt|md|yml|yaml|json|log)$">
+    <RequireAll>
+      Require all denied
+    </RequireAll>
+  </FilesMatch>
+</Directory>
+
+# Rewrite rules for Kirby
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Redirect to www (optional - uncomment if needed)
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+  
+  # Handle Kirby URLs
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*) index.php [QSA,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options nosniff
+  Header always set X-Frame-Options DENY
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Prevent access to sensitive files
+<Files ~ "^\.">
+  Order allow,deny
+  Deny from all
+</Files>
+
+<Files ~ "\.(txt|md|yml|yaml|json|log|sql)$">
+  Order allow,deny
+  Deny from all
+</Files> 
