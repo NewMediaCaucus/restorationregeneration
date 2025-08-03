@@ -1,5 +1,8 @@
 <?php
 
+// Suppress deprecation warnings for PHP 8.1+ compatibility
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+
 /**
  * Validate the PHP version to already
  * stop at older or too recent versions

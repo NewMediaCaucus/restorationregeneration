@@ -27,7 +27,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
-    <!-- Dynamic Animation Loader - Only on home page -->
+    <!-- Animation Loader - Loads different animations based on the day -->
     <script src="<?= url('assets/js/animation-loader.js') ?>" defer></script>
   <?php endif ?>
 
@@ -81,12 +81,28 @@
     <!-- Static Header for other pages -->
     <div class="static-header">
       <?php
-      $today = new DateTime();
-      $dayOfMonth = $today->format('j');
-      $isEvenDay = $dayOfMonth % 2 === 0;
-      $backgroundImage = $isEvenDay ? 'assets/icons/header-background-even.png' : 'assets/icons/header-background-odd.png';
+      // Use JavaScript to get the client's local day of month
       ?>
-      <div class="static-header-background" style="background-image: url('<?= url($backgroundImage) ?>');">
+      <script>
+        // Get the client's local day of month
+        const clientDay = new Date().getDate();
+        const clientIsEvenDay = clientDay % 2 === 0;
+        const backgroundImage = clientIsEvenDay ? '<?= url('assets/icons/header-background-even.png') ?>' : '<?= url('assets/icons/header-background-odd.png') ?>';
+
+        // Apply the background image
+        document.addEventListener('DOMContentLoaded', function() {
+          const staticHeader = document.querySelector('.static-header-background');
+          if (staticHeader) {
+            staticHeader.style.backgroundImage = `url('${backgroundImage}')`;
+          }
+        });
+
+        // Debug info
+        console.log('Client Day of Month:', clientDay);
+        console.log('Client Is Even Day:', clientIsEvenDay);
+        console.log('Client Background Image:', backgroundImage);
+      </script>
+      <div class="static-header-background">
         <div class="hero-overlay">
           <div class="container">
             <?php if ($homePage->hero_title()->isNotEmpty()): ?>
