@@ -9,9 +9,9 @@ class NeuralRegeneration3D {
     
     // Neural system
     this.neurons = [];
-    this.maxNeurons = 80; // Multiple spheres for full effect
+    this.maxNeurons = 160; // Doubled from 80
     this.connections = [];
-    this.maxConnections = 80; // Connections between neurons
+    this.maxConnections = 160; // Doubled from 80
     
     // Growth system
     this.growthTime = 0;
@@ -20,7 +20,7 @@ class NeuralRegeneration3D {
     // Background transition system
     this.backgroundTransition = {
       startTime: Date.now(),
-      duration: 120000, // 120 seconds
+      duration: 240000, // 120 seconds
       nightColor: new THREE.Color(0x000000), // Black
       morningColor: new THREE.Color(0x2D1B3D), // Dark orange
       currentPhase: 0 // 0: night->morning, 1: morning->night
@@ -403,8 +403,8 @@ class NeuralRegeneration3D {
           neuron.rotationStartTime = neuron.age;
         }
         
-        // Count rotations (roughly 10 rotations)
-        const rotationTime = 1200; // Time for 10 rotations
+        // Count rotations
+        const rotationTime = 2400; // Time for 24 rotations
         if (neuron.age - neuron.rotationStartTime > rotationTime) {
           // Blink away the neuron and its dendrites/axons
           this.scene.remove(neuron.mesh);
