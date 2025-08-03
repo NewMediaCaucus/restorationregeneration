@@ -706,6 +706,28 @@ a:hover {
   transition: all var(--transition-fast);
 }
 
+.social-link.nmc-logo {
+  border-radius: 0;
+  background-color: transparent;
+  width: auto;
+  height: 20px;
+}
+
+.social-link.nmc-logo .social-icon {
+  width: auto;
+  height: 20px;
+  object-fit: contain;
+}
+
+.social-link.nmc-logo:hover {
+  background-color: transparent;
+  transform: none;
+}
+
+.social-link.nmc-logo:hover .social-icon {
+  color: var(--color-text-secondary);
+}
+
 .social-link:hover {
   background-color: var(--color-primary);
   transform: translateY(-2px);
@@ -772,7 +794,6 @@ a:hover {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 4.5rem;
   line-height: 1.1;
 }
 
@@ -823,28 +844,94 @@ a:hover {
   }
 }
 
-/* Responsive hero title sizes */
+/* Responsive hero title sizes - Updated */
+@media (min-width: 1440px) {
+  .header-animation .hero-overlay .hero-title {
+    font-size: 6.5rem;
+  }
+
+  .header-animation .hero-overlay .hero-subtitle {
+    font-size: 2rem;
+  }
+
+  .header-animation .hero-overlay .dates-subtitle {
+    font-size: 1.75rem;
+  }
+
+  .header-animation .hero-overlay .university-name-subtitle {
+    font-size: 1.75rem;
+  }
+}
+
 @media (max-width: 1439px) and (min-width: 1024px) {
-  .hero-overlay .hero-title {
-    font-size: 4rem;
+  .header-animation .hero-overlay .hero-title {
+    font-size: 6rem;
+  }
+
+  .header-animation .hero-overlay .hero-subtitle {
+    font-size: 1.75rem;
+  }
+
+  .header-animation .hero-overlay .dates-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .header-animation .hero-overlay .university-name-subtitle {
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 1023px) and (min-width: 768px) {
-  .hero-overlay .hero-title {
-    font-size: 3.5rem;
+  .header-animation .hero-overlay .hero-title {
+    font-size: 5.5rem;
+  }
+
+  .header-animation .hero-overlay .hero-subtitle {
+    font-size: 1.75rem;
+  }
+
+  .header-animation .hero-overlay .dates-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .header-animation .hero-overlay .university-name-subtitle {
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 767px) and (min-width: 480px) {
-  .hero-overlay .hero-title {
-    font-size: 3rem;
+  .header-animation .hero-overlay .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .header-animation .hero-overlay .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .header-animation .hero-overlay .dates-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .header-animation .hero-overlay .university-name-subtitle {
+    font-size: 0.875rem;
   }
 }
 
 @media (max-width: 479px) {
-  .hero-overlay .hero-title {
-    font-size: 2.5rem;
+  .header-animation .hero-overlay .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .header-animation .hero-overlay .hero-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .header-animation .hero-overlay .dates-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .header-animation .hero-overlay .university-name-subtitle {
+    font-size: 0.75rem;
   }
 }
 
@@ -1126,7 +1213,7 @@ a:hover {
   display: flex;
   gap: var(--spacing-xl);
   margin-bottom: var(--spacing-2xl);
-  align-items: flex-start;
+  align-items: center;
 }
 
 .presenter-photo {
@@ -1268,7 +1355,7 @@ a:hover {
 
 .event-header {
   margin-bottom: var(--spacing-2xl);
-  text-align: center;
+  text-align: left;
 }
 
 .event-title {
@@ -1702,8 +1789,8 @@ a:hover {
   left: 0;
   right: 0;
   z-index: 10;
-  padding: var(--spacing-lg) 0 var(--spacing-2xl);
-  /* Increased bottom padding */
+  padding: var(--spacing-lg) 0 var(--spacing-md);
+  /* Reduced bottom padding */
   color: var(--color-text-inverse);
 }
 
@@ -1752,13 +1839,47 @@ a:hover {
 }
 
 /* Responsive adjustments for static header */
+@media (min-width: 1440px) {
+  .static-header {
+    height: 360px;
+  }
+
+  .static-header .hero-overlay .hero-title {
+    font-size: 3rem;
+  }
+
+  .static-header .hero-overlay .hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .static-header .hero-overlay .dates-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .static-header .hero-overlay .university-name-subtitle {
+    font-size: 1.25rem;
+  }
+}
+
 @media (max-width: 1439px) and (min-width: 1024px) {
   .static-header {
     height: 360px;
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
+  }
+
+  .static-header .hero-overlay .hero-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .static-header .hero-overlay .dates-subtitle {
+    font-size: 1rem;
+  }
+
+  .static-header .hero-overlay .university-name-subtitle {
+    font-size: 1rem;
   }
 }
 
@@ -1768,7 +1889,19 @@ a:hover {
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
+  }
+
+  .static-header .hero-overlay .hero-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .static-header .hero-overlay .dates-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .static-header .hero-overlay .university-name-subtitle {
+    font-size: 0.875rem;
   }
 }
 
@@ -1778,17 +1911,7 @@ a:hover {
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 479px) {
-  .static-header {
-    height: 240px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 2.4rem;
+    font-size: 1.75rem;
   }
 
   .static-header .hero-overlay .hero-subtitle {
@@ -1802,6 +1925,45 @@ a:hover {
   .static-header .hero-overlay .university-name-subtitle {
     font-size: 0.75rem;
   }
+}
+
+@media (max-width: 479px) {
+  .static-header {
+    height: 240px;
+  }
+
+  .static-header .hero-overlay .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .static-header .hero-overlay .hero-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .static-header .hero-overlay .dates-subtitle {
+    font-size: 0.625rem;
+  }
+
+  .static-header .hero-overlay .university-name-subtitle {
+    font-size: 0.625rem;
+  }
+}
+
+/* ==========================================================================
+   Section Header Styles
+   ========================================================================== */
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
