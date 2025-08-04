@@ -1,0 +1,10 @@
+# Use the official certbot image as base
+FROM certbot/certbot
+
+# Install Docker CLI
+RUN apk add --no-cache docker-cli
+
+# Set the working directory
+WORKDIR /app
+
+# The entrypoint will be set in docker-compose.yml 
