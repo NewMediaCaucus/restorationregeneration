@@ -5,7 +5,7 @@
   <?php if ($page->welcome()->isNotEmpty()): ?>
     <section class="welcome section">
       <div class="container">
-        <h2>Welcome</h2>
+        <h2>Welcome!</h2>
         <div class="content">
           <?= $page->welcome()->kt() ?>
         </div>
@@ -17,7 +17,7 @@
   <?php if ($page->theme()->isNotEmpty()): ?>
     <section class="theme section">
       <div class="container">
-        <h2>Theme</h2>
+        <h2>Our 2026 Theme</h2>
         <div class="content">
           <?= $page->theme()->kt() ?>
         </div>
@@ -195,7 +195,7 @@
   <?php if ($page->save_the_date()->isNotEmpty() || $page->event_date()->isNotEmpty() || $page->memory_game_enabled()->isTrue()): ?>
     <section class="save-the-date section">
       <div class="container">
-        <h2>Save the Date</h2>
+        <h2>Save the Date!</h2>
         <div class="save-the-date-grid">
           <!-- Text Block -->
           <?php if ($page->save_the_date()->isNotEmpty()): ?>
