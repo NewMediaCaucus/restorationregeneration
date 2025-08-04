@@ -30,8 +30,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./letsencrypt-logs:/var/log/letsencrypt
       - .:/var/www/html
-      - /var/run/docker.sock:/var/run/docker.sock
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --force-renewal --config-dir /etc/letsencrypt --logs-dir /var/log/letsencrypt --post-hook \"docker exec restorationregeneration-prod-container apache2ctl graceful\"; sleep 12h & wait $${!}; done;'"
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --force-renewal --config-dir /etc/letsencrypt --logs-dir /var/log/letsencrypt; sleep 12h & wait $${!}; done;'"
     networks:
       - webnet
 
