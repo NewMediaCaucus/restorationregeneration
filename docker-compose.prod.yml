@@ -30,7 +30,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./letsencrypt-logs:/var/log/letsencrypt
       - .:/var/www/html
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --force-renewal --config-dir /etc/letsencrypt --logs-dir /var/log/letsencrypt; sleep 12h & wait $${!}; done;'"
+    command: "sleep infinity"
     networks:
       - webnet
 
