@@ -25,6 +25,33 @@
     </section>
   <?php endif ?>
 
+  <!-- Our Keynote Speaker Section -->
+  <?php if ($page->keynote_promo()->isNotEmpty() || $page->keynote_headshot()->isNotEmpty() || $page->keynote_bio()->isNotEmpty()): ?>
+    <section class="keynote-speaker section">
+      <div class="container">
+        <h2>Our Keynote Speaker</h2>
+        
+        <?php if ($page->keynote_promo()->isNotEmpty()): ?>
+          <div class="keynote-promo">
+            <?= $page->keynote_promo()->kt() ?>
+          </div>
+        <?php endif ?>
+
+        <?php if ($page->keynote_headshot()->isNotEmpty()): ?>
+          <div class="keynote-headshot">
+            <?= $page->keynote_headshot()->toFile() ?>
+          </div>
+        <?php endif ?>
+
+        <?php if ($page->keynote_bio()->isNotEmpty()): ?>
+          <div class="keynote-bio">
+            <?= $page->keynote_bio()->kt() ?>
+          </div>
+        <?php endif ?>
+      </div>
+    </section>
+  <?php endif ?>
+
   <!-- Event Location -->
   <section class="event-location section">
     <div class="container">

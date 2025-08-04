@@ -488,9 +488,106 @@ a:hover {
 }
 
 .event-location-image img {
+  width: 100%;
   max-width: 100%;
   height: auto;
   box-shadow: var(--shadow-md);
+}
+
+/* ==========================================================================
+   Keynote Headshot Image Styles
+   ========================================================================== */
+
+.keynote-headshot-image {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  position: relative;
+}
+
+.keynote-headshot-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-shadow: var(--shadow-md);
+}
+
+.keynote-headshot-image .image-caption {
+  margin-top: var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.keynote-headshot-image .image-credits {
+  margin-top: var(--spacing-xs);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Keynote Speaker Section Styles
+   ========================================================================== */
+
+.keynote-speaker {
+  background: #333;
+  color: white;
+  padding: var(--spacing-xl) 0;
+}
+
+.keynote-promo {
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.keynote-promo p {
+  color: white;
+}
+
+.keynote-speaker h2 {
+  color: white;
+}
+
+.keynote-headshot {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.keynote-headshot img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  box-shadow: var(--shadow-md);
+}
+
+.keynote-bio {
+  line-height: 1.6;
+}
+
+.keynote-bio p {
+  color: white;
+}
+
+.keynote-speaker a {
+  color: #b8a9dc;
+}
+
+.keynote-bio h3 {
+  margin-bottom: var(--spacing-md);
+  color: white;
+}
+
+.keynote-bio p {
+  margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 767px) {
+  .keynote-promo {
+    font-size: 1rem;
+  }
+  
+  .keynote-bio {
+    padding: 0 var(--spacing-md);
+  }
 }
 
 /* Location details card overlay for larger screens */

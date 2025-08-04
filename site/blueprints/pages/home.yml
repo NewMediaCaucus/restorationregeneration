@@ -32,6 +32,27 @@ sections:
         placeholder: "Description of the symposium theme..."
         dragText: false
         buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
+      keynote_headshot:
+        label: Keynote Headshot
+        type: files
+        multiple: false
+        query: "page.images"
+        uploads:
+          template: keynote-headshot
+      keynote_promo:
+        label: Keynote Promo
+        type: textarea
+        size: medium
+        placeholder: "Promotional text about the keynote speaker..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
+      keynote_bio:
+        label: Keynote Bio
+        type: textarea
+        size: large
+        placeholder: "Biography of the keynote speaker..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       registration:
         label: Registration
         type: textarea
@@ -154,4 +175,23 @@ sections:
         label: Contact Email
         type: email
         placeholder: "contact@example.com"
+      sponsors:
+        label: Sponsors
+        type: structure
+        fields:
+          name:
+            label: Sponsor Name
+            type: text
+            size: medium
+          logo:
+            label: Sponsor Logo
+            type: files
+            multiple: false
+            query: "page.images"
+            uploads:
+              template: image
+          website:
+            label: Website
+            type: url
+            placeholder: "https://..."
 
