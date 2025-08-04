@@ -904,6 +904,16 @@ a:hover {
   line-height: 1.1;
 }
 
+.hero-overlay .hero-title a {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.hero-overlay .hero-title a:hover {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
 .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
