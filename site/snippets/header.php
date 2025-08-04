@@ -53,7 +53,7 @@
       <div class="hero-overlay">
         <div class="container">
           <?php if ($homePage->hero_title()->isNotEmpty()): ?>
-            <h1 class="hero-title"><?= $homePage->hero_title() ?></h1>
+            <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
           <?php endif ?>
 
           <?php if ($homePage->hero_subtitle()->isNotEmpty()): ?>
@@ -106,7 +106,7 @@
         <div class="hero-overlay">
           <div class="container">
             <?php if ($homePage->hero_title()->isNotEmpty()): ?>
-              <h1 class="hero-title"><?= $homePage->hero_title() ?></h1>
+              <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
             <?php endif ?>
 
             <?php if ($homePage->hero_subtitle()->isNotEmpty()): ?>
