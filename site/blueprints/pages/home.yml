@@ -92,10 +92,13 @@ sections:
         placeholder: "Information about paper submissions, deadlines, and requirements..."
         dragText: false
         buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
-      event-date:
+      event_date:
         label: Event Date
         type: date
         format: "YYYY-MM-DD"
+        placeholder: "2026-03-06"
+        size: medium
+        default: "2026-03-06"
       memory_game_enabled:
         label: Enable Memory Game
         type: toggle
