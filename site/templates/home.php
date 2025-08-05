@@ -30,7 +30,7 @@
     <section class="keynote-speaker section">
       <div class="container">
         <h2>Our Keynote Speaker</h2>
-        
+
         <?php if ($page->keynote_promo()->isNotEmpty()): ?>
           <div class="keynote-promo">
             <?= $page->keynote_promo()->kt() ?>
@@ -206,7 +206,7 @@
             </div>
           <?php endif ?>
 
-          <!-- Countdown Block -->
+
           <?php if ($page->event_date()->isNotEmpty()): ?>
             <div class="save-the-date-block countdown-block">
               <div class="countdown-timer">
