@@ -86,6 +86,43 @@ function isPrime(num) {
 2. **Check if day is even**: If true (and not prime), load obsidian icebergs
 3. **Default to odd**: Load neural regeneration
 
+### Static Header Background Logic
+
+1. **Check if day is prime**: If true, use `header-background-prime.png`
+2. **Check if day is even**: If true (and not prime), use `header-background-even.png`
+3. **Default to odd**: Use `header-background-odd.png`
+
+### JavaScript Implementation
+
+The static header logic uses the same prime number detection algorithm:
+
+```javascript
+// Prime number detection function
+function isPrime(num) {
+  if (num <= 1) return false;
+  if (num <= 3) return true;
+  if (num % 2 === 0 || num % 3 === 0) return false;
+  
+  for (let i = 5; i * i <= num; i += 6) {
+    if (num % i === 0 || num % (i + 2) === 0) return false;
+  }
+  return true;
+}
+
+// Background selection logic
+const clientIsPrimeDay = isPrime(clientDay);
+const clientIsEvenDay = clientDay % 2 === 0;
+
+let backgroundImage;
+if (clientIsPrimeDay) {
+  backgroundImage = 'header-background-prime.png';
+} else if (clientIsEvenDay) {
+  backgroundImage = 'header-background-even.png';
+} else {
+  backgroundImage = 'header-background-odd.png';
+}
+```
+
 ### Responsive Design
 
 All animations adapt to different screen sizes:
@@ -139,8 +176,9 @@ All animations adapt to different screen sizes:
 
 ### Internal Pages
 - Uses static header with background images
-- Background alternates based on day of month
+- Background selection based on prime number detection and even/odd logic
 - Hero overlay content from home page data
+- Prime number days get priority over even/odd logic
 
 ## CSS Styling
 
@@ -169,13 +207,20 @@ All animations adapt to different screen sizes:
 
 ## Background Images
 
-### Even Days
-- **File**: `assets/icons/header-background-even.png`
-- **Usage**: Static header background for even days
+### Prime Number Days (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31)
+- **File**: `assets/icons/header-background-prime.png`
+- **Usage**: Static header background for prime number days
+- **Priority**: Highest priority - overrides even/odd logic
 
-### Odd Days
+### Even Days (4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30)
+- **File**: `assets/icons/header-background-even.png`
+- **Usage**: Static header background for even days (non-prime)
+- **Priority**: Medium priority - only when not prime
+
+### Odd Days (1, 9, 15, 21, 25, 27)
 - **File**: `assets/icons/header-background-odd.png`
-- **Usage**: Static header background for odd days
+- **Usage**: Static header background for odd days (non-prime)
+- **Priority**: Lowest priority - fallback for non-prime, non-even days
 
 ## Performance Considerations
 
@@ -215,6 +260,14 @@ All animations include extensive console logging:
 - Script loading progress
 - Day detection results
 - Error handling
+
+### Static Header Debugging
+Static headers include enhanced logging:
+- Client day of month detection
+- Prime number calculation results
+- Even/odd day determination
+- Background image selection
+- DOM element targeting verification
 
 ### Common Issues
 1. **Canvas not found**: Check DOM structure

@@ -4,40 +4,40 @@
 
 :root {
   /* Color Palette */
-  --color-primary: #7c3aed;
-  --color-primary-hover: #6d28d9;
-  --color-primary-light: #dbeafe;
-  --color-secondary: #64748b;
-  --color-secondary-hover: #475569;
+  --color-primary: hsla(262, 83%, 58%, 1);
+  --color-primary-hover: hsla(262, 83%, 51%, 1);
+  --color-primary-light: hsla(213, 94%, 93%, 1);
+  --color-secondary: hsla(215, 16%, 47%, 1);
+  --color-secondary-hover: hsla(215, 25%, 27%, 1);
 
   /* Background Colors */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8fafc;
-  --color-bg-tertiary: #f1f5f9;
-  --color-bg-accent: #eff6ff;
+  --color-bg-primary: hsla(0, 0%, 100%, 1);
+  --color-bg-secondary: hsla(210, 40%, 98%, 1);
+  --color-bg-tertiary: hsla(210, 40%, 96%, 1);
+  --color-bg-accent: hsla(213, 100%, 96%, 1);
 
   /* Text Colors */
-  --color-text-primary: #1e293b;
-  --color-text-secondary: #64748b;
-  --color-text-muted: #94a3b8;
-  --color-text-inverse: #ffffff;
+  --color-text-primary: hsla(215, 25%, 27%, 1);
+  --color-text-secondary: hsla(215, 16%, 47%, 1);
+  --color-text-muted: hsla(215, 16%, 65%, 1);
+  --color-text-inverse: hsla(0, 0%, 100%, 1);
 
   /* Border Colors */
-  --color-border-primary: #e2e8f0;
-  --color-border-secondary: #cbd5e1;
-  --color-border-accent: #bfdbfe;
+  --color-border-primary: hsla(214, 32%, 91%, 1);
+  --color-border-secondary: hsla(214, 32%, 85%, 1);
+  --color-border-accent: hsla(213, 94%, 87%, 1);
 
   /* Status Colors */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-success: hsla(160, 84%, 39%, 1);
+  --color-warning: hsla(43, 96%, 56%, 1);
+  --color-error: hsla(0, 84%, 60%, 1);
+  --color-info: hsla(217, 91%, 60%, 1);
 
   /* Shadow */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 2px 0 hsla(0, 0%, 0%, 0.05);
+  --shadow-md: 0 4px 6px -1px hsla(0, 0%, 0%, 0.1), 0 2px 4px -2px hsla(0, 0%, 0%, 0.1);
+  --shadow-lg: 0 10px 15px -3px hsla(0, 0%, 0%, 0.1), 0 4px 6px -4px hsla(0, 0%, 0%, 0.1);
+  --shadow-xl: 0 20px 25px -5px hsla(0, 0%, 0%, 0.1), 0 8px 10px -6px hsla(0, 0%, 0%, 0.1);
 
   /* Typography */
   --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -529,7 +529,7 @@ a:hover {
    ========================================================================== */
 
 .keynote-speaker {
-  background: #333;
+  background: hsla(0, 0%, 20%, 1);
   color: white;
   padding: var(--spacing-xl) 0;
 }
@@ -568,7 +568,7 @@ a:hover {
 }
 
 .keynote-speaker a {
-  color: #b8a9dc;
+  color: hsla(260, 25%, 75%, 1);
 }
 
 .keynote-bio h3 {
@@ -584,7 +584,7 @@ a:hover {
   .keynote-promo {
     font-size: 1rem;
   }
-  
+
   .keynote-bio {
     padding: 0 var(--spacing-md);
   }
@@ -752,7 +752,7 @@ a:hover {
    ========================================================================== */
 
 .site-footer {
-  background-color: #333;
+  background-color: hsla(0, 0%, 20%, 1);
   border-top: 1px solid var(--color-border-primary);
   padding: var(--spacing-2xl) 0 var(--spacing-lg);
   margin-top: var(--spacing-3xl);
@@ -772,7 +772,7 @@ a:hover {
 }
 
 .footer-main a {
-  color: #b8a9dc;
+  color: hsla(260, 25%, 75%, 1);
   text-decoration: none;
 }
 
@@ -783,7 +783,7 @@ a:hover {
 }
 
 .footer-links a {
-  color: #b8a9dc;
+  color: hsla(260, 25%, 75%, 1);
   text-decoration: none;
 }
 
@@ -831,7 +831,7 @@ a:hover {
 }
 
 .social-link:hover {
-  background-color: #b8a9dc;
+  background-color: hsla(260, 25%, 75%, 1);
   transform: translateY(-2px);
 }
 
@@ -859,7 +859,7 @@ a:hover {
 }
 
 .footer-copyright a {
-  color: #b8a9dc;
+  color: hsla(260, 25%, 75%, 1);
   text-decoration: none;
 }
 
@@ -1248,7 +1248,7 @@ a:hover {
 }
 
 .game-card .card-front {
-  background: #1a1a1a;
+  background: hsla(0, 0%, 10%, 1);
   transform: rotateY(0deg);
 }
 

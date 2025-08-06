@@ -86,8 +86,31 @@
       <script>
         // Get the client's local day of month
         const clientDay = new Date().getDate();
+
+        // Prime number detection function
+        function isPrime(num) {
+          if (num <= 1) return false;
+          if (num <= 3) return true;
+          if (num % 2 === 0 || num % 3 === 0) return false;
+
+          for (let i = 5; i * i <= num; i += 6) {
+            if (num % i === 0 || num % (i + 2) === 0) return false;
+          }
+          return true;
+        }
+
+        const clientIsPrimeDay = isPrime(clientDay);
         const clientIsEvenDay = clientDay % 2 === 0;
-        const backgroundImage = clientIsEvenDay ? '<?= url('assets/icons/header-background-even.png') ?>' : '<?= url('assets/icons/header-background-odd.png') ?>';
+
+        // Determine background image based on prime first, then even/odd
+        let backgroundImage;
+        if (clientIsPrimeDay) {
+          backgroundImage = '<?= url('assets/icons/header-background-prime.png') ?>';
+        } else if (clientIsEvenDay) {
+          backgroundImage = '<?= url('assets/icons/header-background-even.png') ?>';
+        } else {
+          backgroundImage = '<?= url('assets/icons/header-background-odd.png') ?>';
+        }
 
         // Apply the background image
         document.addEventListener('DOMContentLoaded', function() {
@@ -99,6 +122,7 @@
 
         // Debug info
         console.log('Client Day of Month:', clientDay);
+        console.log('Client Is Prime Day:', clientIsPrimeDay);
         console.log('Client Is Even Day:', clientIsEvenDay);
         console.log('Client Background Image:', backgroundImage);
       </script>
