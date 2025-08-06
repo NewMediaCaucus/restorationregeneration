@@ -8,6 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log(`Animation Loader: Day ${dayOfMonth}, isEvenDay: ${isEvenDay}`);
 
+  // Helper function to check if a number is prime
+  function isPrime(num) {
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+    if (num % 2 === 0 || num % 3 === 0) return false;
+    
+    for (let i = 5; i * i <= num; i += 6) {
+      if (num % i === 0 || num % (i + 2) === 0) return false;
+    }
+    return true;
+  }
+
+  const isPrimeDay = isPrime(dayOfMonth);
+  console.log(`Animation Loader: Day ${dayOfMonth} is prime: ${isPrimeDay}`);
+
   // Get the canvas element
   const canvas = document.getElementById('regeneration-canvas');
   if (!canvas) {
@@ -18,9 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Animation Loader: Canvas found, loading animation...');
 
   // Load the appropriate animation based on the day
-  if (isEvenDay) {
-    // Even day - load obsidian-icebergs-3d.js
-    console.log(`Animation Loader: Day ${dayOfMonth} is even - loading obsidian-icebergs-3d.js`);
+  if (isPrimeDay) {
+    // Prime day - load tissue-regeneration-3d.js
+    console.log(`Animation Loader: Day ${dayOfMonth} is prime - loading tissue-regeneration-3d.js`);
+    loadScript('assets/js/tissue-regeneration-3d.js').then(() => {
+      console.log('Animation Loader: Tissue regeneration script loaded successfully');
+      // The animation auto-initializes when the script loads
+    }).catch((error) => {
+      console.error('Animation Loader: Failed to load tissue regeneration script:', error);
+    });
+  } else if (isEvenDay) {
+    // Even day (non-prime) - load obsidian-icebergs-3d.js
+    console.log(`Animation Loader: Day ${dayOfMonth} is even (non-prime) - loading obsidian-icebergs-3d.js`);
     loadScript('assets/js/obsidian-icebergs-3d.js').then(() => {
       console.log('Animation Loader: Obsidian icebergs script loaded successfully');
       // The animation auto-initializes when the script loads
@@ -28,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Animation Loader: Failed to load obsidian icebergs script:', error);
     });
   } else {
-    // Odd day - load neural-regeneration-3d.js
-    console.log(`Animation Loader: Day ${dayOfMonth} is odd - loading neural-regeneration-3d.js`);
+    // Odd day (non-prime) - load neural-regeneration-3d.js
+    console.log(`Animation Loader: Day ${dayOfMonth} is odd (non-prime) - loading neural-regeneration-3d.js`);
     loadScript('assets/js/neural-regeneration-3d.js').then(() => {
       console.log('Animation Loader: Neural regeneration script loaded successfully');
       // Initialize the neural regeneration animation
