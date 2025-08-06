@@ -118,7 +118,7 @@ class ObsidianIcebergs3D {
     this.scene.add(pointLight2);
 
     // Add a third light for more illumination
-    const pointLight3 = new THREE.PointLight(0xffffff, 1.0, 40); // Increased from 0.8 to 1.0
+    const pointLight3 = new THREE.PointLight(0xffffff, 1.5, 40); // Increased from 0.8 to 1.0
     pointLight3.position.set(0, 15, 0);
     this.scene.add(pointLight3);
 
@@ -128,12 +128,12 @@ class ObsidianIcebergs3D {
     this.scene.add(pointLight4);
 
     // Add a fifth light for dramatic side lighting with purple hint
-    const pointLight5 = new THREE.PointLight(0xf0f0ff, 0.6, 30); // Slight purple tint
+    const pointLight5 = new THREE.PointLight(0xf0f0ff, 0.8, 30); // Slight purple tint
     pointLight5.position.set(20, 5, 0);
     this.scene.add(pointLight5);
 
     // Add a sixth light with purple accent
-    const pointLight6 = new THREE.PointLight(0xfff0ff, 0.4, 25); // Light purple tint
+    const pointLight6 = new THREE.PointLight(0xfff0ff, 0.6, 25); // Light purple tint
     pointLight6.position.set(-20, 5, 0);
     this.scene.add(pointLight6);
 
@@ -283,11 +283,13 @@ class ObsidianIcebergs3D {
         this.createDeathEvent(iceberg.position);
       }
       
-      // Color changes based on health
+      // Color changes based on health - shift from black happens sooner
       const healthRatio = iceberg.userData.health / 100;
-      const colorIndex = Math.floor((1 - healthRatio) * this.obsidianColors.length);
+      // Accelerate the color transition by using a modified ratio
+      const acceleratedRatio = Math.min(1, (1 - healthRatio) * 2.5); // Multiplied by 2.5 to make transition happen sooner
+      const colorIndex = Math.floor(acceleratedRatio * this.obsidianColors.length);
       const targetColor = new THREE.Color(this.obsidianColors[colorIndex]);
-      iceberg.material.color.lerp(targetColor, deltaTime * 0.5); // Reduced from 1 to 0.5
+      iceberg.material.color.lerp(targetColor, deltaTime * 0.8); // Increased from 0.5 to 0.8 for faster color change
       
       // Scaling based on health
       const scale = iceberg.userData.size * (0.5 + healthRatio * 0.5);
