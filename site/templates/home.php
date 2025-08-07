@@ -192,7 +192,7 @@
   <?php endif ?>
 
   <!-- Save the Date Section -->
-  <?php if ($page->save_the_date()->isNotEmpty() || $page->event_date()->isNotEmpty() || $page->memory_game_enabled()->isTrue()): ?>
+  <?php if ($page->save_the_date()->isNotEmpty() || $page->memory_game_enabled()->isTrue()): ?>
     <section class="save-the-date section">
       <div class="container">
         <h2>Save the Date!</h2>
@@ -200,11 +200,9 @@
           <!-- Text Block -->
           <?php if ($page->save_the_date()->isNotEmpty()): ?>
             <div class="save-the-date-block text-block">
-              <?php if ($page->event_date()->isNotEmpty()): ?>
-                <div class="countdown-date">
-                  <?= $page->event_date()->toDate('F j, Y') ?>
-                </div>
-              <?php endif ?>
+              <div class="countdown-date">
+                March 6, 2026
+              </div>
               <div class="content">
                 <?= $page->save_the_date()->kt() ?>
               </div>
