@@ -200,25 +200,21 @@
           <!-- Text Block -->
           <?php if ($page->save_the_date()->isNotEmpty()): ?>
             <div class="save-the-date-block text-block">
+              <?php if ($page->event_date()->isNotEmpty()): ?>
+                <div class="countdown-date">
+                  <?= $page->event_date()->toDate('F j, Y') ?>
+                </div>
+              <?php endif ?>
               <div class="content">
                 <?= $page->save_the_date()->kt() ?>
               </div>
-            </div>
-          <?php endif ?>
-
-
-          <?php if ($page->event_date()->isNotEmpty()): ?>
-            <div class="save-the-date-block countdown-block">
               <div class="countdown-timer">
-                <div class="countdown-title">Countdown to the Symposium</div>
+                <div class="countdown-title">⏳ Countdown to the Symposium! </div>
                 <div class="countdown-single">
                   <div class="countdown-item">
                     <div class="countdown-number" id="days">--</div>
                     <div class="countdown-label">Days</div>
                   </div>
-                </div>
-                <div class="countdown-date">
-                  <?= $page->event_date()->toDate('F j, Y') ?>
                 </div>
               </div>
             </div>

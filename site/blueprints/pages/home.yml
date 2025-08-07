@@ -97,7 +97,7 @@ sections:
         type: date
         format: "YYYY-MM-DD"
         placeholder: "2026-03-06"
-        size: medium
+        help: "This is used for date calculations such as the number of days until the event."
         default: "2026-03-06"
       memory_game_enabled:
         label: Enable Memory Game
