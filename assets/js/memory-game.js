@@ -41,27 +41,12 @@ class MemoryGame {
   }
 
   getDaysUntilConference() {
-    // Get the event date from the countdown timer
-    const eventDateElement = document.querySelector('.countdown-date');
-    if (eventDateElement) {
-      const dateText = eventDateElement.textContent.trim();
-      if (dateText) {
-        try {
-          const eventDate = new Date(dateText);
-          const now = new Date();
-          const timeDifference = eventDate - now;
-          const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-          this.timeRemaining = Math.max(0, days);
-        } catch (error) {
-          console.error('Error parsing event date:', error);
-          this.timeRemaining = 216; // Fallback to 216 days
-        }
-      } else {
-        this.timeRemaining = 216; // Fallback to 216 days
-      }
-    } else {
-      this.timeRemaining = 216; // Fallback to 216 days
-    }
+    // Hardcoded event date: March 6, 2026
+    const eventDate = new Date('2026-03-06T00:00:00');
+    const now = new Date();
+    const timeDifference = eventDate - now;
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    this.timeRemaining = Math.max(0, days);
   }
 
   createBoard() {

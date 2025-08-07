@@ -53,26 +53,14 @@ class CountdownTimer {
 
 // Initialize countdown timer when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  // Get the event date from the page (you can modify this to get from a data attribute)
-  const eventDateElement = document.querySelector('.countdown-date');
+  // Hardcoded event date: March 6, 2026
+  const eventDate = new Date('2026-03-06T00:00:00');
   
-  if (eventDateElement) {
-    // Extract date from the displayed text (format: "March 6, 2026")
-    const dateText = eventDateElement.textContent.trim();
-    
-    if (dateText) {
-      try {
-        const eventDate = new Date(dateText);
-        
-        // Check if the date is valid
-        if (!isNaN(eventDate.getTime())) {
-          new CountdownTimer(eventDate);
-        } else {
-          console.warn('Invalid event date format:', dateText);
-        }
-      } catch (error) {
-        console.error('Error parsing event date:', error);
-      }
-    }
+  // Check if the date is valid
+  if (!isNaN(eventDate.getTime())) {
+    new CountdownTimer(eventDate);
+    console.log('Countdown timer initialized for March 6, 2026');
+  } else {
+    console.error('Invalid event date');
   }
 }); 
