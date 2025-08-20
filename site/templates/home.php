@@ -317,6 +317,41 @@
     </section>
   <?php endif ?>
 
+  <!-- NMC Steering Committee -->
+  <?php if ($page->steering_committee_description()->isNotEmpty() || $page->steering_committee_members()->isNotEmpty()): ?>
+    <section class="steering-committee section">
+      <div class="container">
+        <h2>Symposium Steering Committee</h2>
+
+        <?php if ($page->steering_committee_description()->isNotEmpty()): ?>
+          <div class="steering-committee-description">
+            <?= $page->steering_committee_description()->kt() ?>
+          </div>
+        <?php endif ?>
+
+        <?php if ($page->steering_committee_members()->isNotEmpty()): ?>
+          <div class="steering-committee-members">
+            <?php foreach ($page->steering_committee_members()->toStructure() as $member): ?>
+              <?php if ($member->url()->isNotEmpty()): ?>
+                <a href="<?= $member->url() ?>" target="_blank" class="steering-committee-member">
+                <?php else: ?>
+                  <div class="steering-committee-member">
+                  <?php endif ?>
+                  <div class="member-info">
+                    <h3 class="member-name"><?= $member->name() ?></h3>
+                  </div>
+                  <?php if ($member->url()->isNotEmpty()): ?>
+                </a>
+              <?php else: ?>
+          </div>
+        <?php endif ?>
+      <?php endforeach ?>
+      </div>
+    <?php endif ?>
+    </div>
+    </section>
+  <?php endif ?>
+
   <!-- Contact -->
   <?php if ($page->contact_email()->isNotEmpty()): ?>
     <section class="contact section">

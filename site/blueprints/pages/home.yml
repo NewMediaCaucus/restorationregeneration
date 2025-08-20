@@ -171,4 +171,24 @@ sections:
             label: Website
             type: url
             placeholder: "https://..."
+      steering_committee_description:
+        label: Steering Committee Description
+        type: textarea
+        size: medium
+        placeholder: "Description of the NMC Steering Committee..."
+        dragText: false
+        buttons: ['link', bold', 'italic']
+      steering_committee_members:
+        label: Steering Committee Members
+        type: structure
+        fields:
+          name:
+            label: Full Name
+            type: text
+            size: medium
+            placeholder: "Dr. Lucia Pérez"
+          url:
+            label: URL
+            type: url
+            placeholder: "https://..."
 
