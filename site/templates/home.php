@@ -321,7 +321,7 @@
   <?php if ($page->steering_committee_description()->isNotEmpty() || $page->steering_committee_members()->isNotEmpty()): ?>
     <section class="steering-committee section">
       <div class="container">
-        <h2>Symposium Steering Committee</h2>
+        <h2>Symposium Steering Committee & Volunteers</h2>
 
         <?php if ($page->steering_committee_description()->isNotEmpty()): ?>
           <div class="steering-committee-description">
