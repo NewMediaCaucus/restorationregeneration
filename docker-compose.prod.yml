@@ -17,8 +17,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
     env_file:
       - ./id.env
-    depends_on:
-      - certbot
     networks:
       - webnet
 
@@ -31,8 +29,6 @@ services:
       - ./letsencrypt-logs:/var/log/letsencrypt
       - .:/var/www/html
     command: "certbot renew --webroot --webroot-path=/var/www/html --quiet && docker exec restorationregeneration-prod-container apache2ctl graceful"
-    depends_on:
-      - webserver
     networks:
       - webnet
 
