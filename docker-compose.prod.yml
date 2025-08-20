@@ -28,7 +28,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./letsencrypt-logs:/var/log/letsencrypt
       - .:/var/www/html
-    command: "certbot renew --webroot --webroot-path=/var/www/html --quiet && docker exec restorationregeneration-prod-container apache2ctl graceful"
+    command: "bash /var/www/html/certbot-renew.sh"
     networks:
       - webnet
 

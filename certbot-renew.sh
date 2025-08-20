@@ -4,13 +4,13 @@
 echo "Starting certificate renewal process..."
 
 # Renew certificates
-docker exec certbot certbot renew --force-renewal --config-dir /etc/letsencrypt --logs-dir /var/log/letsencrypt
+certbot renew --webroot --webroot-path=/var/www/html --quiet
 
 # Check if renewal was successful
 if [ $? -eq 0 ]; then
     echo "Certificate renewal completed successfully"
     
-    # Reload Apache
+    # Reload Apache in the webserver container
     docker exec restorationregeneration-prod-container apache2ctl graceful
     echo "Apache reloaded successfully"
 else
