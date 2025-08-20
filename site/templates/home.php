@@ -295,19 +295,24 @@
         <h2>Sponsors</h2>
         <div class="sponsors-grid">
           <?php foreach ($page->sponsors()->toStructure() as $sponsor): ?>
-            <div class="sponsor">
-              <?php if ($sponsor->logo()->isNotEmpty()): ?>
-                <div class="sponsor-logo">
-                  <?= $sponsor->logo()->toFile() ?>
-                </div>
-              <?php endif ?>
-              <h3><?= $sponsor->name() ?></h3>
-              <?php if ($sponsor->website()->isNotEmpty()): ?>
-                <a href="<?= $sponsor->website() ?>" target="_blank">Visit Website</a>
-              <?php endif ?>
-            </div>
-          <?php endforeach ?>
+            <?php if ($sponsor->website()->isNotEmpty()): ?>
+              <a href="<?= $sponsor->website() ?>" target="_blank" class="sponsor">
+              <?php else: ?>
+                <div class="sponsor">
+                <?php endif ?>
+                <?php if ($sponsor->logo()->isNotEmpty()): ?>
+                  <div class="sponsor-logo">
+                    <?= $sponsor->logo()->toFile() ?>
+                  </div>
+                <?php endif ?>
+                <h3><?= $sponsor->name() ?></h3>
+                <?php if ($sponsor->website()->isNotEmpty()): ?>
+              </a>
+            <?php else: ?>
         </div>
+      <?php endif ?>
+    <?php endforeach ?>
+      </div>
       </div>
     </section>
   <?php endif ?>

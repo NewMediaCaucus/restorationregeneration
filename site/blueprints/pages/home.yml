@@ -148,25 +148,6 @@ sections:
         query: "page.images"
         uploads:
           template: image
-      partners:
-        label: Partners
-        type: structure
-        fields:
-          name:
-            label: Partner Name
-            type: text
-            size: medium
-          logo:
-            label: Partner Logo
-            type: files
-            multiple: false
-            query: "page.images"
-            uploads:
-          template: image
-          website:
-            label: Website
-            type: url
-            placeholder: "https://..."
       contact_email:
         label: Contact Email
         type: email
