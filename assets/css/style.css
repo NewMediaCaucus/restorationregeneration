@@ -2204,6 +2204,111 @@ a:hover {
 }
 
 /* ==========================================================================
+   Steering Committee Section Styles
+   ========================================================================== */
+
+.steering-committee {
+  margin-top: var(--spacing-2xl);
+}
+
+.steering-committee-description {
+  margin-bottom: var(--spacing-xl);
+  text-align: left;
+  max-width: 800px;
+}
+
+.steering-committee-description p {
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.steering-committee-members {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.steering-committee-member {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border-primary);
+  transition: var(--transition-fast);
+  text-decoration: none;
+  color: inherit;
+}
+
+.steering-committee-member:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.member-info {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.member-name {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.member-title {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xs) 0 0 0;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments for steering committee */
+@media (max-width: 1023px) {
+  .steering-committee-members {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .steering-committee-description p {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 767px) {
+  .steering-committee-members {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .steering-committee-member {
+    padding: var(--spacing-md);
+  }
+
+  .member-name {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 479px) {
+  .steering-committee-members {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .steering-committee-member {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* ==========================================================================
    Print Styles
    ========================================================================== */
 
