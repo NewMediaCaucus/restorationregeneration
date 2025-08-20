@@ -20,4 +20,4 @@ jobs:
 
     - name: Pull latest changes on staging server
       run: |
-        ssh -o StrictHostKeyChecking=no rrnmc@rr.shimmeringtrashpile.com 'cd /home/rrnmc/restorationregeneration && git pull origin main && sudo docker compose -f docker-compose.prod.yml up -d --build'
+        ssh -o StrictHostKeyChecking=no rrnmc@rr.shimmeringtrashpile.com 'cd /home/rrnmc/restorationregeneration && git pull origin main && docker rm -f certbot 2>/dev/null || true && sudo docker compose -f docker-compose.prod.yml up -d --build'
