@@ -13,6 +13,23 @@
     </section>
   <?php endif ?>
 
+  <!-- Registration Section -->
+  <?php if ($page->registration()->isNotEmpty()): ?>
+    <section class="registration section">
+      <div class="container">
+        <h2>Registration</h2>
+        <div class="content">
+          <?= $page->registration()->kt() ?>
+        </div>
+        <?php if ($page->registration_link()->isNotEmpty()): ?>
+          <div class="registration-link">
+            <a href="<?= $page->registration_link() ?>" class="btn btn-primary">Register Now</a>
+          </div>
+        <?php endif ?>
+      </div>
+    </section>
+  <?php endif ?>
+
   <!-- Theme Section -->
   <?php if ($page->theme()->isNotEmpty()): ?>
     <section class="theme section">
@@ -245,22 +262,6 @@
     </section>
   <?php endif ?>
 
-  <!-- Registration Section -->
-  <?php if ($page->registration()->isNotEmpty()): ?>
-    <section class="registration section">
-      <div class="container">
-        <h2>Registration</h2>
-        <div class="content">
-          <?= $page->registration()->kt() ?>
-        </div>
-        <?php if ($page->registration_link()->isNotEmpty()): ?>
-          <div class="registration-link">
-            <a href="<?= $page->registration_link() ?>" class="btn btn-primary">Register Now</a>
-          </div>
-        <?php endif ?>
-      </div>
-    </section>
-  <?php endif ?>
 
   <!-- Travel/Lodging Section -->
   <?php if ($page->travel_lodging()->isNotEmpty()): ?>
