@@ -13,6 +13,31 @@
     </section>
   <?php endif ?>
 
+  <!-- Submission Calls Section -->
+  <?php if ($page->submission_calls()->isNotEmpty()): ?>
+    <section class="submission-calls section">
+      <div class="container">
+        <h2>Call for Submissions</h2>
+        <div class="content">
+          <?= $page->submission_calls()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
+
+  <!-- Theme Section -->
+  <?php if ($page->theme()->isNotEmpty()): ?>
+    <section class="theme section">
+      <div class="container">
+        <h2>Our 2026 Theme</h2>
+        <div class="content">
+          <?= $page->theme()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
   <!-- Registration Section -->
   <?php if ($page->registration()->isNotEmpty()): ?>
     <section class="registration section">
@@ -26,18 +51,6 @@
             <a href="<?= $page->registration_link() ?>" class="btn btn-primary">Register Now</a>
           </div>
         <?php endif ?>
-      </div>
-    </section>
-  <?php endif ?>
-
-  <!-- Theme Section -->
-  <?php if ($page->theme()->isNotEmpty()): ?>
-    <section class="theme section">
-      <div class="container">
-        <h2>Our 2026 Theme</h2>
-        <div class="content">
-          <?= $page->theme()->kt() ?>
-        </div>
       </div>
     </section>
   <?php endif ?>
@@ -276,17 +289,6 @@
   <?php endif ?>
 
 
-  <!-- Submission Calls Section -->
-  <?php if ($page->submission_calls()->isNotEmpty()): ?>
-    <section class="submission-calls section">
-      <div class="container">
-        <h2>Call for Submissions</h2>
-        <div class="content">
-          <?= $page->submission_calls()->kt() ?>
-        </div>
-      </div>
-    </section>
-  <?php endif ?>
 
 
   <!-- Sponsors -->
