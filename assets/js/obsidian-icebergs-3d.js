@@ -8,6 +8,13 @@ class ObsidianIcebergs3D {
     this.scene = null;
     this.camera = null;
     this.renderer = null;
+    this.context = null;
+    this.handleContextLost = null;
+    this.handleContextRestored = null;
+    this.isContextLost = false;
+    this.lightsInitialized = false;
+    this.hasResizeListener = false;
+    this.handleResize = () => this.onWindowResize();
     this.animationId = null;
     
     // Create a simple clock if THREE.Clock is not available
@@ -52,95 +59,228 @@ class ObsidianIcebergs3D {
     this.init();
   }
 
+  acquireWebGLContext() {
+    if (!this.canvas) {
+      return null;
+    }
+
+    const attributes = {
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance',
+      preserveDrawingBuffer: false
+    };
+
+    return (
+      this.canvas.getContext('webgl2', attributes) ||
+      this.canvas.getContext('webgl', attributes) ||
+      this.canvas.getContext('experimental-webgl', attributes)
+    );
+  }
+
+  bindContextEvents() {
+    if (!this.canvas) {
+      return;
+    }
+
+    if (this.handleContextLost) {
+      this.canvas.removeEventListener('webglcontextlost', this.handleContextLost);
+    }
+    if (this.handleContextRestored) {
+      this.canvas.removeEventListener('webglcontextrestored', this.handleContextRestored);
+    }
+
+    this.handleContextLost = (event) => {
+      event.preventDefault();
+      console.warn('ObsidianIcebergs3D: WebGL context lost.');
+      this.isContextLost = true;
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+      }
+      this.disposeRenderer();
+      this.context = null;
+    };
+
+    this.handleContextRestored = () => {
+      console.info('ObsidianIcebergs3D: WebGL context restored.');
+      this.isContextLost = false;
+      this.resetAfterContextRestore();
+    };
+
+    this.canvas.addEventListener('webglcontextlost', this.handleContextLost, false);
+    this.canvas.addEventListener('webglcontextrestored', this.handleContextRestored, false);
+  }
+
+  disposeRenderer() {
+    if (this.renderer) {
+      this.renderer.dispose();
+      this.renderer = null;
+    }
+  }
+
+  showFallbackMessage(message = 'Interactive 3D visualization is unavailable on this device.') {
+    if (!this.canvas) {
+      return;
+    }
+
+    if (this.canvas.dataset.webglFallbackApplied === 'true') {
+      return;
+    }
+
+    this.canvas.dataset.webglFallbackApplied = 'true';
+
+    const fallback = document.createElement('div');
+    fallback.className = 'webgl-fallback-message';
+    fallback.textContent = message;
+    fallback.style.textAlign = 'center';
+    fallback.style.padding = '2rem 1rem';
+    fallback.style.color = '#666';
+    fallback.style.fontSize = '1rem';
+
+    if (this.canvas.parentNode) {
+      this.canvas.parentNode.insertBefore(fallback, this.canvas.nextSibling);
+    }
+  }
+
+  resetAfterContextRestore() {
+    this.disposeRenderer();
+    this.scene = null;
+    this.camera = null;
+    this.lightsInitialized = false;
+    this.icebergs = [];
+    this.ashParticles = [];
+    this.birthEvents = [];
+    this.deathEvents = [];
+    this.cycleTime = 0;
+    this.birthTimer = 0;
+    this.deathTimer = 0;
+    this.divisionTimer = 0;
+    this.currentColorIndex = 0;
+
+    if (this.setupThreeJS()) {
+      this.createInitialIcebergs();
+      this.animate();
+    } else {
+      this.showFallbackMessage();
+    }
+  }
+
   init() {
     console.log('ObsidianIcebergs3D: Starting initialization...');
     try {
-      this.setupThreeJS();
+      if (!this.setupThreeJS()) {
+        this.showFallbackMessage();
+        return;
+      }
       this.createInitialIcebergs();
       this.animate();
       console.log('ObsidianIcebergs3D: Initialization complete');
     } catch (error) {
       console.error('ObsidianIcebergs3D: Error during initialization:', error);
+      this.showFallbackMessage();
     }
   }
 
   setupThreeJS() {
     console.log('ObsidianIcebergs3D: Setting up Three.js...');
     
-    // Check if THREE is available
     if (typeof THREE === 'undefined') {
-      throw new Error('THREE is not defined');
+      console.error('ObsidianIcebergs3D: THREE is not defined.');
+      return false;
     }
     
-    // Scene
-    this.scene = new THREE.Scene();
+    const gl = this.acquireWebGLContext();
+    if (!gl) {
+      console.error('ObsidianIcebergs3D: Unable to acquire a WebGL context.');
+      return false;
+    }
+
+    if (this.renderer) {
+      this.disposeRenderer();
+    }
+
+    const width = (this.canvas && this.canvas.clientWidth) || window.innerWidth || 1;
+    const height = (this.canvas && this.canvas.clientHeight) || window.innerHeight || 1;
+    
+    if (!this.scene) {
+      this.scene = new THREE.Scene();
+    }
     this.scene.background = new THREE.Color(0x000000);
 
-    // Camera - positioned for dramatic view
-    this.camera = new THREE.PerspectiveCamera(
-      75,
-      this.canvas.clientWidth / this.canvas.clientHeight,
-      0.1,
-      1000
-    );
-    this.camera.position.set(0, 15, 20);
+    if (!this.camera) {
+      this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+      this.camera.position.set(0, 15, 20);
+    }
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
     this.camera.lookAt(0, 0, 0);
 
-    // Renderer
+    this.context = gl;
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
+      context: this.context,
       antialias: true,
       alpha: true
     });
-    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Increased lighting for better visibility with purple hints
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.7); // Increased from 0.5 to 0.7
-    this.scene.add(ambientLight);
+    this.bindContextEvents();
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0); // Increased from 1.5 to 2.0
-    directionalLight.position.set(10, 20, 10);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
-    this.scene.add(directionalLight);
+    if (!this.hasResizeListener) {
+      window.addEventListener('resize', this.handleResize);
+      this.hasResizeListener = true;
+    }
 
-    // Add more dramatic point lights with purple hints
-    const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50); // Increased from 1.2 to 1.5
-    pointLight1.position.set(-15, 10, -15);
-    this.scene.add(pointLight1);
+    if (!this.lightsInitialized) {
+      // Increased lighting for better visibility with purple hints
+      const ambientLight = new THREE.AmbientLight(0x404040, 0.7); // Increased from 0.5 to 0.7
+      this.scene.add(ambientLight);
+  
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0); // Increased from 1.5 to 2.0
+      directionalLight.position.set(10, 20, 10);
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 2048;
+      directionalLight.shadow.mapSize.height = 2048;
+      this.scene.add(directionalLight);
+  
+      // Add more dramatic point lights with purple hints
+      const pointLight1 = new THREE.PointLight(0xffffff, 1.5, 50); // Increased from 1.2 to 1.5
+      pointLight1.position.set(-15, 10, -15);
+      this.scene.add(pointLight1);
+  
+      const pointLight2 = new THREE.PointLight(0xffffff, 1.3, 50); // Increased from 1.0 to 1.3
+      pointLight2.position.set(15, -5, 15);
+      this.scene.add(pointLight2);
+  
+      // Add a third light for more illumination
+      const pointLight3 = new THREE.PointLight(0xffffff, 1.5, 40); // Increased from 0.8 to 1.0
+      pointLight3.position.set(0, 15, 0);
+      this.scene.add(pointLight3);
+  
+      // Add a fourth light for even more illumination
+      const pointLight4 = new THREE.PointLight(0xffffff, 0.8, 35);
+      pointLight4.position.set(0, -10, 0);
+      this.scene.add(pointLight4);
+  
+      // Add a fifth light for dramatic side lighting with purple hint
+      const pointLight5 = new THREE.PointLight(0xf0f0ff, 0.8, 30); // Slight purple tint
+      pointLight5.position.set(20, 5, 0);
+      this.scene.add(pointLight5);
+  
+      // Add a sixth light with purple accent
+      const pointLight6 = new THREE.PointLight(0xfff0ff, 0.6, 25); // Light purple tint
+      pointLight6.position.set(-20, 5, 0);
+      this.scene.add(pointLight6);
 
-    const pointLight2 = new THREE.PointLight(0xffffff, 1.3, 50); // Increased from 1.0 to 1.3
-    pointLight2.position.set(15, -5, 15);
-    this.scene.add(pointLight2);
+      this.lightsInitialized = true;
+    }
 
-    // Add a third light for more illumination
-    const pointLight3 = new THREE.PointLight(0xffffff, 1.5, 40); // Increased from 0.8 to 1.0
-    pointLight3.position.set(0, 15, 0);
-    this.scene.add(pointLight3);
-
-    // Add a fourth light for even more illumination
-    const pointLight4 = new THREE.PointLight(0xffffff, 0.8, 35);
-    pointLight4.position.set(0, -10, 0);
-    this.scene.add(pointLight4);
-
-    // Add a fifth light for dramatic side lighting with purple hint
-    const pointLight5 = new THREE.PointLight(0xf0f0ff, 0.8, 30); // Slight purple tint
-    pointLight5.position.set(20, 5, 0);
-    this.scene.add(pointLight5);
-
-    // Add a sixth light with purple accent
-    const pointLight6 = new THREE.PointLight(0xfff0ff, 0.6, 25); // Light purple tint
-    pointLight6.position.set(-20, 5, 0);
-    this.scene.add(pointLight6);
-
-    // Handle resize
-    window.addEventListener('resize', () => this.onWindowResize());
-    
     console.log('ObsidianIcebergs3D: Three.js setup complete');
+    return true;
   }
 
   createIcebergGeometry() {
@@ -443,12 +583,24 @@ class ObsidianIcebergs3D {
   }
 
   onWindowResize() {
-    this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+    if (!this.renderer || !this.camera) {
+      return;
+    }
+
+    const width = (this.canvas && this.canvas.clientWidth) || window.innerWidth || 1;
+    const height = (this.canvas && this.canvas.clientHeight) || window.innerHeight || 1;
+
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setSize(width, height);
   }
 
   animate() {
+    if (!this.renderer || !this.scene || !this.camera) {
+      return;
+    }
+
     this.animationId = requestAnimationFrame(() => this.animate());
     
     const deltaTime = this.clock.getDelta();

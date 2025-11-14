@@ -2,6 +2,14 @@ class NeuralRegeneration3D {
   constructor(canvas) {
     this.canvas = canvas;
     
+    this.renderer = null;
+    this.context = null;
+    this.handleContextLost = null;
+    this.handleContextRestored = null;
+    this.isContextLost = false;
+    this.lightsInitialized = false;
+    this.controls = null;
+    
     // Animation settings
     this.isRunning = true;
     this.speed = 60;
@@ -83,44 +91,161 @@ class NeuralRegeneration3D {
     this.currentPaletteIndex = 2; // Purple Mystical palette
     this.colors = this.colorPalettes[this.currentPaletteIndex];
     
-    this.setupThreeJS();
+    if (!this.setupThreeJS()) {
+      this.isRunning = false;
+      this.showFallbackMessage();
+      return;
+    }
     this.setupResizeHandler();
     
     this.initializeNeurons();
     this.animate();
   }
+
+  acquireWebGLContext() {
+    if (!this.canvas) {
+      return null;
+    }
+
+    const attributes = {
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance',
+      preserveDrawingBuffer: false
+    };
+
+    return (
+      this.canvas.getContext('webgl2', attributes) ||
+      this.canvas.getContext('webgl', attributes) ||
+      this.canvas.getContext('experimental-webgl', attributes)
+    );
+  }
+
+  bindContextEvents() {
+    if (!this.canvas) {
+      return;
+    }
+
+    if (this.handleContextLost) {
+      this.canvas.removeEventListener('webglcontextlost', this.handleContextLost);
+    }
+    if (this.handleContextRestored) {
+      this.canvas.removeEventListener('webglcontextrestored', this.handleContextRestored);
+    }
+
+    this.handleContextLost = (event) => {
+      event.preventDefault();
+      console.warn('NeuralRegeneration3D: WebGL context lost.');
+      this.isContextLost = true;
+      this.isRunning = false;
+      this.disposeRenderer();
+      this.context = null;
+    };
+
+    this.handleContextRestored = () => {
+      console.info('NeuralRegeneration3D: WebGL context restored.');
+      this.isContextLost = false;
+      if (this.setupThreeJS()) {
+        this.reset();
+        this.isRunning = true;
+        this.animate();
+      } else {
+        this.showFallbackMessage();
+      }
+    };
+
+    this.canvas.addEventListener('webglcontextlost', this.handleContextLost, false);
+    this.canvas.addEventListener('webglcontextrestored', this.handleContextRestored, false);
+  }
+
+  disposeRenderer() {
+    if (this.renderer) {
+      this.renderer.dispose();
+      this.renderer = null;
+    }
+  }
+
+  showFallbackMessage(message = 'Interactive 3D visualization is unavailable on this device.') {
+    if (!this.canvas) {
+      return;
+    }
+
+    if (this.canvas.dataset.webglFallbackApplied === 'true') {
+      return;
+    }
+
+    this.canvas.dataset.webglFallbackApplied = 'true';
+
+    const fallback = document.createElement('div');
+    fallback.className = 'webgl-fallback-message';
+    fallback.textContent = message;
+    fallback.style.textAlign = 'center';
+    fallback.style.padding = '2rem 1rem';
+    fallback.style.color = '#666';
+    fallback.style.fontSize = '1rem';
+
+    if (this.canvas.parentNode) {
+      this.canvas.parentNode.insertBefore(fallback, this.canvas.nextSibling);
+    }
+  }
   
   setupThreeJS() {
-    // Scene
-    this.scene = new THREE.Scene();
+    if (typeof THREE === 'undefined') {
+      console.error('NeuralRegeneration3D: THREE is not defined.');
+      return false;
+    }
+
+    const gl = this.acquireWebGLContext();
+    if (!gl) {
+      console.error('NeuralRegeneration3D: Unable to acquire a WebGL context.');
+      return false;
+    }
+
+    if (this.renderer) {
+      this.disposeRenderer();
+    }
+
+    if (!this.scene) {
+      this.scene = new THREE.Scene();
+    }
     this.scene.background = new THREE.Color(this.colors.background);
     
-    // Camera
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / 800, 0.1, 1000);
-    this.camera.position.set(0, 0, 16);
-    
-    // Renderer
-    this.renderer = new THREE.WebGLRenderer({ 
-      canvas: this.canvas, 
+    if (!this.camera) {
+      this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / 800, 0.1, 1000);
+      this.camera.position.set(0, 0, 16);
+    }
+
+    this.context = gl;
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      context: this.context,
       antialias: true,
-      alpha: true 
+      alpha: true
     });
-    this.resizeCanvas();
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    this.bindContextEvents();
+    this.resizeCanvas();
     
-    // Lighting
-    this.setupLighting();
+    if (!this.lightsInitialized) {
+      this.setupLighting();
+      this.lightsInitialized = true;
+    }
     
-    // Controls
-    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = false;
-    this.controls.dampingFactor = 0.05;
-    this.controls.enableZoom = false;
-    this.controls.enablePan = false;
-    this.controls.enableRotate = false;
-    this.controls.autoRotate = true;
-    this.controls.autoRotateSpeed = 3.0;
+    if (!this.controls) {
+      this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = false;
+      this.controls.dampingFactor = 0.05;
+      this.controls.enableZoom = false;
+      this.controls.enablePan = false;
+      this.controls.enableRotate = false;
+      this.controls.autoRotate = true;
+      this.controls.autoRotateSpeed = 3.0;
+    }
+
+    return true;
   }
   
   setupLighting() {
@@ -154,6 +279,10 @@ class NeuralRegeneration3D {
   }
   
   resizeCanvas() {
+    if (!this.renderer || !this.camera) {
+      return;
+    }
+
     this.width = window.innerWidth;
     
     // Responsive height based on screen size
@@ -171,6 +300,7 @@ class NeuralRegeneration3D {
     
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.setSize(this.width, this.height);
   }
   
@@ -612,32 +742,36 @@ class NeuralRegeneration3D {
   }
 
   animate() {
-    if (this.isRunning) {
-      this.growthTime++;
-      
-      // Update background transition
-      this.updateBackgroundTransition();
-      
-      // Add new neurons
-      this.addNeurons();
-      
-      // Update neural growth
-      this.updateNeuralGrowth();
-      
-      // Create new connections
-      if (this.growthTime % 100 === 0) {
-        this.createConnections();
-      }
-      
-      // Update controls
-      this.controls.update();
-      
-      // Render
-      this.renderer.render(this.scene, this.camera);
-      
-      // Continue animation
-      setTimeout(() => this.animate(), this.speed);
+    if (!this.isRunning || !this.renderer || !this.scene || !this.camera) {
+      return;
     }
+
+    this.growthTime++;
+    
+    // Update background transition
+    this.updateBackgroundTransition();
+    
+    // Add new neurons
+    this.addNeurons();
+    
+    // Update neural growth
+    this.updateNeuralGrowth();
+    
+    // Create new connections
+    if (this.growthTime % 100 === 0) {
+      this.createConnections();
+    }
+    
+    // Update controls
+    if (this.controls) {
+      this.controls.update();
+    }
+    
+    // Render
+    this.renderer.render(this.scene, this.camera);
+    
+    // Continue animation
+    setTimeout(() => this.animate(), this.speed);
   }
   
   toggle() {
@@ -686,6 +820,10 @@ class NeuralRegeneration3D {
   }
   
   reset() {
+    if (!this.scene) {
+      return;
+    }
+
     // Remove all meshes from scene
     for (let neuron of this.neurons) {
       this.scene.remove(neuron.mesh);
