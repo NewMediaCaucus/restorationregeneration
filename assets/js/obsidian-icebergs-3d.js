@@ -196,6 +196,22 @@ class ObsidianIcebergs3D {
       return false;
     }
 
+    if (typeof gl.isContextLost === 'function' && gl.isContextLost()) {
+      console.error('ObsidianIcebergs3D: WebGL context was lost immediately after creation.');
+      return false;
+    }
+
+    try {
+      const testParameter = gl.getParameter(gl.VERSION);
+      if (!testParameter) {
+        console.error('ObsidianIcebergs3D: WebGL context returned null from getParameter test.');
+        return false;
+      }
+    } catch (error) {
+      console.error('ObsidianIcebergs3D: WebGL context test failed.', error);
+      return false;
+    }
+
     if (this.renderer) {
       this.disposeRenderer();
     }
@@ -216,13 +232,33 @@ class ObsidianIcebergs3D {
     this.camera.updateProjectionMatrix();
     this.camera.lookAt(0, 0, 0);
 
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        context: gl,
+        antialias: true,
+        alpha: true
+      });
+    } catch (error) {
+      console.error('ObsidianIcebergs3D: Failed to construct WebGLRenderer.', error);
+      return false;
+    }
+
+    if (!renderer) {
+      console.error('ObsidianIcebergs3D: WebGLRenderer construction returned null/undefined.');
+      return false;
+    }
+
+    const rendererContext = renderer.getContext();
+    if (!rendererContext || (typeof rendererContext.isContextLost === 'function' && rendererContext.isContextLost())) {
+      console.error('ObsidianIcebergs3D: Renderer context is invalid or lost.');
+      renderer.dispose();
+      return false;
+    }
+
     this.context = gl;
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      context: this.context,
-      antialias: true,
-      alpha: true
-    });
+    this.renderer = renderer;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = true;
@@ -598,6 +634,12 @@ class ObsidianIcebergs3D {
 
   animate() {
     if (!this.renderer || !this.scene || !this.camera) {
+      return;
+    }
+
+    if (this.context && typeof this.context.isContextLost === 'function' && this.context.isContextLost()) {
+      console.warn('ObsidianIcebergs3D: Context lost during animation, stopping.');
+      this.isContextLost = true;
       return;
     }
 

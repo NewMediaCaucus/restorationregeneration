@@ -201,6 +201,22 @@ class NeuralRegeneration3D {
       return false;
     }
 
+    if (typeof gl.isContextLost === 'function' && gl.isContextLost()) {
+      console.error('NeuralRegeneration3D: WebGL context was lost immediately after creation.');
+      return false;
+    }
+
+    try {
+      const testParameter = gl.getParameter(gl.VERSION);
+      if (!testParameter) {
+        console.error('NeuralRegeneration3D: WebGL context returned null from getParameter test.');
+        return false;
+      }
+    } catch (error) {
+      console.error('NeuralRegeneration3D: WebGL context test failed.', error);
+      return false;
+    }
+
     if (this.renderer) {
       this.disposeRenderer();
     }
@@ -215,13 +231,33 @@ class NeuralRegeneration3D {
       this.camera.position.set(0, 0, 16);
     }
 
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        context: gl,
+        antialias: true,
+        alpha: true
+      });
+    } catch (error) {
+      console.error('NeuralRegeneration3D: Failed to construct WebGLRenderer.', error);
+      return false;
+    }
+
+    if (!renderer) {
+      console.error('NeuralRegeneration3D: WebGLRenderer construction returned null/undefined.');
+      return false;
+    }
+
+    const rendererContext = renderer.getContext();
+    if (!rendererContext || (typeof rendererContext.isContextLost === 'function' && rendererContext.isContextLost())) {
+      console.error('NeuralRegeneration3D: Renderer context is invalid or lost.');
+      renderer.dispose();
+      return false;
+    }
+
     this.context = gl;
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      context: this.context,
-      antialias: true,
-      alpha: true
-    });
+    this.renderer = renderer;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -743,6 +779,13 @@ class NeuralRegeneration3D {
 
   animate() {
     if (!this.isRunning || !this.renderer || !this.scene || !this.camera) {
+      return;
+    }
+
+    if (this.context && typeof this.context.isContextLost === 'function' && this.context.isContextLost()) {
+      console.warn('NeuralRegeneration3D: Context lost during animation, stopping.');
+      this.isRunning = false;
+      this.isContextLost = true;
       return;
     }
 
