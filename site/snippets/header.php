@@ -44,9 +44,9 @@
   $homePage = site()->find('home');
   ?>
 
-  <?php if ($page->isHomePage()): ?>
-    <!-- Dynamic Regeneration Header Animation - Only on home page -->
-    <div class="header-animation">
+<?php if ($page->isHomePage()): ?>
+    <!-- Dynamic Regeneration Header Animation - Desktop / large screens -->
+    <div class="header-animation home-header-desktop">
       <canvas id="regeneration-canvas"></canvas>
 
       <!-- Hero Section Overlay -->
@@ -77,55 +77,41 @@
         </div>
       </div>
     </div>
+
+    <!-- Static header fallback for mobile -->
+    <div class="static-header home-header-mobile">
+      <div class="static-header-background">
+        <div class="hero-overlay">
+          <div class="container">
+            <?php if ($homePage->hero_title()->isNotEmpty()): ?>
+              <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
+            <?php endif ?>
+
+            <?php if ($homePage->hero_subtitle()->isNotEmpty()): ?>
+              <h2 class="hero-subtitle"><?= $homePage->hero_subtitle() ?></h2>
+            <?php endif ?>
+
+            <?php if ($homePage->dates_subtitle()->isNotEmpty()): ?>
+              <h3 class="dates-subtitle"><?= $homePage->dates_subtitle() ?></h3>
+            <?php endif ?>
+            <?php if ($homePage->university_name()->isNotEmpty()): ?>
+              <h3 class="university-name-subtitle">
+                <?= $homePage->university_name() ?></h3>
+              </h3>
+            <?php endif ?>
+
+            <?php if ($homePage->hero_image()->isNotEmpty()): ?>
+              <div class="hero-image">
+                <?= $homePage->hero_image()->toFile() ?>
+              </div>
+            <?php endif ?>
+          </div>
+        </div>
+      </div>
+    </div>
   <?php else: ?>
     <!-- Static Header for other pages -->
     <div class="static-header">
-      <?php
-      // Use JavaScript to get the client's local day of month
-      ?>
-      <script>
-        // Get the client's local day of month
-        const clientDay = new Date().getDate();
-
-        // Prime number detection function
-        function isPrime(num) {
-          if (num <= 1) return false;
-          if (num <= 3) return true;
-          if (num % 2 === 0 || num % 3 === 0) return false;
-
-          for (let i = 5; i * i <= num; i += 6) {
-            if (num % i === 0 || num % (i + 2) === 0) return false;
-          }
-          return true;
-        }
-
-        const clientIsPrimeDay = isPrime(clientDay);
-        const clientIsEvenDay = clientDay % 2 === 0;
-
-        // Determine background image based on prime first, then even/odd
-        let backgroundImage;
-        if (clientIsPrimeDay) {
-          backgroundImage = '<?= url('assets/icons/header-background-prime.png') ?>';
-        } else if (clientIsEvenDay) {
-          backgroundImage = '<?= url('assets/icons/header-background-even.png') ?>';
-        } else {
-          backgroundImage = '<?= url('assets/icons/header-background-odd.png') ?>';
-        }
-
-        // Apply the background image
-        document.addEventListener('DOMContentLoaded', function() {
-          const staticHeader = document.querySelector('.static-header-background');
-          if (staticHeader) {
-            staticHeader.style.backgroundImage = `url('${backgroundImage}')`;
-          }
-        });
-
-        // Debug info
-        console.log('Client Day of Month:', clientDay);
-        console.log('Client Is Prime Day:', clientIsPrimeDay);
-        console.log('Client Is Even Day:', clientIsEvenDay);
-        console.log('Client Background Image:', backgroundImage);
-      </script>
       <div class="static-header-background">
         <div class="hero-overlay">
           <div class="container">
@@ -156,3 +142,38 @@
       </div>
     </div>
   <?php endif ?>
+
+  <script>
+    (function () {
+      const staticHeaders = document.querySelectorAll('.static-header-background');
+      if (!staticHeaders.length) return;
+
+      const day = new Date().getDate();
+
+      const isPrime = (num) => {
+        if (num <= 1) return false;
+        if (num <= 3) return true;
+        if (num % 2 === 0 || num % 3 === 0) return false;
+        for (let i = 5; i * i <= num; i += 6) {
+          if (num % i === 0 || num % (i + 2) === 0) return false;
+        }
+        return true;
+      };
+
+      const backgrounds = {
+        prime: '<?= url('assets/icons/header-background-prime.png') ?>',
+        even: '<?= url('assets/icons/header-background-even.png') ?>',
+        odd: '<?= url('assets/icons/header-background-odd.png') ?>'
+      };
+
+      const isPrimeDay = isPrime(day);
+      const isEvenDay = day % 2 === 0;
+      const selectedBackground = isPrimeDay ? backgrounds.prime : (isEvenDay ? backgrounds.even : backgrounds.odd);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        staticHeaders.forEach((header) => {
+          header.style.backgroundImage = `url('${selectedBackground}')`;
+        });
+      });
+    })();
+  </script>

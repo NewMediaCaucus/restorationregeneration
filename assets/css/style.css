@@ -632,7 +632,7 @@ a:hover {
    ========================================================================== */
 
 .event-location {
-  /* margin-top: var(--spacing-lg); */
+  margin-top: 0;
 }
 
 .location-details {
@@ -877,6 +877,20 @@ a:hover {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+.home-header-mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .home-header-desktop {
+    display: none;
+  }
+
+  .home-header-mobile {
+    display: block;
+  }
 }
 
 #regeneration-canvas {
