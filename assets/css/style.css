@@ -498,27 +498,31 @@ a:hover {
    Keynote Headshot Image Styles
    ========================================================================== */
 
-.keynote-headshot-image {
+.keynote-headshot-image,
+.sudomagic-promo-image {
   margin-bottom: var(--spacing-lg);
   text-align: center;
   position: relative;
 }
 
-.keynote-headshot-image img {
+.keynote-headshot-image,
+.sudomagic-promo-image img {
   width: 100%;
   max-width: 100%;
   height: auto;
   box-shadow: var(--shadow-md);
 }
 
-.keynote-headshot-image .image-caption {
+.keynote-headshot-image .image-caption,
+.sudomagic-promo-image .image-caption {
   margin-top: var(--spacing-sm);
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   font-style: italic;
 }
 
-.keynote-headshot-image .image-credits {
+.keynote-headshot-image .image-credits,
+.sudomagic-promo-image .image-credits {
   margin-top: var(--spacing-xs);
   font-size: 0.8rem;
   color: var(--color-text-muted);
@@ -547,12 +551,14 @@ a:hover {
   color: white;
 }
 
-.keynote-headshot {
+.keynote-headshot,
+.sudomagic-promo-image {
   margin-bottom: var(--spacing-lg);
   text-align: center;
 }
 
-.keynote-headshot img {
+.keynote-headshot img,
+.sudomagic-promo-image img {
   width: 100%;
   max-width: 100%;
   height: auto;
