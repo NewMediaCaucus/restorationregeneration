@@ -163,7 +163,7 @@ class TissueRegeneration3D {
       return false;
     }
 
-git    // Check if context is lost
+    // Check if context is lost
     if (typeof gl.isContextLost === 'function' && gl.isContextLost()) {
       console.error('TissueRegeneration3D: WebGL context was lost immediately after creation.');
       return false;
