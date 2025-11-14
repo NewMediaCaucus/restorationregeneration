@@ -13,18 +13,6 @@
     </section>
   <?php endif ?>
 
-  <!-- Submission Calls Section -->
-  <?php if ($page->submission_calls()->isNotEmpty()): ?>
-    <section class="submission-calls section">
-      <div class="container">
-        <h2>Call for Submissions</h2>
-        <div class="content">
-          <?= $page->submission_calls()->kt() ?>
-        </div>
-      </div>
-    </section>
-  <?php endif ?>
-
 
   <!-- Theme Section -->
   <?php if ($page->theme()->isNotEmpty()): ?>
@@ -49,6 +37,23 @@
         <?php if ($page->registration_link()->isNotEmpty()): ?>
           <div class="registration-link">
             <a href="<?= $page->registration_link() ?>" class="btn btn-primary">Register Now</a>
+          </div>
+        <?php endif ?>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- SudoMagic Promo Section -->
+  <?php if ($page->sudomagic_promo()->isNotEmpty()): ?>
+    <section class="sudomagic-promo section">
+      <div class="container">
+        <h2>TouchDesigner Workshop with SudoMagic</h2>
+        <div class="content">
+          <?= $page->sudomagic_promo()->kt() ?>
+        </div>
+        <?php if ($page->sudomagic_promo_image()->isNotEmpty()): ?>
+          <div class="sudomagic-promo-image">
+            <?= $page->sudomagic_promo_image()->toFile() ?>
           </div>
         <?php endif ?>
       </div>
@@ -121,8 +126,6 @@
           $googleMapsUrl = 'https://maps.google.com/?q=' . urlencode(implode(', ', $addressParts));
         }
         ?>
-
-
 
         <div class="event-location">
           <div class="location-details">
@@ -288,8 +291,17 @@
     </section>
   <?php endif ?>
 
-
-
+  <!-- Submission Calls Section -->
+  <?php if ($page->submission_calls()->isNotEmpty()): ?>
+    <section class="submission-calls section">
+      <div class="container">
+        <h2>Call for Submissions</h2>
+        <div class="content">
+          <?= $page->submission_calls()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
 
   <!-- Sponsors -->
   <?php if ($page->sponsors()->isNotEmpty()): ?>
