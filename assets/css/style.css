@@ -887,15 +887,12 @@ a:hover {
   display: none;
 }
 
-@media (max-width: 1023px),
-(pointer: coarse) {
-  .home-header-desktop {
-    display: none;
-  }
+body.is-touch .home-header-desktop {
+  display: none;
+}
 
-  .home-header-mobile {
-    display: block;
-  }
+body.is-touch .home-header-mobile {
+  display: block;
 }
 
 #regeneration-canvas {

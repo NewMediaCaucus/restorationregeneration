@@ -39,6 +39,23 @@
 </head>
 
 <body>
+  <script>
+    (function () {
+      const ua = navigator.userAgent || '';
+      const isTouchPointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      const isSmallViewport = window.innerWidth <= 1023;
+      const isMobileUA = /(iphone|ipad|ipod|android|mobile)/i.test(ua);
+      const isTouchDevice = isTouchPointer || isSmallViewport || isMobileUA;
+
+      if (isTouchDevice) {
+        document.documentElement.classList.add('is-touch');
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.classList.add('is-touch');
+        });
+        window.skipRegenerationAnimation = true;
+      }
+    })();
+  </script>
   <?php
   // Get the home page content for hero overlay
   $homePage = site()->find('home');
