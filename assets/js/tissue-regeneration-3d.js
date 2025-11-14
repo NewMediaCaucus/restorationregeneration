@@ -72,6 +72,52 @@ class TissueRegeneration3D {
     this.animate();
   }
 
+  detectMobileProfile() {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const ua = navigator.userAgent || '';
+    const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const isSmallViewport = window.innerWidth <= 820;
+    const mobileIndicators = /(iphone|ipad|ipod|android|mobile)/i;
+
+    return isTouch || isSmallViewport || mobileIndicators.test(ua);
+  }
+
+  getProfileConfig(profile) {
+    const profiles = {
+      default: {
+        speed: 60,
+        maxCells: 120,
+        maxConnections: 80,
+        growthRate: 0.03,
+        divisionRate: 0.005,
+        migrationSpeed: 0.02,
+        attractionRadius: 8,
+        newCellProbability: 0.015,
+        connectionDistance: 6,
+        connectionProbability: 0.002,
+        initialCellCount: 12
+      },
+      mobile: {
+        speed: 90,
+        maxCells: 60,
+        maxConnections: 40,
+        growthRate: 0.025,
+        divisionRate: 0.003,
+        migrationSpeed: 0.015,
+        attractionRadius: 6,
+        newCellProbability: 0.008,
+        connectionDistance: 5,
+        connectionProbability: 0.001,
+        initialCellCount: 8
+      }
+    };
+
+    return profiles[profile] || profiles.default;
+  }
+
   acquireWebGLContext() {
     if (!this.canvas) {
       return null;

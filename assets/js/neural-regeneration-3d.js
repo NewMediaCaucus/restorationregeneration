@@ -109,6 +109,46 @@ class NeuralRegeneration3D {
     this.animate();
   }
 
+  detectMobileProfile() {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const ua = navigator.userAgent || '';
+    const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const isSmallViewport = window.innerWidth <= 820;
+    const mobileIndicators = /(iphone|ipad|ipod|android|mobile)/i;
+
+    return isTouch || isSmallViewport || mobileIndicators.test(ua);
+  }
+
+  getProfileConfig(profile) {
+    const profiles = {
+      default: {
+        speed: 60,
+        maxNeurons: 160,
+        maxConnections: 160,
+        growthRate: 0.02,
+        addNeuronProbability: 0.02,
+        connectionDistance: 15,
+        connectionProbability: 0.003,
+        initialNeuronCount: 8
+      },
+      mobile: {
+        speed: 100,
+        maxNeurons: 80,
+        maxConnections: 80,
+        growthRate: 0.016,
+        addNeuronProbability: 0.01,
+        connectionDistance: 12,
+        connectionProbability: 0.0015,
+        initialNeuronCount: 5
+      }
+    };
+
+    return profiles[profile] || profiles.default;
+  }
+
   acquireWebGLContext() {
     if (!this.canvas) {
       return null;
