@@ -1,6 +1,10 @@
 // Animation Loader - Loads different animations based on the day of the month
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Animation Loader: DOM loaded');
+  if (window.skipRegenerationAnimation) {
+    console.log('Animation Loader: Skipping animation load on touch/mobile device.');
+    return;
+  }
   
   const today = new Date();
   const dayOfMonth = today.getDate();
