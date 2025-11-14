@@ -879,11 +879,16 @@ a:hover {
   padding: 0;
 }
 
+.home-header-desktop {
+  display: block;
+}
+
 .home-header-mobile {
   display: none;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1023px),
+(pointer: coarse) {
   .home-header-desktop {
     display: none;
   }
