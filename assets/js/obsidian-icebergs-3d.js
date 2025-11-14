@@ -16,7 +16,10 @@ class ObsidianIcebergs3D {
     this.hasResizeListener = false;
     this.handleResize = () => this.onWindowResize();
     this.animationId = null;
-    
+
+    this.profile = this.detectMobileProfile() ? 'mobile' : 'default';
+    this.config = this.getProfileConfig(this.profile);
+
     // Create a simple clock if THREE.Clock is not available
     if (typeof THREE !== 'undefined' && THREE.Clock) {
       this.clock = new THREE.Clock();
@@ -39,6 +42,14 @@ class ObsidianIcebergs3D {
     this.birthTimer = 0;
     this.deathTimer = 0;
     this.divisionTimer = 0;
+
+    this.maxIcebergs = this.config.maxIcebergs;
+    this.birthInterval = this.config.birthInterval;
+    this.divisionInterval = this.config.divisionInterval;
+    this.healthDecayRate = this.config.healthDecayRate;
+    this.rotationMultiplier = this.config.rotationMultiplier;
+    this.floatMultiplier = this.config.floatMultiplier;
+    this.colorTransitionMultiplier = this.config.colorTransitionMultiplier;
     
     // Obsidian color palette with purple hints
     this.obsidianColors = [
@@ -57,6 +68,48 @@ class ObsidianIcebergs3D {
     this.currentColorIndex = 0;
     
     this.init();
+  }
+
+  detectMobileProfile() {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    const ua = navigator.userAgent || '';
+    const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const isSmallViewport = window.innerWidth <= 820;
+    const mobileIndicators = /(iphone|ipad|ipod|android|mobile)/i;
+
+    return isTouch || isSmallViewport || mobileIndicators.test(ua);
+  }
+
+  getProfileConfig(profile) {
+    const profiles = {
+      default: {
+        maxIcebergs: 20,
+        birthInterval: 15,
+        divisionInterval: 20,
+        healthDecayRate: 1,
+        rotationMultiplier: 1,
+        floatMultiplier: 1,
+        colorTransitionMultiplier: 2.5,
+        initialIcebergs: 12,
+        cameraOrbitMultiplier: 1
+      },
+      mobile: {
+        maxIcebergs: 10,
+        birthInterval: 20,
+        divisionInterval: 28,
+        healthDecayRate: 0.8,
+        rotationMultiplier: 0.6,
+        floatMultiplier: 0.7,
+        colorTransitionMultiplier: 1.6,
+        initialIcebergs: 6,
+        cameraOrbitMultiplier: 0.6
+      }
+    };
+
+    return profiles[profile] || profiles.default;
   }
 
   acquireWebGLContext() {
@@ -378,7 +431,8 @@ class ObsidianIcebergs3D {
 
   createInitialIcebergs() {
     // Create more initial icebergs
-    for (let i = 0; i < 12; i++) { // Increased from 5 to 12
+    const initialCount = this.config.initialIcebergs;
+    for (let i = 0; i < initialCount; i++) { // Increased from 5 to 12
       this.createIceberg();
     }
   }
@@ -428,7 +482,7 @@ class ObsidianIcebergs3D {
     this.divisionTimer += deltaTime;
     
     // Birth new icebergs - slowed down
-    if (this.birthTimer > 15 && this.icebergs.length < 20) { // Increased from 12 to 20
+    if (this.birthTimer > this.birthInterval && this.icebergs.length < this.maxIcebergs) { // Increased from 12 to 20
       this.createIceberg();
       this.birthTimer = 0;
       this.createBirthEvent();
@@ -438,17 +492,17 @@ class ObsidianIcebergs3D {
     for (let i = this.icebergs.length - 1; i >= 0; i--) {
       const iceberg = this.icebergs[i];
       iceberg.userData.age += deltaTime;
-      iceberg.userData.health -= deltaTime * 1; // Reduced from 2 to 1
+      iceberg.userData.health -= deltaTime * this.healthDecayRate; // Reduced from 2 to 1
       
       // Rotation - slowed down
-      iceberg.rotation.y += iceberg.userData.rotationSpeed * 0.5; // Reduced by half
-      iceberg.rotation.x += iceberg.userData.rotationSpeed * 0.25; // Reduced by half
+      iceberg.rotation.y += iceberg.userData.rotationSpeed * 0.5 * this.rotationMultiplier; // Reduced by half
+      iceberg.rotation.x += iceberg.userData.rotationSpeed * 0.25 * this.rotationMultiplier; // Reduced by half
       
       // Floating motion - slowed down
-      iceberg.position.y = Math.sin(this.cycleTime * iceberg.userData.floatSpeed * 0.5) * 0.5; // Reduced speed by half
+      iceberg.position.y = Math.sin(this.cycleTime * iceberg.userData.floatSpeed * 0.5 * this.floatMultiplier) * 0.5; // Reduced speed by half
       
       // Division (birth of new icebergs) - slowed down
-      if (this.divisionTimer > 20 && iceberg.userData.divisionCount < iceberg.userData.maxDivisions) { // Increased from 12 to 20
+      if (this.divisionTimer > this.divisionInterval && iceberg.userData.divisionCount < iceberg.userData.maxDivisions) { // Increased from 12 to 20
         this.divideIceberg(iceberg);
         this.divisionTimer = 0;
       }
@@ -462,7 +516,7 @@ class ObsidianIcebergs3D {
       // Color changes based on health - shift from black happens sooner
       const healthRatio = iceberg.userData.health / 100;
       // Accelerate the color transition by using a modified ratio
-      const acceleratedRatio = Math.min(1, (1 - healthRatio) * 2.5); // Multiplied by 2.5 to make transition happen sooner
+      const acceleratedRatio = Math.min(1, (1 - healthRatio) * this.colorTransitionMultiplier); // Multiplied by 2.5 to make transition happen sooner
       const colorIndex = Math.floor(acceleratedRatio * this.obsidianColors.length);
       const targetColor = new THREE.Color(this.obsidianColors[colorIndex]);
       iceberg.material.color.lerp(targetColor, deltaTime * 0.8); // Increased from 0.5 to 0.8 for faster color change
@@ -612,9 +666,10 @@ class ObsidianIcebergs3D {
   updateCamera(deltaTime) {
     // Dramatic camera movement - slowed down
     const time = this.clock.getElapsedTime();
-    this.camera.position.x = Math.sin(time * 0.05) * 15; // Reduced from 0.1 to 0.05
-    this.camera.position.y = 15 + Math.sin(time * 0.075) * 3; // Reduced from 0.15 to 0.075
-    this.camera.position.z = Math.cos(time * 0.05) * 20; // Reduced from 0.1 to 0.05
+    const orbitMultiplier = this.config.cameraOrbitMultiplier;
+    this.camera.position.x = Math.sin(time * 0.05 * orbitMultiplier) * 15;
+    this.camera.position.y = 15 + Math.sin(time * 0.075 * orbitMultiplier) * 3;
+    this.camera.position.z = Math.cos(time * 0.05 * orbitMultiplier) * 20;
     this.camera.lookAt(0, 0, 0);
   }
 

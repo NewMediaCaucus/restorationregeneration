@@ -10,21 +10,28 @@ class NeuralRegeneration3D {
     this.lightsInitialized = false;
     this.controls = null;
     
+    this.profile = this.detectMobileProfile() ? 'mobile' : 'default';
+    this.config = this.getProfileConfig(this.profile);
+
     // Animation settings
     this.isRunning = true;
-    this.speed = 60;
+    this.speed = this.config.speed;
 
     
     // Neural system
     this.neurons = [];
-    this.maxNeurons = 160; // Doubled from 80
+    this.maxNeurons = this.config.maxNeurons; // Doubled from 80
     this.connections = [];
-    this.maxConnections = 160; // Doubled from 80
-    
+    this.maxConnections = this.config.maxConnections; // Doubled from 80
+
     // Growth system
     this.growthTime = 0;
-    this.growthRate = 0.02;
-    
+    this.growthRate = this.config.growthRate;
+    this.addNeuronProbability = this.config.addNeuronProbability;
+    this.connectionDistance = this.config.connectionDistance;
+    this.connectionProbability = this.config.connectionProbability;
+    this.initialNeuronCount = this.config.initialNeuronCount;
+ 
     // Background transition system
     this.backgroundTransition = {
       startTime: Date.now(),
@@ -522,8 +529,9 @@ class NeuralRegeneration3D {
     const margin = 15;
     const maxDistance = 20;
     
-    for (let i = 0; i < 8; i++) {
-      const angle = (i / 8) * Math.PI * 2;
+    const initialCount = this.initialNeuronCount;
+    for (let i = 0; i < initialCount; i++) {
+      const angle = (i / Math.max(initialCount, 1)) * Math.PI * 2;
       const distance = Math.random() * maxDistance + 10;
       const x = centerX + Math.cos(angle) * distance;
       const y = centerY + Math.sin(angle) * distance;
@@ -539,7 +547,7 @@ class NeuralRegeneration3D {
   }
   
   addNeurons() {
-    if (this.neurons.length < this.maxNeurons && Math.random() < 0.02) {
+    if (this.neurons.length < this.maxNeurons && Math.random() < this.addNeuronProbability) {
       const margin = 15;
       const x = (Math.random() - 0.5) * 2 * margin;
       const y = (Math.random() - 0.5) * 2 * margin;
@@ -701,7 +709,7 @@ class NeuralRegeneration3D {
           (neuron1.z - neuron2.z) ** 2
         );
         
-        if (distance < 15 && Math.random() < 0.003) {
+        if (distance < this.connectionDistance && Math.random() < this.connectionProbability) {
           const connection = {
             from: neuron1,
             to: neuron2,
