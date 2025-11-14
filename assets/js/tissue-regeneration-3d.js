@@ -13,25 +13,33 @@ class TissueRegeneration3D {
     this.lightsInitialized = false;
     this.controls = null;
 
+    // Device / profile configuration
+    this.profile = this.detectMobileProfile() ? 'mobile' : 'default';
+    this.config = this.getProfileConfig(this.profile);
+
     // Animation settings
     this.isRunning = true;
-    this.speed = 60;
+    this.speed = this.config.speed;
     
     // Tissue system
     this.cells = [];
-    this.maxCells = 120;
+    this.maxCells = this.config.maxCells;
     this.connections = [];
-    this.maxConnections = 80;
+    this.maxConnections = this.config.maxConnections;
     
     // Growth and division system
     this.growthTime = 0;
-    this.growthRate = 0.03;
-    this.divisionRate = 0.005;
+    this.growthRate = this.config.growthRate;
+    this.divisionRate = this.config.divisionRate;
     
     // Migration system
-    this.migrationSpeed = 0.02;
-    this.attractionRadius = 8;
-    
+    this.migrationSpeed = this.config.migrationSpeed;
+    this.attractionRadius = this.config.attractionRadius;
+    this.newCellProbability = this.config.newCellProbability;
+    this.connectionDistance = this.config.connectionDistance;
+    this.connectionProbability = this.config.connectionProbability;
+    this.initialCellCount = this.config.initialCellCount;
+
     // Color palette for tissue cells
     this.cellColors = [
       0xE91E63, // Pink
@@ -368,9 +376,9 @@ class TissueRegeneration3D {
     const margin = 12;
     const maxDistance = 15;
     
-    // Create initial tissue cells in a cluster
-    for (let i = 0; i < 12; i++) {
-      const angle = (i / 12) * Math.PI * 2;
+    const initialCount = this.initialCellCount;
+    for (let i = 0; i < initialCount; i++) {
+      const angle = (i / Math.max(initialCount, 1)) * Math.PI * 2;
       const distance = Math.random() * maxDistance + 5;
       const x = centerX + Math.cos(angle) * distance;
       const y = centerY + Math.sin(angle) * distance;
@@ -386,7 +394,7 @@ class TissueRegeneration3D {
   }
   
   addCells() {
-    if (this.cells.length < this.maxCells && Math.random() < 0.015) {
+    if (this.cells.length < this.maxCells && Math.random() < this.newCellProbability) {
       const margin = 12;
       const x = (Math.random() - 0.5) * 2 * margin;
       const y = (Math.random() - 0.5) * 2 * margin;
@@ -567,7 +575,7 @@ class TissueRegeneration3D {
         const cell2 = this.cells[j];
         const distance = cell1.position.distanceTo(cell2.position);
         
-        if (distance < 6 && Math.random() < 0.002) {
+        if (distance < this.connectionDistance && Math.random() < this.connectionProbability) {
           const connection = {
             from: cell1,
             to: cell2,
