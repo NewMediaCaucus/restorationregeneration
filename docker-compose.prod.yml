@@ -24,11 +24,12 @@ services:
     image: certbot/certbot
     container_name: certbot
     user: root
+    entrypoint: /bin/sh
+    command: -c "sleep infinity"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./letsencrypt-logs:/var/log/letsencrypt
       - .:/var/www/html
-    command: "sleep infinity"
     networks:
       - webnet
     restart: unless-stopped
