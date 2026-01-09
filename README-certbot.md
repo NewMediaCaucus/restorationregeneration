@@ -23,9 +23,9 @@ This project uses a Docker-based certbot container to automatically manage SSL c
 3. **ACME challenge**: Let's Encrypt verifies domain ownership through `.well-known/acme-challenge/`
 
 ### Certificate Renewal
-1. **Automatic renewal**: Certificates are renewed every 12 hours
-2. **Manual renewal**: Can be triggered manually when needed
-3. **Apache reload**: Apache is reloaded after successful renewal
+1. **Automatic renewal**: Requires a cron job to be set up (see Automation section)
+2. **Manual renewal**: Can be triggered manually using the renewal scripts
+3. **Apache reload**: Apache is automatically reloaded after successful renewal
 
 ## Configuration Files
 
@@ -40,7 +40,10 @@ certbot:
     - ./letsencrypt-logs:/var/log/letsencrypt
     - .:/var/www/html
   command: "sleep infinity"
+  restart: unless-stopped
 ```
+
+**Note**: The certbot container runs `sleep infinity` to stay running. Certificate renewal is triggered manually or via cron using `certbot-renew.sh`.
 
 ### Apache Configuration (`default.prod.conf`)
 - HTTP VirtualHost blocks for both domains
@@ -71,10 +74,10 @@ sudo docker logs certbot --tail 20
 ### Test Certificate Renewal
 ```bash
 # Test renewal without actually renewing (dry run)
-sudo docker exec certbot certbot renew --dry-run
+sudo docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --dry-run
 
-# Test manual renewal
-sudo docker exec certbot certbot renew --force-renewal
+# Test actual renewal (only renews if certificates are close to expiry)
+sudo ./certbot-renew.sh
 ```
 
 ### Check Renewal Logs
@@ -90,8 +93,11 @@ sudo docker exec certbot tail -20 /var/log/letsencrypt/letsencrypt.log
 
 ### Renew Certificates Manually
 ```bash
-# Run the renewal script
+# Run the renewal script (only renews if certificates are close to expiry)
 sudo ./certbot-renew.sh
+
+# Force renewal of expired certificates (use when certificates have expired)
+sudo ./certbot-force-renew.sh
 ```
 
 ### Reload Apache After Renewal
@@ -166,12 +172,25 @@ sudo docker exec certbot certbot renew --dry-run
 ## Automation
 
 ### Set up Automatic Renewal
-To ensure certificates are renewed automatically, you can set up a cron job:
+To ensure certificates are renewed automatically, you **must** set up a cron job. Without this, certificates will not renew automatically:
 
 ```bash
-# Add to crontab (runs every 6 hours)
-# 0 */6 * * * cd /home/rrnmc/restorationregeneration && sudo ./certbot-renew.sh
+# Edit crontab as root or with sudo
+sudo crontab -e
+
+# Add one of these lines (choose based on your preference):
+
+# Option 1: Run renewal twice daily (at 2 AM and 2 PM) - RECOMMENDED
+0 2,14 * * * cd /home/rrnmc/restorationregeneration && /usr/bin/docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --quiet && /usr/bin/docker exec restorationregeneration-prod-container apache2ctl graceful >/dev/null 2>&1
+
+# Option 2: Use the renewal script (runs twice daily)
+0 2,14 * * * cd /home/rrnmc/restorationregeneration && sudo ./certbot-renew.sh >/dev/null 2>&1
+
+# Option 3: Run every 6 hours (more frequent but still safe)
+0 */6 * * * cd /home/rrnmc/restorationregeneration && sudo ./certbot-renew.sh >/dev/null 2>&1
 ```
+
+**Important**: Certificates will NOT renew automatically without a cron job. The certbot container just keeps running but doesn't initiate renewals on its own.
 
 ### Monitor Renewal Process
 ```bash
@@ -186,7 +205,8 @@ sudo docker exec certbot certbot certificates
 
 ### Let's Encrypt Certificates
 - **Validity**: 90 days
-- **Renewal**: Every 12 hours (well before expiry)
+- **Renewal**: Recommended to run renewal checks daily or twice daily via cron
+- **Auto-renewal threshold**: Certificates are automatically renewed when within 30 days of expiry
 - **Method**: Webroot verification
 - **Domains**: Both domains renewed together
 
@@ -204,31 +224,38 @@ sudo docker exec certbot certbot certificates
 
 ### Rate Limits
 - Let's Encrypt has rate limits (50 renewals per week per domain)
-- The 12-hour renewal interval is well within limits
+- Running renewal checks twice daily is well within limits (certbot only actually renews if certificates are within 30 days of expiry)
 - Dry-run tests don't count against rate limits
+- Force renewal counts against rate limits, so use sparingly
 
 ## Related Files
 
 - `docker-compose.prod.yml` - Container configuration
 - `default.prod.conf` - Apache SSL configuration
-- `certbot-renew.sh` - Manual renewal script
+- `certbot-renew.sh` - Manual renewal script (for normal renewals)
+- `certbot-force-renew.sh` - Force renewal script (for expired certificates)
 - `reload-apache.sh` - Apache reload script
 - `renewal-hook.sh` - Renewal hook script (alternative approach)
 
 ## Best Practices
 
-1. **Monitor regularly**: Check certificate status weekly
-2. **Test renewal**: Run dry-run tests monthly
-3. **Backup certificates**: Consider backing up `/etc/letsencrypt/`
-4. **Monitor logs**: Check for renewal errors
-5. **Test HTTPS**: Verify both domains work correctly
+1. **Set up cron job**: Ensure automatic renewal is configured (see Automation section)
+2. **Monitor regularly**: Check certificate status weekly
+3. **Test renewal**: Run dry-run tests monthly: `sudo docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --dry-run`
+4. **Backup certificates**: Consider backing up `/etc/letsencrypt/`
+5. **Monitor logs**: Check for renewal errors in certbot logs
+6. **Test HTTPS**: Verify both domains work correctly after renewal
+7. **Verify cron is running**: Periodically check that your cron job is executing successfully
 
 ## Emergency Procedures
 
 ### If Certificates Expire
 ```bash
-# Force renewal of all certificates
-sudo docker exec certbot certbot renew --force-renewal
+# Use the force renewal script (recommended)
+sudo ./certbot-force-renew.sh
+
+# OR manually force renewal
+sudo docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --force-renewal
 
 # Reload Apache
 sudo docker exec restorationregeneration-prod-container apache2ctl graceful
