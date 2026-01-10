@@ -64,7 +64,7 @@ fields:
   presenters:
     label: Artist Humans
     type: pages
-    query: "site.index.filterBy('intendedTemplate', 'presenter').sortBy('page.presenter_name asc')""
+    query: "site.index.filterBy('intendedTemplate', 'presenter').sortBy('page.presenter_name asc')"
     multiple: true
     layout: cards
     sortBy: default
