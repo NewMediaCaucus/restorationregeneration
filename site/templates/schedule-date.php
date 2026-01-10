@@ -131,6 +131,35 @@
                   <h3 class="event-type-header"><?= $typeData['title'] ?>s</h3>
                   <div class="events-grid">
                     <?php foreach ($typeData['events'] as $event): ?>
+                      <?php
+                      // Map event template names to listing page slugs and templates
+                      $templateToListing = [
+                        'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                        'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                        'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                        'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                        'video' => ['slug' => 'videos', 'template' => 'videos']
+                      ];
+                      $templateName = $event->intendedTemplate()->name();
+                      $listingInfo = $templateToListing[$templateName] ?? null;
+
+                      $listingPage = null;
+                      $listingUrl = null;
+
+                      if ($listingInfo) {
+                        $listingPage = $site->find($listingInfo['slug']);
+                        if (!$listingPage) {
+                          $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                            return $page->intendedTemplate()->name() === $listingInfo['template'];
+                          })->first();
+                        }
+                        if (!$listingPage) {
+                          $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                        } else {
+                          $listingUrl = $listingPage->url();
+                        }
+                      }
+                      ?>
                       <div class="event-card">
                         <div class="event-info">
                           <h4 class="event-name">
@@ -148,11 +177,18 @@
                               ?>
                             </div>
                           <?php endif ?>
-                          <?php if ($event->duration()->isNotEmpty()): ?>
-                            <div class="event-duration">
-                              Duration: <?= $event->duration() ?>
-                            </div>
-                          <?php endif ?>
+                          <div class="event-type-duration">
+                            <?php if ($listingUrl): ?>
+                              <span class="event-type">
+                                <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                              </span>
+                            <?php else: ?>
+                              <span class="event-type"><?= $event->blueprint()->title() ?></span>
+                            <?php endif ?>
+                            <?php if ($event->duration()->isNotEmpty()): ?>
+                              <span class="event-duration"><?= $event->duration() ?></span>
+                            <?php endif ?>
+                          </div>
                           <?php if ($event->location()->isNotEmpty()): ?>
                             <?php
                             $location = $event->location()->toPage();
@@ -181,12 +217,40 @@
             <h2 class="timeblock-header">Other Events</h2>
             <div class="events-grid">
               <?php foreach ($eventsWithoutTimeblock as $event): ?>
+                <?php
+                // Map event template names to listing page slugs and templates
+                $templateToListing = [
+                  'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                  'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                  'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                  'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                  'video' => ['slug' => 'videos', 'template' => 'videos']
+                ];
+                $templateName = $event->intendedTemplate()->name();
+                $listingInfo = $templateToListing[$templateName] ?? null;
+
+                $listingPage = null;
+                $listingUrl = null;
+
+                if ($listingInfo) {
+                  $listingPage = $site->find($listingInfo['slug']);
+                  if (!$listingPage) {
+                    $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                      return $page->intendedTemplate()->name() === $listingInfo['template'];
+                    })->first();
+                  }
+                  if (!$listingPage) {
+                    $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                  } else {
+                    $listingUrl = $listingPage->url();
+                  }
+                }
+                ?>
                 <div class="event-card">
                   <div class="event-info">
                     <h4 class="event-name">
                       <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
                     </h4>
-                    <div class="event-type"><?= $event->blueprint()->title() ?></div>
                     <?php if ($event->presenters()->isNotEmpty()): ?>
                       <div class="event-presenters">
                         <?php
@@ -199,6 +263,18 @@
                         ?>
                       </div>
                     <?php endif ?>
+                    <div class="event-type-duration">
+                      <?php if ($listingUrl): ?>
+                        <span class="event-type">
+                          <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                        </span>
+                      <?php else: ?>
+                        <span class="event-type"><?= $event->blueprint()->title() ?></span>
+                      <?php endif ?>
+                      <?php if ($event->duration()->isNotEmpty()): ?>
+                        <span class="event-duration"><?= $event->duration() ?></span>
+                      <?php endif ?>
+                    </div>
                     <?php if ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
                       <div class="event-time">
                         <?php
@@ -206,11 +282,6 @@
                         $end = new DateTime($event->end_time());
                         echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
                         ?>
-                      </div>
-                    <?php endif ?>
-                    <?php if ($event->duration()->isNotEmpty()): ?>
-                      <div class="event-duration">
-                        Duration: <?= $event->duration() ?>
                       </div>
                     <?php endif ?>
                     <?php if ($event->location()->isNotEmpty()): ?>
