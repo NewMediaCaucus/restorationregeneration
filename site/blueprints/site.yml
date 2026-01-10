@@ -10,6 +10,16 @@ sections:
     size: small
     limit: 80
     sortBy: page.date asc
+  expanded-media:
+    label: Expanded Media
+    type: pages
+    template: expanded-media
+    empty: "No expanded media yet"
+    description: "Create a expanded media for the symposium. Each expanded media can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: list
+    limit: 80
   presentations:
     type: pages
     template: presentation
@@ -47,7 +57,7 @@ sections:
     type: info
     text: "When you add an artist human, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name, such as 'Lillian Schwartz'. It's a little odd, so I thought I'd mention it. - Rob
   presenters:
-    label: All Artist Humans
+    label: Artist Humans
     type: pages
     template: presenter
     empty: "No humans yet"

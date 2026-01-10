@@ -1,26 +1,26 @@
-title: Single-Channel Video
+title: Expanded Media
 options:
   changeSlug: true
   changeStatus: true
   changeTitle: true
 fields:
   title:
-    label: Single-Channel Video Title
+    label: Expanded Media Title
     type: text
     width: 1/2
     size: large
-    placeholder: "Single-channel video title"
+    placeholder: "Expanded media title"
     required: true
     text: |
-      This is the title of the single-channel video.
+      This is the title of the expanded media.
       It will be used as the page url slug.
-  duration:
-    label: Duration
+  type:
+    label: Type of Work
     type: text
     size: small
     width: 1/2
     required: false
-    help: "Example: 2 min 42 sec. This is just informational for attendees."
+    help: "Example: Kinetic Installation, Virtual Reality, etc. This is just informational for attendees."
   location:
     label: Location
     type: pages
@@ -44,6 +44,6 @@ fields:
     label: Description
     type: textarea
     size: large
-    placeholder: "Single-channel video description..."
+    placeholder: "Expanded media description..."
     dragText: false
     buttons: ['link', 'ul', 'ol', 'bold', 'italic']
