@@ -71,34 +71,26 @@
 
       <!-- Events -->
       <?php
-      // Debug: Let's see what we're working with
-      $currentPresenterId = $page->id();
-      $currentPresenterUuid = $page->uuid();
-      // Extract just the UUID part without the 'page://' prefix
-      $uuidOnly = str_replace('page://', '', $currentPresenterUuid);
-      $allEvents = $site->index()->filterBy('intendedTemplate', 'event');
+      // Get all event types that can have presenters
+      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $allEvents = new \Kirby\Cms\Pages();
 
-      // Manual approach: check each event's presenters field
+      foreach ($eventTemplates as $template) {
+        $templateEvents = $site->index()->filterBy('intendedTemplate', $template);
+        $allEvents = $allEvents->merge($templateEvents);
+      }
+
+      // Filter events that include this presenter
       $events = new \Kirby\Cms\Pages();
       foreach ($allEvents as $event) {
         if ($event->presenters()->isNotEmpty()) {
-          // Check if the current presenter's UUID is in the presenters field
-          if (str_contains($event->presenters(), $currentPresenterUuid)) {
+          // Get the Pages collection from the presenters field
+          $eventPresenters = $event->presenters()->toPages();
+          // Check if the current presenter page is in the collection
+          if ($eventPresenters->has($page)) {
             $events->add($event);
           }
         }
-      }
-
-      // Debug output
-      echo "<!-- Debug: Current presenter ID: " . $currentPresenterId . " -->";
-      echo "<!-- Debug: Current presenter UUID: " . $currentPresenterUuid . " -->";
-      echo "<!-- Debug: UUID only: " . $uuidOnly . " -->";
-      echo "<!-- Debug: Total events found: " . $allEvents->count() . " -->";
-      echo "<!-- Debug: Events with this presenter: " . $events->count() . " -->";
-
-      // Let's also check what the presenters field contains in each event
-      foreach ($allEvents as $event) {
-        echo "<!-- Debug: Event '" . $event->title() . "' presenters: " . $event->presenters() . " -->";
       }
 
       if ($events->count() > 0):
@@ -107,18 +99,89 @@
           <h2>Events</h2>
           <div class="events-grid">
             <?php foreach ($events as $event): ?>
-              <a href="<?= $event->url() ?>" class="event-card">
+              <div class="event-card">
                 <div class="event-info">
-                  <h3 class="event-name"><?= $event->title() ?></h3>
+                  <h3 class="event-name">
+                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
+                  </h3>
+                  <?php
+                  // Map event template names to listing page slugs and templates
+                  $templateToListing = [
+                    'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                    'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                    'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                    'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                    'video' => ['slug' => 'videos', 'template' => 'videos']
+                  ];
+                  $templateName = $event->intendedTemplate()->name();
+                  $listingInfo = $templateToListing[$templateName] ?? null;
+
+                  // Try to find the listing page
+                  $listingPage = null;
+                  $listingUrl = null;
+
+                  if ($listingInfo) {
+                    // First try to find by slug
+                    $listingPage = $site->find($listingInfo['slug']);
+
+                    // If not found by slug, try to find by template
+                    if (!$listingPage) {
+                      $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                        return $page->intendedTemplate()->name() === $listingInfo['template'];
+                      })->first();
+                    }
+
+                    // If still not found, construct URL based on expected slug
+                    if (!$listingPage) {
+                      $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                    } else {
+                      $listingUrl = $listingPage->url();
+                    }
+                  }
+                  ?>
+                  <?php if ($listingUrl): ?>
+                    <div class="event-type">
+                      <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                    </div>
+                  <?php else: ?>
+                    <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                  <?php endif ?>
                   <?php if ($event->date()->isNotEmpty()): ?>
+                    <?php
+                    $dateObj = new DateTime($event->date());
+                    $dateFormatted = $dateObj->format('l, F j, Y');
+                    $dateSlug = $dateObj->format('Y-m-d');
+
+                    // Try to find a page using the schedule-date template with matching slug
+                    $datePage = $site->index()->filter(function ($page) use ($dateSlug) {
+                      return $page->intendedTemplate()->name() === 'schedule-date' &&
+                        ($page->slug() === $dateSlug || $page->slug() === str_replace('-', '', $dateSlug));
+                    })->first();
+
+                    // If not found by slug match, try finding by exact slug
+                    if (!$datePage) {
+                      $datePage = $site->find($dateSlug);
+                      if ($datePage && $datePage->intendedTemplate()->name() !== 'schedule-date') {
+                        $datePage = null;
+                      }
+                    }
+
+                    // Construct URL if page exists, otherwise use expected URL
+                    if ($datePage) {
+                      $dateUrl = $datePage->url();
+                    } else {
+                      $dateUrl = $site->url() . '/' . $dateSlug;
+                    }
+                    ?>
                     <div class="event-date">
-                      <?php
-                      $date = new DateTime($event->date());
-                      echo $date->format('l, F j, Y');
-                      ?>
+                      <a href="<?= $dateUrl ?>"><?= $dateFormatted ?></a>
                     </div>
                   <?php endif ?>
-                  <?php if ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                  <?php if ($event->timeblock()->isNotEmpty()): ?>
+                    <div class="event-time">
+                      <?= $event->timeblock() ?>
+                    </div>
+                  <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
                     <div class="event-time">
                       <?php
                       $start = new DateTime($event->start_time());
@@ -128,7 +191,17 @@
                     </div>
                   <?php endif ?>
                 </div>
-              </a>
+                <?php if ($event->location()->isNotEmpty()): ?>
+                  <?php
+                  $location = $event->location()->toPage();
+                  if ($location):
+                  ?>
+                    <div class="event-location">
+                      Location: <a href="<?= $location->url() ?>"><?= $location->title() ?></a>
+                    </div>
+                  <?php endif ?>
+                <?php endif ?>
+              </div>
             <?php endforeach ?>
           </div>
         </div>

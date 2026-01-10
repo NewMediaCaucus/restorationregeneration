@@ -1,0 +1,14 @@
+title: Schedule Date
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  title:
+    label: Date Title
+    type: text
+    size: large
+    placeholder: "Friday, March 6, 2026"
+    required: true
+    help: "The formatted date that will appear as the page title"
+
