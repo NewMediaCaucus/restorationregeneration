@@ -38,7 +38,7 @@ fields:
     buttons: ['link', 'bold', 'italic']
     minlength: 20
     maxlength: 750
-    info: "Minimum 50 characters, maximum 750 characters"
+    info: "Minimum 20 characters, maximum 750 characters"
   links:
     label: links
     type: structure

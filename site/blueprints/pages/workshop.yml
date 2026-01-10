@@ -1,0 +1,66 @@
+title: Workshop
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  title:
+    label: Workshop Title
+    type: text
+    size: large
+    placeholder: "Workshop title"
+    required: true
+    text: |
+      This is the title of the workshop.
+      It will be used as the page slug.
+  duration:
+    label: Duration
+    type: text
+    size: small
+    width: 1/4
+    required: false
+    help: "Examples: 2 hours or 20 minutes."
+  description:
+    label: Description
+    type: textarea
+    size: large
+    placeholder: "Event description..."
+    dragText: false
+    buttons: ['link', 'ul', 'ol', 'bold', 'italic']
+  date:
+    label: Date
+    type: select
+    width: 1/4
+    options:
+      "2026-03-06": "Friday, March 6, 2026"
+      "2026-03-07": "Saturday, March 7, 2026"
+      "2026-03-08": "Sunday, March 8, 2026"
+    required: true
+  timeblock:
+    label: Time Block
+    type: text
+    width: 1/4
+    required: true
+    options:
+      "9:00AM to 11:00AM": "9:00AM to 11:00AM"
+      "11:15AM to 01:15PM": "11:15AM to 01:15PM"
+      "2:15PM to 4:15PM": "2:15PM to 4:15PM"
+      "4:30PM to 6:30PM": "4:30PM to 6:30PM"
+  location:
+    label: Location
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'location')"
+    multiple: false
+    layout: cards
+    size: small
+    help: "Select a location for this event. Use TBD if you don't have a location yet."
+    required: true
+  presenters:
+    label: Presenters
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'presenter')"
+    multiple: true
+    layout: cards
+    sortBy: default
+    size: small
+    help: "Select presenters for this event" 
