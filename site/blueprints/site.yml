@@ -1,31 +1,15 @@
 title: Site
 sections:
-  pages:
+  videos:
+    label: Single-Channel Videos
     type: pages
-    template: home
-    empty: "No pages yet"
+    template: video
     image:
       cover: true
-    layout: cards
-    size: small
-    limit: 20
-    sortBy: page.title asc
-  presenters:
-    type: pages
-    template: presenter
-    empty: "No presenters yet"
-    description: "Add presenters for the symposium. Each presenter will have their own page with bio, photo, and social media links."
-    image:
-      cover: true
-      query: "page.headshot.toFile"
     layout: list
     size: small
-    limit: 100
-    sortBy: page.presenter_name asc 
-  presenters_info:
-    label: Helpful Tip 🦄
-    type: info
-    text: "When you add a presenter, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
+    limit: 80
+    sortBy: page.date asc
   presentations:
     type: pages
     template: presentation
@@ -57,4 +41,31 @@ sections:
     layout: cards
     size: small
     limit: 80
+    sortBy: page.title asc
+  presenters_info:
+    label: Helpful Tip 🦄
+    type: info
+    text: "When you add an artist human, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name, such as 'Lillian Schwartz'. It's a little odd, so I thought I'd mention it. - Rob
+  presenters:
+    label: All Artist Humans
+    type: pages
+    template: presenter
+    empty: "No humans yet"
+    description: "Add an artist human for the symposium. Each human will have their own page with bio, photo, and social media links."
+    image:
+      cover: true
+      query: "page.headshot.toFile"
+    layout: list
+    size: small
+    limit: 100
+    sortBy: page.presenter_name asc 
+  pages:
+    type: pages
+    template: home
+    empty: "No pages yet"
+    image:
+      cover: true
+    layout: cards
+    size: small
+    limit: 20
     sortBy: page.title asc
