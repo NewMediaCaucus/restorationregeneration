@@ -18,7 +18,7 @@ sections:
     image:
       cover: true
       query: "page.headshot.toFile"
-    layout: cards
+    layout: list
     size: small
     limit: 100
     sortBy: page.presenter_name asc 
@@ -33,8 +33,7 @@ sections:
     description: "Create a presentation for the symposium. Each presentation can have multiple presenters and specific details."
     image:
       cover: true
-    layout: cards
-    size: small
+    layout: list
     limit: 80
     sortBy: page.date asc
   workshops:
@@ -44,8 +43,7 @@ sections:
     description: "Create a workshop for the symposium. Each workshop can have multiple presenters and specific details."
     image:
       cover: true
-    layout: cards
-    size: small
+    layout: list
     limit: 80
     sortBy: page.date asc
   locations:
