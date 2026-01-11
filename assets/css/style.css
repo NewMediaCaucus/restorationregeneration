@@ -1694,11 +1694,37 @@ body.is-touch .home-header-mobile {
   flex-shrink: 0;
 }
 
+.event-type {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+.event-type a {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.event-type a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive adjustments */
 @media (max-width: 767px) {
   .events-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Listings Page Styles
+   ========================================================================== */
+
+.listings-page {
+  padding: var(--spacing-2xl) 0;
 }
 
 /* ==========================================================================
