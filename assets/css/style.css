@@ -1642,6 +1642,7 @@ body.is-touch .home-header-mobile {
   grid-template-columns: repeat(auto-fill, 300px);
   gap: var(--spacing-lg);
   justify-content: start;
+  padding-bottom: var(--spacing-2xl);
 }
 
 .event-card {
