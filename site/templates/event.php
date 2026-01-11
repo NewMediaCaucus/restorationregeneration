@@ -32,14 +32,21 @@
 
           <?php if ($page->location()->isNotEmpty()): ?>
             <div class="event-location">
-              <strong>Location:</strong>
               <?php
               $location = $page->location()->toPage();
               if ($location): ?>
                 <a href="<?= $location->url() ?>" class="location-link">
+                  <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
                   <?= $location->title() ?>
                 </a>
               <?php else: ?>
+                <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
                 <?= $page->location() ?>
               <?php endif ?>
             </div>
