@@ -5,41 +5,41 @@
     <article class="listings-content">
 
       <div class="listings-header">
-        <h1>Presentations</h1>
+        <h1>Expanded Media</h1>
       </div>
 
       <?php
-      // Get all presentations
-      $presentations = $site->index()->filterBy('intendedTemplate', 'presentation');
+      // Get all expanded media
+      $expandedMedia = $site->index()->filterBy('intendedTemplate', 'expanded-media');
 
-      // Group presentations by date
-      $presentationsByDate = [];
-      $presentationsWithoutDate = [];
+      // Group expanded media by date
+      $expandedMediaByDate = [];
+      $expandedMediaWithoutDate = [];
 
-      foreach ($presentations as $presentation) {
-        if ($presentation->date()->isNotEmpty()) {
+      foreach ($expandedMedia as $item) {
+        if ($item->date()->isNotEmpty()) {
           try {
-            $dateObj = new DateTime($presentation->date()->value());
+            $dateObj = new DateTime($item->date()->value());
             $dateKey = $dateObj->format('Y-m-d');
             $dateFormatted = $dateObj->format('l, F j, Y');
 
-            if (!isset($presentationsByDate[$dateKey])) {
-              $presentationsByDate[$dateKey] = [
+            if (!isset($expandedMediaByDate[$dateKey])) {
+              $expandedMediaByDate[$dateKey] = [
                 'formatted' => $dateFormatted,
-                'presentations' => []
+                'items' => []
               ];
             }
-            $presentationsByDate[$dateKey]['presentations'][] = $presentation;
+            $expandedMediaByDate[$dateKey]['items'][] = $item;
           } catch (Exception $e) {
-            $presentationsWithoutDate[] = $presentation;
+            $expandedMediaWithoutDate[] = $item;
           }
         } else {
-          $presentationsWithoutDate[] = $presentation;
+          $expandedMediaWithoutDate[] = $item;
         }
       }
 
       // Sort dates chronologically
-      ksort($presentationsByDate);
+      ksort($expandedMediaByDate);
 
       // Timeblock order
       $timeblockOrder = [
@@ -49,66 +49,69 @@
         "4:30PM to 6:30PM"
       ];
 
-      // Get the listing page URL for presentations
-      $listingPage = $site->find('presentations');
+      // Get the listing page URL for expanded media
+      $listingPage = $site->find('expanded-medias');
       if (!$listingPage) {
         $listingPage = $site->index()->filter(function ($page) {
-          return $page->intendedTemplate()->name() === 'presentations';
+          return $page->intendedTemplate()->name() === 'expanded-medias';
         })->first();
       }
       $listingUrl = $listingPage ? $listingPage->url() : $page->url();
 
-      if (count($presentationsByDate) > 0 || count($presentationsWithoutDate) > 0):
+      if (count($expandedMediaByDate) > 0 || count($expandedMediaWithoutDate) > 0):
       ?>
         <?php
-        // Display presentations grouped by date
-        foreach ($presentationsByDate as $dateKey => $dateData):
-          // Group presentations by timeblock for this date
-          $presentationsByTimeblock = [];
-          $presentationsWithoutTimeblock = [];
+        // Display expanded media grouped by date
+        foreach ($expandedMediaByDate as $dateKey => $dateData):
+          // Group expanded media by timeblock for this date
+          $expandedMediaByTimeblock = [];
+          $expandedMediaWithoutTimeblock = [];
 
-          foreach ($dateData['presentations'] as $presentation) {
-            $timeblock = $presentation->timeblock()->isNotEmpty() ? $presentation->timeblock()->value() : '';
+          foreach ($dateData['items'] as $item) {
+            $timeblock = $item->timeblock()->isNotEmpty() ? $item->timeblock()->value() : '';
 
             if ($timeblock && in_array($timeblock, $timeblockOrder)) {
-              if (!isset($presentationsByTimeblock[$timeblock])) {
-                $presentationsByTimeblock[$timeblock] = [];
+              if (!isset($expandedMediaByTimeblock[$timeblock])) {
+                $expandedMediaByTimeblock[$timeblock] = [];
               }
-              $presentationsByTimeblock[$timeblock][] = $presentation;
+              $expandedMediaByTimeblock[$timeblock][] = $item;
             } else {
-              $presentationsWithoutTimeblock[] = $presentation;
+              $expandedMediaWithoutTimeblock[] = $item;
             }
           }
         ?>
           <div class="date-group">
-            <h2>Presentations for <?= $dateData['formatted'] ?></h2>
-
             <?php
             // Display timeblocks in order
             foreach ($timeblockOrder as $timeblock) {
-              if (isset($presentationsByTimeblock[$timeblock]) && count($presentationsByTimeblock[$timeblock]) > 0):
+              if (isset($expandedMediaByTimeblock[$timeblock]) && count($expandedMediaByTimeblock[$timeblock]) > 0):
             ?>
                 <div class="timeblock-group">
                   <h3 class="timeblock-header"><?= $timeblock ?></h3>
                   <div class="events-grid">
-                    <?php foreach ($presentationsByTimeblock[$timeblock] as $presentation): ?>
+                    <?php foreach ($expandedMediaByTimeblock[$timeblock] as $item): ?>
                       <div class="event-card">
                         <div class="event-info">
                           <div class="event-type-container">
                             <div class="event-type">
-                              <a href="<?= $listingUrl ?>"><?= $presentation->blueprint()->title() ?></a>
+                              <a href="<?= $listingUrl ?>"><?= $item->blueprint()->title() ?></a>
                             </div>
-                            <?php if ($presentation->duration()->isNotEmpty()): ?>
-                              <div class="event-duration"><?= $presentation->duration() ?></div>
+                            <?php if ($item->type()->isNotEmpty()): ?>
+                              <div class="event-work-type">
+                                <?= $item->type() ?>
+                              </div>
+                            <?php endif ?>
+                            <?php if ($item->duration()->isNotEmpty()): ?>
+                              <div class="event-duration"><?= $item->duration() ?></div>
                             <?php endif ?>
                           </div>
                           <h4 class="event-name">
-                            <a href="<?= $presentation->url() ?>"><?= $presentation->title() ?></a>
+                            <a href="<?= $item->url() ?>"><?= $item->title() ?></a>
                           </h4>
-                          <?php if ($presentation->presenters()->isNotEmpty()): ?>
+                          <?php if ($item->presenters()->isNotEmpty()): ?>
                             <div class="event-presenters">
                               <?php
-                              $presenterList = $presentation->presenters()->toPages();
+                              $presenterList = $item->presenters()->toPages();
                               $presenterNames = [];
                               foreach ($presenterList as $presenter) {
                                 $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
@@ -118,14 +121,14 @@
                             </div>
                           <?php endif ?>
                           <div class="event-footer">
-                            <?php if ($presentation->timeblock()->isNotEmpty()): ?>
+                            <?php if ($item->timeblock()->isNotEmpty()): ?>
                               <div class="event-timeblock">
-                                <?= $presentation->timeblock() ?>
+                                <?= $item->timeblock() ?>
                               </div>
                             <?php endif ?>
-                            <?php if ($presentation->location()->isNotEmpty()): ?>
+                            <?php if ($item->location()->isNotEmpty()): ?>
                               <?php
-                              $location = $presentation->location()->toPage();
+                              $location = $item->location()->toPage();
                               if ($location):
                               ?>
                                 <div class="event-location">
@@ -143,30 +146,37 @@
               endif;
             }
 
-            // Display presentations without timeblock for this date
-            if (count($presentationsWithoutTimeblock) > 0):
+            // Display expanded media without timeblock for this date
+            if (count($expandedMediaWithoutTimeblock) > 0):
               ?>
               <div class="timeblock-group">
-                <h3 class="timeblock-header">Other Presentations</h3>
+                <h3 class="timeblock-header">Other Expanded Media</h3>
                 <div class="events-grid">
-                  <?php foreach ($presentationsWithoutTimeblock as $presentation): ?>
+                  <?php foreach ($expandedMediaWithoutTimeblock as $item): ?>
                     <div class="event-card">
                       <div class="event-info">
                         <div class="event-type-duration">
-                          <div class="event-type">
-                            <a href="<?= $listingUrl ?>"><?= $presentation->blueprint()->title() ?></a>
+                          <div class="event-type-container">
+                            <div class="event-type">
+                              <a href="<?= $listingUrl ?>"><?= $item->blueprint()->title() ?></a>
+                            </div>
+                            <?php if ($item->type()->isNotEmpty()): ?>
+                              <div class="event-work-type">
+                                <?= $item->type() ?>
+                              </div>
+                            <?php endif ?>
                           </div>
-                          <?php if ($presentation->duration()->isNotEmpty()): ?>
-                            <span class="event-duration"><?= $presentation->duration() ?></span>
+                          <?php if ($item->duration()->isNotEmpty()): ?>
+                            <span class="event-duration"><?= $item->duration() ?></span>
                           <?php endif ?>
                         </div>
                         <h4 class="event-name">
-                          <a href="<?= $presentation->url() ?>"><?= $presentation->title() ?></a>
+                          <a href="<?= $item->url() ?>"><?= $item->title() ?></a>
                         </h4>
-                        <?php if ($presentation->presenters()->isNotEmpty()): ?>
+                        <?php if ($item->presenters()->isNotEmpty()): ?>
                           <div class="event-presenters">
                             <?php
-                            $presenterList = $presentation->presenters()->toPages();
+                            $presenterList = $item->presenters()->toPages();
                             $presenterNames = [];
                             foreach ($presenterList as $presenter) {
                               $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
@@ -176,9 +186,9 @@
                           </div>
                         <?php endif ?>
                         <div class="event-footer">
-                          <?php if ($presentation->location()->isNotEmpty()): ?>
+                          <?php if ($item->location()->isNotEmpty()): ?>
                             <?php
-                            $location = $presentation->location()->toPage();
+                            $location = $item->location()->toPage();
                             if ($location):
                             ?>
                               <div class="event-location">
@@ -197,30 +207,36 @@
         <?php endforeach ?>
 
         <?php
-        // Display presentations without dates
-        if (count($presentationsWithoutDate) > 0):
+        // Display expanded media without dates
+        if (count($expandedMediaWithoutDate) > 0):
         ?>
           <div class="date-group">
-            <h2>Presentations</h2>
             <div class="events-grid">
-              <?php foreach ($presentationsWithoutDate as $presentation): ?>
+              <?php foreach ($expandedMediaWithoutDate as $item): ?>
                 <div class="event-card">
                   <div class="event-info">
                     <div class="event-type-duration">
-                      <div class="event-type">
-                        <a href="<?= $listingUrl ?>"><?= $presentation->blueprint()->title() ?></a>
+                      <div class="event-type-container">
+                        <div class="event-type">
+                          <a href="<?= $listingUrl ?>"><?= $item->blueprint()->title() ?></a>
+                        </div>
+                        <?php if ($item->type()->isNotEmpty()): ?>
+                          <div class="event-work-type">
+                            <?= $item->type() ?>
+                          </div>
+                        <?php endif ?>
                       </div>
-                      <?php if ($presentation->duration()->isNotEmpty()): ?>
-                        <span class="event-duration"><?= $presentation->duration() ?></span>
+                      <?php if ($item->duration()->isNotEmpty()): ?>
+                        <span class="event-duration"><?= $item->duration() ?></span>
                       <?php endif ?>
                     </div>
                     <h4 class="event-name">
-                      <a href="<?= $presentation->url() ?>"><?= $presentation->title() ?></a>
+                      <a href="<?= $item->url() ?>"><?= $item->title() ?></a>
                     </h4>
-                    <?php if ($presentation->presenters()->isNotEmpty()): ?>
+                    <?php if ($item->presenters()->isNotEmpty()): ?>
                       <div class="event-presenters">
                         <?php
-                        $presenterList = $presentation->presenters()->toPages();
+                        $presenterList = $item->presenters()->toPages();
                         $presenterNames = [];
                         foreach ($presenterList as $presenter) {
                           $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
@@ -230,14 +246,14 @@
                       </div>
                     <?php endif ?>
                     <div class="event-footer">
-                      <?php if ($presentation->timeblock()->isNotEmpty()): ?>
+                      <?php if ($item->timeblock()->isNotEmpty()): ?>
                         <div class="event-timeblock">
-                          <?= $presentation->timeblock() ?>
+                          <?= $item->timeblock() ?>
                         </div>
                       <?php endif ?>
-                      <?php if ($presentation->location()->isNotEmpty()): ?>
+                      <?php if ($item->location()->isNotEmpty()): ?>
                         <?php
-                        $location = $presentation->location()->toPage();
+                        $location = $item->location()->toPage();
                         if ($location):
                         ?>
                           <div class="event-location">
@@ -253,7 +269,7 @@
           </div>
         <?php endif ?>
       <?php else: ?>
-        <p>No presentations available at this time.</p>
+        <p>No expanded media available at this time.</p>
       <?php endif ?>
 
     </article>

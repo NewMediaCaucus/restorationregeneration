@@ -4,8 +4,8 @@
 
 :root {
   /* Color Palette */
-  --color-primary: hsla(262, 83%, 58%, 1);
-  --color-primary-hover: hsla(262, 83%, 51%, 1);
+  --color-primary: hsla(278, 32%, 22%, 1);
+  --color-primary-hover: hsla(278, 34%, 26%, 1);
   --color-primary-light: hsla(213, 94%, 93%, 1);
   --color-secondary: hsla(215, 16%, 47%, 1);
   --color-secondary-hover: hsla(215, 25%, 27%, 1);
@@ -1646,34 +1646,45 @@ body.is-touch .home-header-mobile {
 }
 
 .event-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   padding: var(--spacing-lg);
-  background: var(--color-bg-secondary);
+  background: var(--color-primary);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-primary);
   text-decoration: none;
-  color: inherit;
+  color: var(--color-text-inverse);
   transition: var(--transition-fast);
 }
 
 .event-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  background: var(--color-bg-tertiary);
+  background: var(--color-primary-hover);
 }
 
 .event-info {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  flex: 1;
 }
 
 .event-name {
   font-size: var(--font-size-xl);
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--color-text-inverse);
   margin: 0;
   line-height: 1.2;
+}
+
+.event-name a {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.event-name a:hover {
+  text-decoration: none;
 }
 
 .event-date,
@@ -1681,11 +1692,29 @@ body.is-touch .home-header-mobile {
 .event-location,
 .event-type-duration {
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
   line-height: 1.4;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.event-card a {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.event-card a:hover {
+  text-decoration: none;
+}
+
+.event-presenters a {
+  color: var(--color-text-inverse);
+}
+
+.event-presenters a:hover {
+  text-decoration: none;
 }
 
 .event-location .map-pin-icon {
@@ -1695,12 +1724,10 @@ body.is-touch .home-header-mobile {
 }
 
 .event-type {
-  display: inline-block;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+  font-size: var(--font-size-sm);
+  color: hsla(262, 83%, 90%, 1);
   font-weight: 500;
+  display: inline-block;
 }
 
 .event-type a {
@@ -1709,7 +1736,42 @@ body.is-touch .home-header-mobile {
 }
 
 .event-type a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.event-timeblock {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-inverse);
+  line-height: 1.4;
+}
+
+.event-duration {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-inverse);
+  line-height: 1.4;
+  margin-top: calc(var(--spacing-xs) * -0.5);
+}
+
+.event-type-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.event-work-type {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-inverse);
+  line-height: 1.4;
+  margin-top: calc(var(--spacing-xs) * -0.5);
+}
+
+.event-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
 }
 
 /* Responsive adjustments */

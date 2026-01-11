@@ -101,15 +101,12 @@
             <?php foreach ($events as $event): ?>
               <div class="event-card">
                 <div class="event-info">
-                  <h3 class="event-name">
-                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
-                  </h3>
                   <?php
                   // Map event template names to listing page slugs and templates
                   $templateToListing = [
                     'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
                     'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-                    'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                    'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
                     'performance' => ['slug' => 'performances', 'template' => 'performances'],
                     'video' => ['slug' => 'videos', 'template' => 'videos']
                   ];
@@ -146,6 +143,9 @@
                   <?php else: ?>
                     <div class="event-type"><?= $event->blueprint()->title() ?></div>
                   <?php endif ?>
+                  <h3 class="event-name">
+                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
+                  </h3>
                   <?php if ($event->date()->isNotEmpty()): ?>
                     <?php
                     $dateObj = new DateTime($event->date());

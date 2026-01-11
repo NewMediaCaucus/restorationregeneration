@@ -35,7 +35,6 @@
       <!-- Event Description -->
       <?php if ($page->description()->isNotEmpty()): ?>
         <div class="event-description">
-          <h2>Description</h2>
           <div class="description-content">
             <?= $page->description()->kt() ?>
           </div>

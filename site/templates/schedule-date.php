@@ -136,7 +136,7 @@
                       $templateToListing = [
                         'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
                         'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-                        'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                        'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
                         'performance' => ['slug' => 'performances', 'template' => 'performances'],
                         'video' => ['slug' => 'videos', 'template' => 'videos']
                       ];
@@ -162,6 +162,18 @@
                       ?>
                       <div class="event-card">
                         <div class="event-info">
+                          <div class="event-type-container">
+                            <?php if ($listingUrl): ?>
+                              <div class="event-type">
+                                <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                              </div>
+                            <?php else: ?>
+                              <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                            <?php endif ?>
+                            <?php if ($event->duration()->isNotEmpty()): ?>
+                              <div class="event-duration"><?= $event->duration() ?></div>
+                            <?php endif ?>
+                          </div>
                           <h4 class="event-name">
                             <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
                           </h4>
@@ -177,33 +189,23 @@
                               ?>
                             </div>
                           <?php endif ?>
-                          <?php if ($event->timeblock()->isNotEmpty()): ?>
-                            <div class="event-timeblock">
-                              <?= $event->timeblock() ?>
-                            </div>
-                          <?php endif ?>
-                          <div class="event-type-duration">
-                            <?php if ($listingUrl): ?>
-                              <span class="event-type">
-                                <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
-                              </span>
-                            <?php else: ?>
-                              <span class="event-type"><?= $event->blueprint()->title() ?></span>
-                            <?php endif ?>
-                            <?php if ($event->duration()->isNotEmpty()): ?>
-                              <span class="event-duration"><?= $event->duration() ?></span>
-                            <?php endif ?>
-                          </div>
-                          <?php if ($event->location()->isNotEmpty()): ?>
-                            <?php
-                            $location = $event->location()->toPage();
-                            if ($location):
-                            ?>
-                              <div class="event-location">
-                                Location: <a href="<?= $location->url() ?>"><?= $location->title() ?></a>
+                          <div class="event-footer">
+                            <?php if ($event->timeblock()->isNotEmpty()): ?>
+                              <div class="event-timeblock">
+                                <?= $event->timeblock() ?>
                               </div>
                             <?php endif ?>
-                          <?php endif ?>
+                            <?php if ($event->location()->isNotEmpty()): ?>
+                              <?php
+                              $location = $event->location()->toPage();
+                              if ($location):
+                              ?>
+                                <div class="event-location">
+                                  Location: <a href="<?= $location->url() ?>"><?= $location->title() ?></a>
+                                </div>
+                              <?php endif ?>
+                            <?php endif ?>
+                          </div>
                         </div>
                       </div>
                     <?php endforeach ?>
@@ -227,7 +229,7 @@
                 $templateToListing = [
                   'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
                   'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-                  'expanded-media' => ['slug' => 'expanded-media-list', 'template' => 'expanded-media-list'],
+                  'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
                   'performance' => ['slug' => 'performances', 'template' => 'performances'],
                   'video' => ['slug' => 'videos', 'template' => 'videos']
                 ];
@@ -253,6 +255,18 @@
                 ?>
                 <div class="event-card">
                   <div class="event-info">
+                    <div class="event-type-container">
+                      <?php if ($listingUrl): ?>
+                        <div class="event-type">
+                          <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                        </div>
+                      <?php else: ?>
+                        <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                      <?php endif ?>
+                      <?php if ($event->duration()->isNotEmpty()): ?>
+                        <div class="event-duration"><?= $event->duration() ?></div>
+                      <?php endif ?>
+                    </div>
                     <h4 class="event-name">
                       <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
                     </h4>
@@ -268,41 +282,31 @@
                         ?>
                       </div>
                     <?php endif ?>
-                    <?php if ($event->timeblock()->isNotEmpty()): ?>
-                      <div class="event-timeblock">
-                        <?= $event->timeblock() ?>
-                      </div>
-                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
-                      <div class="event-time">
-                        <?php
-                        $start = new DateTime($event->start_time());
-                        $end = new DateTime($event->end_time());
-                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
-                        ?>
-                      </div>
-                    <?php endif ?>
-                    <div class="event-type-duration">
-                      <?php if ($listingUrl): ?>
-                        <span class="event-type">
-                          <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
-                        </span>
-                      <?php else: ?>
-                        <span class="event-type"><?= $event->blueprint()->title() ?></span>
-                      <?php endif ?>
-                      <?php if ($event->duration()->isNotEmpty()): ?>
-                        <span class="event-duration"><?= $event->duration() ?></span>
-                      <?php endif ?>
-                    </div>
-                    <?php if ($event->location()->isNotEmpty()): ?>
-                      <?php
-                      $location = $event->location()->toPage();
-                      if ($location):
-                      ?>
-                        <div class="event-location">
-                          Location: <a href="<?= $location->url() ?>"><?= $location->title() ?></a>
+                    <div class="event-footer">
+                      <?php if ($event->timeblock()->isNotEmpty()): ?>
+                        <div class="event-timeblock">
+                          <?= $event->timeblock() ?>
+                        </div>
+                      <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                        <div class="event-time">
+                          <?php
+                          $start = new DateTime($event->start_time());
+                          $end = new DateTime($event->end_time());
+                          echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                          ?>
                         </div>
                       <?php endif ?>
-                    <?php endif ?>
+                      <?php if ($event->location()->isNotEmpty()): ?>
+                        <?php
+                        $location = $event->location()->toPage();
+                        if ($location):
+                        ?>
+                          <div class="event-location">
+                            Location: <a href="<?= $location->url() ?>"><?= $location->title() ?></a>
+                          </div>
+                        <?php endif ?>
+                      <?php endif ?>
+                    </div>
                   </div>
                 </div>
               <?php endforeach ?>
