@@ -1743,6 +1743,21 @@ body.is-touch .home-header-mobile {
   text-decoration: none;
 }
 
+.event-card .event-date {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-inverse);
+  line-height: 1.4;
+}
+
+.event-card .event-date a {
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.event-card .event-date a:hover {
+  text-decoration: none;
+}
+
 .event-presenters a {
   color: var(--color-text-inverse);
 }
