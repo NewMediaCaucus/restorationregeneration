@@ -28,7 +28,6 @@
       <!-- Bio -->
       <?php if ($page->bio()->isNotEmpty()): ?>
         <div class="presenter-bio">
-          <h2>Biography</h2>
           <div class="bio-content">
             <?= $page->bio()->kt() ?>
           </div>
@@ -136,77 +135,70 @@
                     }
                   }
                   ?>
-                  <?php if ($listingUrl): ?>
-                    <div class="event-type">
-                      <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
-                    </div>
-                  <?php else: ?>
-                    <div class="event-type"><?= $event->blueprint()->title() ?></div>
-                  <?php endif ?>
-                  <h3 class="event-name">
+                  <div class="event-type-container">
+                    <?php if ($listingUrl): ?>
+                      <div class="event-type">
+                        <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                      </div>
+                    <?php else: ?>
+                      <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'expanded-media' && $event->type()->isNotEmpty()): ?>
+                      <div class="event-work-type">
+                        <?= $event->type() ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'presentation' && $event->duration()->isNotEmpty()): ?>
+                      <div class="event-duration"><?= $event->duration() ?></div>
+                    <?php endif ?>
+                  </div>
+                  <h4 class="event-name">
                     <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
-                  </h3>
-                  <?php if ($event->date()->isNotEmpty()): ?>
-                    <?php
-                    $dateObj = new DateTime($event->date());
-                    $dateFormatted = $dateObj->format('l, F j, Y');
-                    $dateSlug = $dateObj->format('Y-m-d');
-
-                    // Try to find a page using the schedule-date template with matching slug
-                    $datePage = $site->index()->filter(function ($page) use ($dateSlug) {
-                      return $page->intendedTemplate()->name() === 'schedule-date' &&
-                        ($page->slug() === $dateSlug || $page->slug() === str_replace('-', '', $dateSlug));
-                    })->first();
-
-                    // If not found by slug match, try finding by exact slug
-                    if (!$datePage) {
-                      $datePage = $site->find($dateSlug);
-                      if ($datePage && $datePage->intendedTemplate()->name() !== 'schedule-date') {
-                        $datePage = null;
-                      }
-                    }
-
-                    // Construct URL if page exists, otherwise use expected URL
-                    if ($datePage) {
-                      $dateUrl = $datePage->url();
-                    } else {
-                      $dateUrl = $site->url() . '/' . $dateSlug;
-                    }
-                    ?>
-                    <div class="event-date">
-                      <a href="<?= $dateUrl ?>"><?= $dateFormatted ?></a>
-                    </div>
-                  <?php endif ?>
-                  <?php if ($event->timeblock()->isNotEmpty()): ?>
-                    <div class="event-time">
-                      <?= $event->timeblock() ?>
-                    </div>
-                  <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
-                    <div class="event-time">
+                  </h4>
+                  <?php if ($event->presenters()->isNotEmpty()): ?>
+                    <div class="event-presenters">
                       <?php
-                      $start = new DateTime($event->start_time());
-                      $end = new DateTime($event->end_time());
-                      echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                      $presenterList = $event->presenters()->toPages();
+                      $presenterNames = [];
+                      foreach ($presenterList as $presenter) {
+                        $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
+                      }
+                      echo implode(', ', $presenterNames);
                       ?>
                     </div>
                   <?php endif ?>
+                  <div class="event-footer">
+                    <?php if ($event->timeblock()->isNotEmpty()): ?>
+                      <div class="event-timeblock">
+                        <?= $event->timeblock() ?>
+                      </div>
+                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                      <div class="event-time">
+                        <?php
+                        $start = new DateTime($event->start_time());
+                        $end = new DateTime($event->end_time());
+                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                        ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($event->location()->isNotEmpty()): ?>
+                      <?php
+                      $location = $event->location()->toPage();
+                      if ($location):
+                      ?>
+                        <div class="event-location">
+                          <a href="<?= $location->url() ?>">
+                            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <?= $location->title() ?>
+                          </a>
+                        </div>
+                      <?php endif ?>
+                    <?php endif ?>
+                  </div>
                 </div>
-                <?php if ($event->location()->isNotEmpty()): ?>
-                  <?php
-                  $location = $event->location()->toPage();
-                  if ($location):
-                  ?>
-                    <div class="event-location">
-                      <a href="<?= $location->url() ?>">
-                        <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                          <circle cx="12" cy="10" r="3" />
-                        </svg>
-                        <?= $location->title() ?>
-                      </a>
-                    </div>
-                  <?php endif ?>
-                <?php endif ?>
               </div>
             <?php endforeach ?>
           </div>
