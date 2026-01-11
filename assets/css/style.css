@@ -1677,7 +1677,8 @@ body.is-touch .home-header-mobile {
 
 .event-date,
 .event-time,
-.event-location {
+.event-location,
+.event-type-duration {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: 1.4;
@@ -1697,6 +1698,14 @@ body.is-touch .home-header-mobile {
   .events-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   Schedule Date Page Styles
+   ========================================================================== */
+
+.schedule-date-page {
+  padding: var(--spacing-2xl) 0;
 }
 
 /* ==========================================================================
