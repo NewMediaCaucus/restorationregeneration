@@ -1508,12 +1508,37 @@ body.is-touch .home-header-mobile {
   text-align: left;
 }
 
+.event-meta .event-type {
+  color: var(--color-text-primary);
+}
+
 .event-date,
 .event-time,
 .event-location {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+}
+
+.event-date a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.event-date a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+.event-meta .event-location a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.event-meta .event-location a:hover {
+  color: var(--color-primary);
+  text-decoration: none;
 }
 
 .event-description {
@@ -1544,8 +1569,13 @@ body.is-touch .home-header-mobile {
 
 .presenters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: var(--spacing-lg);
+  justify-content: start;
+}
+
+.presenters-grid .artist-card {
+  width: 100%;
 }
 
 .presenter-card {
@@ -1609,6 +1639,10 @@ body.is-touch .home-header-mobile {
 
   .presenters-grid {
     grid-template-columns: 1fr;
+  }
+
+  .presenters-grid .artist-card {
+    width: 100%;
   }
 
   .presenter-card {
