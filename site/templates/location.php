@@ -216,7 +216,8 @@
                       <div class="event-work-type">
                         <?= $event->type() ?>
                       </div>
-                    <?php elseif ($templateName === 'presentation' && $event->duration()->isNotEmpty()): ?>
+                    <?php endif ?>
+                    <?php if ($event->duration()->isNotEmpty()): ?>
                       <div class="event-duration"><?= $event->duration() ?></div>
                     <?php endif ?>
                   </div>
