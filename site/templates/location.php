@@ -237,19 +237,6 @@
                     </div>
                   <?php endif ?>
                   <div class="event-footer">
-                    <?php if ($event->timeblock()->isNotEmpty()): ?>
-                      <div class="event-timeblock">
-                        <?= $event->timeblock() ?>
-                      </div>
-                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
-                      <div class="event-time">
-                        <?php
-                        $start = new DateTime($event->start_time());
-                        $end = new DateTime($event->end_time());
-                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
-                        ?>
-                      </div>
-                    <?php endif ?>
                     <?php if ($event->date()->isNotEmpty()): ?>
                       <?php
                       try {
@@ -269,6 +256,19 @@
                         // Skip if date is invalid
                       }
                       ?>
+                    <?php endif ?>
+                    <?php if ($event->timeblock()->isNotEmpty()): ?>
+                      <div class="event-timeblock">
+                        <?= $event->timeblock() ?>
+                      </div>
+                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                      <div class="event-time">
+                        <?php
+                        $start = new DateTime($event->start_time());
+                        $end = new DateTime($event->end_time());
+                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                        ?>
+                      </div>
                     <?php endif ?>
                   </div>
                 </div>
