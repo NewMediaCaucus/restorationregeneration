@@ -1,40 +1,43 @@
 title: Site
 sections:
-  pages:
+  videos:
+    label: Single-Channel Videos
     type: pages
-    template: home
-    empty: "No pages yet"
+    template: video
     image:
       cover: true
-    layout: cards
-    size: small
-    limit: 20
-    sortBy: page.title asc
-  presenters:
-    type: pages
-    template: presenter
-    empty: "No presenters yet"
-    description: "Add presenters for the symposium. Each presenter will have their own page with bio, photo, and social media links."
-    image:
-      cover: true
-      query: "page.headshot.toFile"
-    layout: cards
+    layout: list
     size: small
     limit: 80
-    sortBy: page.presenter_name asc 
-  presenters_info:
-    label: Helpful Tip 🦄
-    type: info
-    text: "When you add a presenter, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name. Ex: Lillian Schwartz"
-  events:
+    sortBy: page.date asc
+  expanded-media:
+    label: Expanded Media
     type: pages
-    template: event
-    empty: "No events yet"
-    description: "Create events for the symposium. Each event can have multiple presenters and specific details."
+    template: expanded-media
+    empty: "No expanded media yet"
+    description: "Create a expanded media for the symposium. Each expanded media can have multiple presenters and specific details."
     image:
       cover: true
-    layout: cards
-    size: small
+    layout: list
+    limit: 80
+  presentations:
+    type: pages
+    template: presentation
+    empty: "No presentations yet"
+    description: "Create a presentation for the symposium. Each presentation can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: list
+    limit: 80
+    sortBy: page.date asc
+  workshops:
+    type: pages
+    template: workshop
+    empty: "No workshops yet"
+    description: "Create a workshop for the symposium. Each workshop can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: list
     limit: 80
     sortBy: page.date asc
   locations:
@@ -48,4 +51,31 @@ sections:
     layout: cards
     size: small
     limit: 80
+    sortBy: page.title asc
+  presenters_info:
+    label: Helpful Tip 🦄
+    type: info
+    text: "When you add an artist human, you will be asked for Title. This is <em>Page Title</em>, so use the presenter's full name, such as 'Lillian Schwartz'. It's a little odd, so I thought I'd mention it. - Rob
+  presenters:
+    label: Artist Humans
+    type: pages
+    template: presenter
+    empty: "No humans yet"
+    description: "Add an artist human for the symposium. Each human will have their own page with bio, photo, and social media links."
+    image:
+      cover: true
+      query: "page.headshot.toFile"
+    layout: list
+    size: small
+    limit: 100
+    sortBy: page.presenter_name asc 
+  pages:
+    type: pages
+    template: home
+    empty: "No pages yet"
+    image:
+      cover: true
+    layout: cards
+    size: small
+    limit: 20
     sortBy: page.title asc

@@ -1,0 +1,49 @@
+title: Performance
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  title:
+    label: Performance Title
+    type: text
+    width: 1/2
+    size: large
+    placeholder: "Performance title"
+    required: true
+    text: |
+      This is the title of the performance.
+      It will be used as the page url slug.
+  type:
+    label: Type of Work
+    type: text
+    size: small
+    width: 1/2
+    required: false
+    help: "Example: Kinetic Installation, Virtual Reality, etc. This is just informational for attendees."
+  location:
+    label: Location
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'location')"
+    multiple: false
+    layout: cards
+    size: small
+    width: 1/2
+    help: "Use TBD if you don't have a location yet."
+    required: true
+  presenters:
+    label: Artist Humans
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'presenter').sortBy('page.presenter_name asc')"
+    multiple: true
+    layout: cards
+    sortBy: default
+    size: small
+    width: 1/2
+  description:
+    label: Description
+    type: textarea
+    size: large
+    placeholder: "Performance description..."
+    dragText: false
+    buttons: ['link', 'ul', 'ol', 'bold', 'italic']

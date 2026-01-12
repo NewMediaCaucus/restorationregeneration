@@ -1,0 +1,49 @@
+title: Single-Channel Video
+options:
+  changeSlug: true
+  changeStatus: true
+  changeTitle: true
+fields:
+  title:
+    label: Single-Channel Video Title
+    type: text
+    width: 1/2
+    size: large
+    placeholder: "Single-channel video title"
+    required: true
+    text: |
+      This is the title of the single-channel video.
+      It will be used as the page url slug.
+  duration:
+    label: Duration
+    type: text
+    size: small
+    width: 1/2
+    required: false
+    help: "Example: 2 min 42 sec. This is just informational for attendees."
+  location:
+    label: Location
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'location')"
+    multiple: false
+    layout: cards
+    size: small
+    width: 1/2
+    help: "Use TBD if you don't have a location yet."
+    required: true
+  presenters:
+    label: Artist Humans
+    type: pages
+    query: "site.index.filterBy('intendedTemplate', 'presenter').sortBy('page.presenter_name asc')"
+    multiple: true
+    layout: cards
+    sortBy: default
+    size: small
+    width: 1/2
+  description:
+    label: Description
+    type: textarea
+    size: large
+    placeholder: "Single-channel video description..."
+    dragText: false
+    buttons: ['link', 'ul', 'ol', 'bold', 'italic']

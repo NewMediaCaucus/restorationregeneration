@@ -102,61 +102,176 @@
 
       <!-- Events at this Location -->
       <?php
-      $allEvents = $site->index()->filterBy('intendedTemplate', 'event');
+      // Get all event types
+      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $allEvents = [];
 
-      // Manual approach: check each event's location field
-      $events = new \Kirby\Cms\Pages();
+      foreach ($eventTemplates as $template) {
+        $templateEvents = $site->index()->filterBy('intendedTemplate', $template);
+        foreach ($templateEvents as $event) {
+          $allEvents[] = $event;
+        }
+      }
+
+      // Filter events that are at this location
+      $locationEvents = [];
       foreach ($allEvents as $event) {
         if ($event->location()->isNotEmpty()) {
-          // Check if the current location's UUID is in the location field
-          if (str_contains($event->location(), $page->uuid())) {
-            $events->add($event);
+          $eventLocation = $event->location()->toPage();
+          if ($eventLocation && $eventLocation->id() === $page->id()) {
+            $locationEvents[] = $event;
           }
         }
       }
 
-      // Sort events by date and time
-      $events = $events->sortBy('date', 'asc');
+      // Sort events by date (Friday, Saturday, Sunday)
+      $dateOrder = ['2026-03-06', '2026-03-07', '2026-03-08'];
+      $sortedEvents = [];
+      $eventsWithoutDate = [];
 
-      // Debug output
-      echo "<!-- Debug: Current location ID: " . $page->id() . " -->";
-      echo "<!-- Debug: Current location UUID: " . $page->uuid() . " -->";
-      echo "<!-- Debug: Total events found: " . $allEvents->count() . " -->";
-      echo "<!-- Debug: Events with this location: " . $events->count() . " -->";
-
-      // Let's also check what the location field contains in each event
-      foreach ($allEvents as $event) {
-        echo "<!-- Debug: Event '" . $event->title() . "' location: " . $event->location() . " -->";
+      foreach ($locationEvents as $event) {
+        if ($event->date()->isNotEmpty()) {
+          try {
+            $eventDate = new DateTime($event->date()->value());
+            $dateValue = $eventDate->format('Y-m-d');
+            if (in_array($dateValue, $dateOrder)) {
+              $sortedEvents[] = $event;
+            } else {
+              $eventsWithoutDate[] = $event;
+            }
+          } catch (Exception $e) {
+            $eventsWithoutDate[] = $event;
+          }
+        } else {
+          $eventsWithoutDate[] = $event;
+        }
       }
 
-      if ($events->count() > 0):
+      // Sort by date order
+      usort($sortedEvents, function ($a, $b) use ($dateOrder) {
+        try {
+          $dateA = new DateTime($a->date()->value());
+          $dateB = new DateTime($b->date()->value());
+          $dateValueA = $dateA->format('Y-m-d');
+          $dateValueB = $dateB->format('Y-m-d');
+          $indexA = array_search($dateValueA, $dateOrder);
+          $indexB = array_search($dateValueB, $dateOrder);
+          if ($indexA === false) $indexA = 999;
+          if ($indexB === false) $indexB = 999;
+          return $indexA - $indexB;
+        } catch (Exception $e) {
+          return 0;
+        }
+      });
+
+      // Combine sorted and unsorted events
+      $finalEvents = array_merge($sortedEvents, $eventsWithoutDate);
+
+      if (count($finalEvents) > 0):
       ?>
         <div class="location-events">
           <h2>Events at This Location</h2>
           <div class="events-grid">
-            <?php foreach ($events as $event): ?>
-              <a href="<?= $event->url() ?>" class="event-card">
+            <?php foreach ($finalEvents as $event): ?>
+              <?php
+              // Map event template names to listing page slugs and templates
+              $templateToListing = [
+                'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
+                'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                'video' => ['slug' => 'videos', 'template' => 'videos']
+              ];
+              $templateName = $event->intendedTemplate()->name();
+              $listingInfo = $templateToListing[$templateName] ?? null;
+
+              $listingPage = null;
+              $listingUrl = null;
+
+              if ($listingInfo) {
+                $listingPage = $site->find($listingInfo['slug']);
+                if (!$listingPage) {
+                  $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                    return $page->intendedTemplate()->name() === $listingInfo['template'];
+                  })->first();
+                }
+                if (!$listingPage) {
+                  $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                } else {
+                  $listingUrl = $listingPage->url();
+                }
+              }
+              ?>
+              <div class="event-card">
                 <div class="event-info">
-                  <h3 class="event-name"><?= $event->title() ?></h3>
-                  <?php if ($event->date()->isNotEmpty()): ?>
-                    <div class="event-date">
+                  <div class="event-type-container">
+                    <?php if ($listingUrl): ?>
+                      <div class="event-type">
+                        <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                      </div>
+                    <?php else: ?>
+                      <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'expanded-media' && $event->type()->isNotEmpty()): ?>
+                      <div class="event-work-type">
+                        <?= $event->type() ?>
+                      </div>
+                    <?php elseif ($templateName === 'presentation' && $event->duration()->isNotEmpty()): ?>
+                      <div class="event-duration"><?= $event->duration() ?></div>
+                    <?php endif ?>
+                  </div>
+                  <h4 class="event-name">
+                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
+                  </h4>
+                  <?php if ($event->presenters()->isNotEmpty()): ?>
+                    <div class="event-presenters">
                       <?php
-                      $date = new DateTime($event->date());
-                      echo $date->format('l, F j, Y');
+                      $presenters = $event->presenters()->toPages();
+                      $presenterNames = [];
+                      foreach ($presenters as $presenter) {
+                        $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
+                      }
+                      echo implode(', ', $presenterNames);
                       ?>
                     </div>
                   <?php endif ?>
-                  <?php if ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
-                    <div class="event-time">
+                  <div class="event-footer">
+                    <?php if ($event->timeblock()->isNotEmpty()): ?>
+                      <div class="event-timeblock">
+                        <?= $event->timeblock() ?>
+                      </div>
+                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                      <div class="event-time">
+                        <?php
+                        $start = new DateTime($event->start_time());
+                        $end = new DateTime($event->end_time());
+                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                        ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($event->date()->isNotEmpty()): ?>
                       <?php
-                      $start = new DateTime($event->start_time());
-                      $end = new DateTime($event->end_time());
-                      echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                      try {
+                        $eventDate = new DateTime($event->date()->value());
+                        $dateValue = $eventDate->format('Y-m-d');
+                        $dateFormatted = $eventDate->format('l, F j, Y');
+
+                        // Find or create schedule-date page URL
+                        $scheduleDatePage = $site->find($dateValue);
+                        $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
                       ?>
-                    </div>
-                  <?php endif ?>
+                        <div class="event-date">
+                          <a href="<?= $scheduleDateUrl ?>"><?= $dateFormatted ?></a>
+                        </div>
+                      <?php
+                      } catch (Exception $e) {
+                        // Skip if date is invalid
+                      }
+                      ?>
+                    <?php endif ?>
+                  </div>
                 </div>
-              </a>
+              </div>
             <?php endforeach ?>
           </div>
         </div>
