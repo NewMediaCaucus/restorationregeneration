@@ -25,7 +25,7 @@ fields:
     label: Location
     type: pages
     query: "site.index.filterBy('intendedTemplate', 'location')"
-    multiple: false
+    multiple: true
     layout: cards
     size: small
     width: 1/2
