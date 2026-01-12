@@ -118,6 +118,26 @@
                             </div>
                           <?php endif ?>
                           <div class="event-footer">
+                            <?php if ($workshop->date()->isNotEmpty()): ?>
+                              <?php
+                              try {
+                                $eventDate = new DateTime($workshop->date()->value());
+                                $dateValue = $eventDate->format('Y-m-d');
+                                $dateFormatted = $eventDate->format('l, F j, Y');
+
+                                // Find or create schedule-date page URL
+                                $scheduleDatePage = $site->find($dateValue);
+                                $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+                              ?>
+                                <div class="event-date">
+                                  <a href="<?= $scheduleDateUrl ?>"><?= $dateFormatted ?></a>
+                                </div>
+                              <?php
+                              } catch (Exception $e) {
+                                // Skip if date is invalid
+                              }
+                              ?>
+                            <?php endif ?>
                             <?php if ($workshop->timeblock()->isNotEmpty()): ?>
                               <div class="event-timeblock">
                                 <?= $workshop->timeblock() ?>
@@ -182,6 +202,26 @@
                           </div>
                         <?php endif ?>
                         <div class="event-footer">
+                          <?php if ($workshop->date()->isNotEmpty()): ?>
+                            <?php
+                            try {
+                              $eventDate = new DateTime($workshop->date()->value());
+                              $dateValue = $eventDate->format('Y-m-d');
+                              $dateFormatted = $eventDate->format('l, F j, Y');
+
+                              // Find or create schedule-date page URL
+                              $scheduleDatePage = $site->find($dateValue);
+                              $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+                            ?>
+                              <div class="event-date">
+                                <a href="<?= $scheduleDateUrl ?>"><?= $dateFormatted ?></a>
+                              </div>
+                            <?php
+                            } catch (Exception $e) {
+                              // Skip if date is invalid
+                            }
+                            ?>
+                          <?php endif ?>
                           <?php if ($workshop->location()->isNotEmpty()): ?>
                             <?php
                             $location = $workshop->location()->toPage();
@@ -242,6 +282,26 @@
                       </div>
                     <?php endif ?>
                     <div class="event-footer">
+                      <?php if ($workshop->date()->isNotEmpty()): ?>
+                        <?php
+                        try {
+                          $eventDate = new DateTime($workshop->date()->value());
+                          $dateValue = $eventDate->format('Y-m-d');
+                          $dateFormatted = $eventDate->format('l, F j, Y');
+
+                          // Find or create schedule-date page URL
+                          $scheduleDatePage = $site->find($dateValue);
+                          $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+                        ?>
+                          <div class="event-date">
+                            <a href="<?= $scheduleDateUrl ?>"><?= $dateFormatted ?></a>
+                          </div>
+                        <?php
+                        } catch (Exception $e) {
+                          // Skip if date is invalid
+                        }
+                        ?>
+                      <?php endif ?>
                       <?php if ($workshop->timeblock()->isNotEmpty()): ?>
                         <div class="event-timeblock">
                           <?= $workshop->timeblock() ?>
