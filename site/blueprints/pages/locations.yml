@@ -1,0 +1,12 @@
+title: Locations
+options:
+  changeSlug: false
+  changeStatus: false
+  changeTitle: false
+fields:
+  title:
+    label: Title
+    type: text
+    required: true
+    default: Locations
+

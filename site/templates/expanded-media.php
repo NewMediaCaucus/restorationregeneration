@@ -9,24 +9,41 @@
         <h1 class="event-title"><?= $page->title() ?></h1>
 
         <div class="event-meta">
-          <?php if ($page->date()->isNotEmpty()): ?>
-            <div class="event-date">
-              <strong>Date:</strong>
-              <?php
-              $date = new DateTime($page->date());
-              echo $date->format('l, F j, Y');
-              ?>
+          <?php if ($page->type()->isNotEmpty()): ?>
+            <div class="event-type">
+              <?= $page->type() ?>
             </div>
           <?php endif ?>
 
-          <?php if ($page->start_time()->isNotEmpty() && $page->end_time()->isNotEmpty()): ?>
-            <div class="event-time">
-              <strong>Time:</strong>
-              <?php
-              $start = new DateTime($page->start_time());
-              $end = new DateTime($page->end_time());
-              echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
-              ?>
+          <?php if ($page->date()->isNotEmpty()): ?>
+            <?php
+            $dateObj = new DateTime($page->date());
+            $dateFormatted = $dateObj->format('l, F j, Y');
+            $dateSlug = $dateObj->format('Y-m-d');
+
+            // Try to find a page using the schedule-date template with matching slug
+            $datePage = $site->index()->filter(function ($page) use ($dateSlug) {
+              return $page->intendedTemplate()->name() === 'schedule-date' &&
+                ($page->slug() === $dateSlug || $page->slug() === str_replace('-', '', $dateSlug));
+            })->first();
+
+            // If not found by slug match, try finding by exact slug
+            if (!$datePage) {
+              $datePage = $site->find($dateSlug);
+              if ($datePage && $datePage->intendedTemplate()->name() !== 'schedule-date') {
+                $datePage = null;
+              }
+            }
+
+            // Construct URL if page exists, otherwise use expected URL
+            if ($datePage) {
+              $dateUrl = $datePage->url();
+            } else {
+              $dateUrl = $site->url() . '/' . $dateSlug;
+            }
+            ?>
+            <div class="event-date">
+              <a href="<?= $dateUrl ?>"><?= $dateFormatted ?></a>
             </div>
           <?php endif ?>
 
@@ -57,32 +74,37 @@
       <!-- Event Description -->
       <?php if ($page->description()->isNotEmpty()): ?>
         <div class="event-description">
-          <h2>Description</h2>
           <div class="description-content">
             <?= $page->description()->kt() ?>
           </div>
         </div>
       <?php endif ?>
 
-      <!-- Presenters -->
+      <!-- Artists -->
       <?php if ($page->presenters()->isNotEmpty()): ?>
         <div class="event-presenters">
-          <h2>Presenters</h2>
+          <h2>Artists</h2>
           <div class="presenters-grid">
             <?php foreach ($page->presenters()->toPages() as $presenter): ?>
-              <a href="<?= $presenter->url() ?>" class="presenter-card">
-                <?php if ($presenter->headshot()->isNotEmpty()): ?>
-                  <div class="presenter-headshot">
-                    <?= $presenter->headshot()->toFile() ?>
+              <div class="artist-card">
+                <a href="<?= $presenter->url() ?>" class="artist-headshot-link">
+                  <div class="artist-headshot">
+                    <?php if ($presenter->headshot()->isNotEmpty()): ?>
+                      <?= $presenter->headshot()->toFile() ?>
+                    <?php else: ?>
+                      <div class="artist-headshot-placeholder"></div>
+                    <?php endif ?>
                   </div>
-                <?php endif ?>
-                <div class="presenter-info">
-                  <h3 class="presenter-name"><?= $presenter->title() ?></h3>
+                </a>
+                <div class="artist-info">
+                  <h3 class="artist-name">
+                    <a href="<?= $presenter->url() ?>"><?= $presenter->title() ?></a>
+                  </h3>
                   <?php if ($presenter->organization()->isNotEmpty()): ?>
                     <div class="presenter-organization"><?= $presenter->organization() ?></div>
                   <?php endif ?>
                 </div>
-              </a>
+              </div>
             <?php endforeach ?>
           </div>
         </div>

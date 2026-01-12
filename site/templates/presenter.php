@@ -28,7 +28,6 @@
       <!-- Bio -->
       <?php if ($page->bio()->isNotEmpty()): ?>
         <div class="presenter-bio">
-          <h2>Biography</h2>
           <div class="bio-content">
             <?= $page->bio()->kt() ?>
           </div>
@@ -71,34 +70,26 @@
 
       <!-- Events -->
       <?php
-      // Debug: Let's see what we're working with
-      $currentPresenterId = $page->id();
-      $currentPresenterUuid = $page->uuid();
-      // Extract just the UUID part without the 'page://' prefix
-      $uuidOnly = str_replace('page://', '', $currentPresenterUuid);
-      $allEvents = $site->index()->filterBy('intendedTemplate', 'event');
+      // Get all event types that can have presenters
+      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $allEvents = new \Kirby\Cms\Pages();
 
-      // Manual approach: check each event's presenters field
+      foreach ($eventTemplates as $template) {
+        $templateEvents = $site->index()->filterBy('intendedTemplate', $template);
+        $allEvents = $allEvents->merge($templateEvents);
+      }
+
+      // Filter events that include this presenter
       $events = new \Kirby\Cms\Pages();
       foreach ($allEvents as $event) {
         if ($event->presenters()->isNotEmpty()) {
-          // Check if the current presenter's UUID is in the presenters field
-          if (str_contains($event->presenters(), $currentPresenterUuid)) {
+          // Get the Pages collection from the presenters field
+          $eventPresenters = $event->presenters()->toPages();
+          // Check if the current presenter page is in the collection
+          if ($eventPresenters->has($page)) {
             $events->add($event);
           }
         }
-      }
-
-      // Debug output
-      echo "<!-- Debug: Current presenter ID: " . $currentPresenterId . " -->";
-      echo "<!-- Debug: Current presenter UUID: " . $currentPresenterUuid . " -->";
-      echo "<!-- Debug: UUID only: " . $uuidOnly . " -->";
-      echo "<!-- Debug: Total events found: " . $allEvents->count() . " -->";
-      echo "<!-- Debug: Events with this presenter: " . $events->count() . " -->";
-
-      // Let's also check what the presenters field contains in each event
-      foreach ($allEvents as $event) {
-        echo "<!-- Debug: Event '" . $event->title() . "' presenters: " . $event->presenters() . " -->";
       }
 
       if ($events->count() > 0):
@@ -107,28 +98,108 @@
           <h2>Events</h2>
           <div class="events-grid">
             <?php foreach ($events as $event): ?>
-              <a href="<?= $event->url() ?>" class="event-card">
+              <div class="event-card">
                 <div class="event-info">
-                  <h3 class="event-name"><?= $event->title() ?></h3>
-                  <?php if ($event->date()->isNotEmpty()): ?>
-                    <div class="event-date">
+                  <?php
+                  // Map event template names to listing page slugs and templates
+                  $templateToListing = [
+                    'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                    'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                    'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
+                    'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                    'video' => ['slug' => 'videos', 'template' => 'videos']
+                  ];
+                  $templateName = $event->intendedTemplate()->name();
+                  $listingInfo = $templateToListing[$templateName] ?? null;
+
+                  // Try to find the listing page
+                  $listingPage = null;
+                  $listingUrl = null;
+
+                  if ($listingInfo) {
+                    // First try to find by slug
+                    $listingPage = $site->find($listingInfo['slug']);
+
+                    // If not found by slug, try to find by template
+                    if (!$listingPage) {
+                      $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                        return $page->intendedTemplate()->name() === $listingInfo['template'];
+                      })->first();
+                    }
+
+                    // If still not found, construct URL based on expected slug
+                    if (!$listingPage) {
+                      $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                    } else {
+                      $listingUrl = $listingPage->url();
+                    }
+                  }
+                  ?>
+                  <div class="event-type-container">
+                    <?php if ($listingUrl): ?>
+                      <div class="event-type">
+                        <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                      </div>
+                    <?php else: ?>
+                      <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'expanded-media' && $event->type()->isNotEmpty()): ?>
+                      <div class="event-work-type">
+                        <?= $event->type() ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'presentation' && $event->duration()->isNotEmpty()): ?>
+                      <div class="event-duration"><?= $event->duration() ?></div>
+                    <?php endif ?>
+                  </div>
+                  <h4 class="event-name">
+                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
+                  </h4>
+                  <?php if ($event->presenters()->isNotEmpty()): ?>
+                    <div class="event-presenters">
                       <?php
-                      $date = new DateTime($event->date());
-                      echo $date->format('l, F j, Y');
+                      $presenterList = $event->presenters()->toPages();
+                      $presenterNames = [];
+                      foreach ($presenterList as $presenter) {
+                        $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
+                      }
+                      echo implode(', ', $presenterNames);
                       ?>
                     </div>
                   <?php endif ?>
-                  <?php if ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
-                    <div class="event-time">
+                  <div class="event-footer">
+                    <?php if ($event->timeblock()->isNotEmpty()): ?>
+                      <div class="event-timeblock">
+                        <?= $event->timeblock() ?>
+                      </div>
+                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                      <div class="event-time">
+                        <?php
+                        $start = new DateTime($event->start_time());
+                        $end = new DateTime($event->end_time());
+                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                        ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($event->location()->isNotEmpty()): ?>
                       <?php
-                      $start = new DateTime($event->start_time());
-                      $end = new DateTime($event->end_time());
-                      echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                      $location = $event->location()->toPage();
+                      if ($location):
                       ?>
-                    </div>
-                  <?php endif ?>
+                        <div class="event-location">
+                          <a href="<?= $location->url() ?>">
+                            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <?= $location->title() ?>
+                          </a>
+                        </div>
+                      <?php endif ?>
+                    <?php endif ?>
+                  </div>
                 </div>
-              </a>
+              </div>
             <?php endforeach ?>
           </div>
         </div>
