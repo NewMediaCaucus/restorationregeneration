@@ -20,6 +20,17 @@ sections:
       cover: true
     layout: list
     limit: 80
+  performances:
+    label: Performances
+    type: pages
+    template: performance
+    empty: "No performances yet"
+    description: "Create a performance for the symposium. Each performance can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: list
+    limit: 80
+    sortBy: page.date asc
   presentations:
     type: pages
     template: presentation
