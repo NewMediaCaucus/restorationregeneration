@@ -43,22 +43,6 @@
     </section>
   <?php endif ?>
 
-  <!-- SudoMagic Promo Section -->
-  <?php if ($page->sudomagic_promo()->isNotEmpty()): ?>
-    <section class="sudomagic-promo section">
-      <div class="container">
-        <h2>TouchDesigner Workshop with SudoMagic</h2>
-        <div class="content">
-          <?= $page->sudomagic_promo()->kt() ?>
-        </div>
-        <?php if ($page->sudomagic_promo_image()->isNotEmpty()): ?>
-          <div class="sudomagic-promo-image">
-            <?= $page->sudomagic_promo_image()->toFile() ?>
-          </div>
-        <?php endif ?>
-      </div>
-    </section>
-  <?php endif ?>
 
   <!-- Our Keynote Speaker Section -->
   <?php if ($page->keynote_promo()->isNotEmpty() || $page->keynote_headshot()->isNotEmpty() || $page->keynote_bio()->isNotEmpty()): ?>
@@ -81,6 +65,23 @@
         <?php if ($page->keynote_bio()->isNotEmpty()): ?>
           <div class="keynote-bio">
             <?= $page->keynote_bio()->kt() ?>
+          </div>
+        <?php endif ?>
+      </div>
+    </section>
+  <?php endif ?>
+
+  <!-- SudoMagic Promo Section -->
+  <?php if ($page->sudomagic_promo()->isNotEmpty()): ?>
+    <section class="sudomagic-promo section">
+      <div class="container">
+        <h2>TouchDesigner Workshop with SudoMagic</h2>
+        <div class="content">
+          <?= $page->sudomagic_promo()->kt() ?>
+        </div>
+        <?php if ($page->sudomagic_promo_image()->isNotEmpty()): ?>
+          <div class="sudomagic-promo-image">
+            <?= $page->sudomagic_promo_image()->toFile() ?>
           </div>
         <?php endif ?>
       </div>
@@ -212,6 +213,18 @@
     </div>
   </section>
 
+  <!-- Travel/Lodging Section -->
+  <?php if ($page->travel_lodging()->isNotEmpty()): ?>
+    <section class="travel-lodging section">
+      <div class="container">
+        <h2>Travel & Lodging</h2>
+        <div class="content">
+          <?= $page->travel_lodging()->kt() ?>
+        </div>
+      </div>
+    </section>
+  <?php endif ?>
+
   <!-- About New Media Caucus Section -->
   <?php if ($page->about_new_media_caucus()->isNotEmpty()): ?>
     <section class="about-nmc section">
@@ -273,31 +286,6 @@
               </div>
             </div>
           <?php endif ?>
-        </div>
-      </div>
-    </section>
-  <?php endif ?>
-
-
-  <!-- Travel/Lodging Section -->
-  <?php if ($page->travel_lodging()->isNotEmpty()): ?>
-    <section class="travel-lodging section">
-      <div class="container">
-        <h2>Travel & Lodging</h2>
-        <div class="content">
-          <?= $page->travel_lodging()->kt() ?>
-        </div>
-      </div>
-    </section>
-  <?php endif ?>
-
-  <!-- Submission Calls Section -->
-  <?php if ($page->submission_calls()->isNotEmpty()): ?>
-    <section class="submission-calls section">
-      <div class="container">
-        <h2>Call for Submissions</h2>
-        <div class="content">
-          <?= $page->submission_calls()->kt() ?>
         </div>
       </div>
     </section>
