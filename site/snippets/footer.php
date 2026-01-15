@@ -1,5 +1,120 @@
 <footer class="site-footer">
   <div class="container">
+    <!-- Megafooter Navigation -->
+    <div class="megafooter">
+      <!-- First Block: Arrive On Time -->
+      <div class="megafooter-navblock">
+        <h3 class="navblock-header">Arrive On Time</h3>
+        <nav class="navblock-links">
+          <?php
+          // Full Schedule
+          $schedulePage = $site->find('schedule');
+          $scheduleUrl = $schedulePage ? $schedulePage->url() : $site->url() . '/schedule';
+          // Friday, Saturday, Sunday
+          $fridayPage = $site->find('2026-03-06');
+          $saturdayPage = $site->find('2026-03-07');
+          $sundayPage = $site->find('2026-03-08');
+          ?>
+          <a href="<?= $fridayPage ? $fridayPage->url() : $site->url() . '/2026-03-06' ?>">Friday</a>
+          <a href="<?= $saturdayPage ? $saturdayPage->url() : $site->url() . '/2026-03-07' ?>">Saturday</a>
+          <a href="<?= $sundayPage ? $sundayPage->url() : $site->url() . '/2026-03-08' ?>">Sunday</a>
+          <a href="<?= $scheduleUrl ?>">Full Schedule</a>
+        </nav>
+      </div>
+
+      <!-- Second Block: Be Dazzled -->
+      <div class="megafooter-navblock">
+        <h3 class="navblock-header">Be Dazzled</h3>
+        <nav class="navblock-links">
+          <?php
+          $artistsPage = $site->find('artists');
+          $presentationsPage = $site->find('presentations');
+          $workshopsPage = $site->find('workshops');
+          $performancesPage = $site->find('performances');
+          $videosPage = $site->find('videos');
+          $expandedMediasPage = $site->find('expanded-medias');
+          ?>
+          <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
+          <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
+          <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
+          <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
+          <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+          <a href="<?= $expandedMediasPage ? $expandedMediasPage->url() : $site->url() . '/expanded-medias' ?>">Expanded Media</a>
+        </nav>
+      </div>
+
+      <!-- Third Block: Find Yourself -->
+      <div class="megafooter-navblock">
+        <h3 class="navblock-header">Find Yourself</h3>
+        <nav class="navblock-links">
+          <?php
+          $locationsPage = $site->find('locations');
+          ?>
+          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations</a>
+        </nav>
+      </div>
+
+      <!-- Fourth Block: Join Us! -->
+      <div class="megafooter-navblock">
+        <h3 class="navblock-header">Join Us!</h3>
+        <nav class="navblock-links">
+          <a href="https://newmediacaucus.org" target="_blank">New Media Caucus</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Hamburger Menu Toggle (Mobile Only) -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+      <span class="hamburger-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+    <!-- Mobile Menu (Overlay) -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+      <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="mobile-menu-content">
+        <!-- First Block: Arrive On Time -->
+        <div class="mobile-navblock">
+          <h3 class="mobile-navblock-header">Arrive On Time</h3>
+          <nav class="mobile-navblock-links">
+            <a href="<?= $fridayPage ? $fridayPage->url() : $site->url() . '/2026-03-06' ?>">Friday</a>
+            <a href="<?= $saturdayPage ? $saturdayPage->url() : $site->url() . '/2026-03-07' ?>">Saturday</a>
+            <a href="<?= $sundayPage ? $sundayPage->url() : $site->url() . '/2026-03-08' ?>">Sunday</a>
+            <a href="<?= $scheduleUrl ?>">Full Schedule</a>
+          </nav>
+        </div>
+
+        <!-- Second Block: Be Dazzled -->
+        <div class="mobile-navblock">
+          <h3 class="mobile-navblock-header">Be Dazzled</h3>
+          <nav class="mobile-navblock-links">
+            <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
+            <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
+            <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
+            <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
+            <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+            <a href="<?= $expandedMediasPage ? $expandedMediasPage->url() : $site->url() . '/expanded-medias' ?>">Expanded Media</a>
+          </nav>
+        </div>
+
+        <!-- Third Block: Find Yourself -->
+        <div class="mobile-navblock">
+          <h3 class="mobile-navblock-header">Find Yourself</h3>
+          <nav class="mobile-navblock-links">
+            <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Content (Original) -->
     <div class="footer-content">
       <div class="footer-main">
         <p>The New Media Caucus (NMC) is an international non-profit association formed to promote the development and understanding of new media art. We represent and serve: artists, designers, practitioners, historians, theorists, educators, students, and scholars. <a href="http://newmediacaucus.org" target="_blank">Join us</a>.</p>
@@ -34,6 +149,8 @@
     </div>
   </div>
 </footer>
+
+<script src="<?= url('assets/js/mobile-menu.js') ?>" defer></script>
 
 </body>
 
