@@ -5,6 +5,7 @@
       <!-- First Block: Arrive On Time -->
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Arrive On Time</h3>
+        <p class="navblock-description">Make sure you don't miss anything!</p>
         <nav class="navblock-links">
           <?php
           // Full Schedule
@@ -24,7 +25,9 @@
 
       <!-- Second Block: Be Dazzled -->
       <div class="megafooter-navblock">
-        <h3 class="navblock-header">Be Dazzled</h3>
+        <h3 class="navblock-header">Become Dazzled</h3>
+        <p class="navblock-description">Discover the many artists, artforms, and activities gathering at the symposium.</p>
+
         <nav class="navblock-links">
           <?php
           $artistsPage = $site->find('artists');
@@ -45,12 +48,22 @@
 
       <!-- Third Block: Find Yourself -->
       <div class="megafooter-navblock">
-        <h3 class="navblock-header">Find Yourself</h3>
+        <h3 class="navblock-header">Find Your Way</h3>
+        <p class="navblock-description">Learn about our venues inside the MIX Center.</p>
+
         <nav class="navblock-links">
           <?php
           $locationsPage = $site->find('locations');
           ?>
-          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations</a>
+          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Our MIX Center Locations</a>
+          <a href="https://maps.app.goo.gl/YwgmUCz7Z7hoTGZp9" target="_blank">
+            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            50 N Centennial Way, Mesa, AZ 85201
+          </a>
+
         </nav>
       </div>
 
@@ -58,7 +71,8 @@
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Join Us!</h3>
         <nav class="navblock-links">
-          <a href="https://newmediacaucus.org" target="_blank">New Media Caucus</a>
+          <a href="<https://www.tixtree.com/e/2026-symposium-restorationregeneration-1301fb9395e6>">Register for Restoration/Regeneration</a>
+          <a href="https://newmediacaucus.org" target="_blank">newmediacaucus.org</a>
         </nav>
       </div>
     </div>
@@ -76,7 +90,7 @@
     <div class="mobile-menu-overlay" id="mobile-menu-overlay">
       <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
       <div class="mobile-menu-content">
@@ -91,9 +105,9 @@
           </nav>
         </div>
 
-        <!-- Second Block: Be Dazzled -->
+        <!-- Second Block: Become Dazzled -->
         <div class="mobile-navblock">
-          <h3 class="mobile-navblock-header">Be Dazzled</h3>
+          <h3 class="mobile-navblock-header">Become Dazzled</h3>
           <nav class="mobile-navblock-links">
             <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
             <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
@@ -104,11 +118,18 @@
           </nav>
         </div>
 
-        <!-- Third Block: Find Yourself -->
+        <!-- Third Block: Find Your Way -->
         <div class="mobile-navblock">
-          <h3 class="mobile-navblock-header">Find Yourself</h3>
+          <h3 class="mobile-navblock-header">Find Your Way</h3>
           <nav class="mobile-navblock-links">
-            <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations</a>
+            <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Our MIX Center Locations</a>
+            <a href="https://maps.app.goo.gl/YwgmUCz7Z7hoTGZp9" target="_blank">
+              <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              50 N Centennial Way, Mesa, AZ 85201
+            </a>
           </nav>
         </div>
       </div>
