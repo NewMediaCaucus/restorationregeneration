@@ -924,6 +924,7 @@ a:hover {
    ========================================================================== */
 
 @media (max-width: 1023px) {
+
   /* Make megafooter single column on mobile */
   .megafooter {
     grid-template-columns: 1fr;
@@ -964,7 +965,6 @@ a:hover {
     flex-direction: column;
     gap: 4px;
     width: 24px;
-    height: 18px;
   }
 
   .hamburger-icon span {
