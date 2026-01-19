@@ -2321,6 +2321,62 @@ body.is-touch .home-header-mobile {
   padding: var(--spacing-2xl) 0;
 }
 
+/* Schedule Days Grid (Home Page) */
+.schedule-days-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.schedule-day-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl);
+  background: hsla(0, 0%, 20%, 1);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-primary);
+  transition: var(--transition-normal);
+  text-decoration: none;
+  color: hsl(142, 75%, 87%);
+  text-align: center;
+}
+
+.schedule-day-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  color: hsl(142, 75%, 87%);
+}
+
+.schedule-day-card h3 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin: 0;
+  color: hsl(142, 75%, 87%);
+}
+
+.schedule-day-card p {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: hsl(142, 75%, 87%);
+}
+
+/* Responsive styles for schedule-days-grid */
+@media (max-width: 1023px) {
+  .schedule-days-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .schedule-days-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .date-group {
   margin-bottom: var(--spacing-3xl);
 }

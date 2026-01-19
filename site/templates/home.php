@@ -26,6 +26,34 @@
     </section>
   <?php endif ?>
 
+  <!-- Schedule Section -->
+  <section class="schedule section">
+    <div class="container">
+      <h2>Schedule</h2>
+      <?php if ($page->schedule_intro()->isNotEmpty()): ?>
+        <div class="content">
+          <?= $page->schedule_intro()->kt() ?>
+        </div>
+      <?php endif ?>
+      <div class="schedule-days-grid">
+        <?php
+        $dates = [
+          '2026-03-06' => 'Friday, March 6, 2026',
+          '2026-03-07' => 'Saturday, March 7, 2026',
+          '2026-03-08' => 'Sunday, March 8, 2026'
+        ];
+        foreach ($dates as $dateValue => $dateFormatted):
+          $scheduleDatePage = $site->find($dateValue);
+          $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+        ?>
+          <a href="<?= $scheduleDateUrl ?>" class="schedule-day-card">
+            <h3><?= explode(',', $dateFormatted)[0] ?></h3>
+          </a>
+        <?php endforeach ?>
+      </div>
+    </div>
+  </section>
+
   <!-- Registration Section -->
   <?php if ($page->registration()->isNotEmpty()): ?>
     <section class="registration section">
