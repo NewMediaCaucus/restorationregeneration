@@ -8,6 +8,8 @@
         <h1>Symposium Schedule</h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Define the three days
       $dates = [
