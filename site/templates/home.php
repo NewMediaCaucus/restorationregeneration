@@ -42,13 +42,84 @@
           '2026-03-07' => 'Saturday, March 7, 2026',
           '2026-03-08' => 'Sunday, March 8, 2026'
         ];
+
+        // Get weather data
+        $weatherData = [];
+        if ($page->schedule_weather()->isNotEmpty()) {
+          foreach ($page->schedule_weather()->toStructure() as $weather) {
+            $weatherDate = $weather->date()->value();
+            $weatherData[$weatherDate] = [
+              'high' => $weather->high_temp()->value(),
+              'low' => $weather->low_temp()->value(),
+              'condition' => $weather->condition()->value()
+            ];
+          }
+        }
+
         foreach ($dates as $dateValue => $dateFormatted):
           $scheduleDatePage = $site->find($dateValue);
           $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+          $weather = $weatherData[$dateValue] ?? null;
         ?>
-          <a href="<?= $scheduleDateUrl ?>" class="schedule-day-card">
-            <h3><?= explode(',', $dateFormatted)[0] ?></h3>
-          </a>
+          <div class="schedule-day-wrapper">
+            <a href="<?= $scheduleDateUrl ?>" class="schedule-day-card">
+              <h3><?= explode(',', $dateFormatted)[0] ?></h3>
+              <?php if ($weather): ?>
+                <div class="schedule-weather-box">
+                  <div class="weather-icon">
+                    <?php
+                    $condition = $weather['condition'];
+                    if ($condition === 'sunny') {
+                      $svgPath = kirby()->root('assets') . '/icons/noun-sunny-5362980-FFFFFF.svg';
+                      if (file_exists($svgPath)) {
+                        $svgContent = file_get_contents($svgPath);
+                        // Remove XML declaration
+                        $svgContent = preg_replace('/<\?xml[^>]*\?>/', '', $svgContent);
+                        // Update viewBox for better scaling
+                        $svgContent = str_replace('viewBox="0 0 128 128"', 'viewBox="0 0 128 128" preserveAspectRatio="xMidYMid meet"', $svgContent);
+                        echo trim($svgContent);
+                      }
+                    } elseif ($condition === 'partly-cloudy') {
+                      $svgPath = kirby()->root('assets') . '/icons/noun-partly-cloudy-8200719-FFFFFF.svg';
+                      if (file_exists($svgPath)) {
+                        $svgContent = file_get_contents($svgPath);
+                        // Remove XML declaration
+                        $svgContent = preg_replace('/<\?xml[^>]*\?>/', '', $svgContent);
+                        // Update viewBox for better scaling
+                        $svgContent = str_replace('viewBox="0 0 128 128"', 'viewBox="0 0 128 128" preserveAspectRatio="xMidYMid meet"', $svgContent);
+                        echo trim($svgContent);
+                      }
+                    } elseif ($condition === 'cloudy') {
+                      $svgPath = kirby()->root('assets') . '/icons/noun-cloud-8172191-FFFFFF.svg';
+                      if (file_exists($svgPath)) {
+                        $svgContent = file_get_contents($svgPath);
+                        // Remove XML declaration
+                        $svgContent = preg_replace('/<\?xml[^>]*\?>/', '', $svgContent);
+                        // Update viewBox for better scaling
+                        $svgContent = str_replace('viewBox="0 0 128 128"', 'viewBox="0 0 128 128" preserveAspectRatio="xMidYMid meet"', $svgContent);
+                        echo trim($svgContent);
+                      }
+                    } elseif ($condition === 'rainy') {
+                      echo '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16" y1="13" x2="16" y2="21"/><line x1="8" y1="13" x2="8" y2="21"/><line x1="12" y1="15" x2="12" y2="23"/><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg>';
+                    }
+                    ?>
+                  </div>
+                  <div class="weather-temps">
+                    <?php if ($weather['high']):
+                      $highC = round(($weather['high'] - 32) * 5 / 9);
+                    ?>
+                      <span class="temp-high"><?= $weather['high'] ?>°F / <?= $highC ?>°C</span>
+                    <?php endif ?>
+                    <?php if ($weather['low']):
+                      $lowC = round(($weather['low'] - 32) * 5 / 9);
+                    ?>
+                      <span class="temp-low"><?= $weather['low'] ?>°F / <?= $lowC ?>°C</span>
+                    <?php endif ?>
+                  </div>
+                </div>
+              <?php endif ?>
+            </a>
+          </div>
         <?php endforeach ?>
       </div>
     </div>
