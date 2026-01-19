@@ -32,6 +32,13 @@ sections:
         placeholder: "Description of the symposium theme..."
         dragText: false
         buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
+      schedule_intro:
+        label: Schedule Introduction
+        type: textarea
+        size: medium
+        placeholder: "Introductory text for the schedule section..."
+        dragText: false
+        buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
       sudomagic_promo_image:
         label: SudoMagic Promo Image
         type: files
