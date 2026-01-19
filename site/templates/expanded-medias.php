@@ -8,6 +8,8 @@
         <h1>Expanded Media</h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all expanded media
       $expandedMedia = $site->index()->filterBy('intendedTemplate', 'expanded-media');

@@ -2082,6 +2082,44 @@ body.is-touch .home-header-mobile {
   font-weight: 700;
 }
 
+/* Construction Alert Box */
+.construction-alert {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: hsl(33, 100%, 90%);
+  border-radius: 12px;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.construction-alert-icon {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.construction-alert-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.construction-alert-content {
+  flex: 1;
+}
+
+.construction-alert-content p {
+  margin: 0;
+  color: black;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
 .listings-page h1.presenter-name {
   font-size: 3.5rem;
   font-weight: 700;

@@ -39,6 +39,8 @@
         <h1>Schedule for <?= $dateFormatted ?></h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all event types that can have dates
       $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];

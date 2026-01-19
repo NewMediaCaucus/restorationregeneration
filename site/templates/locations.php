@@ -8,6 +8,8 @@
         <h1>Locations</h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all locations
       $locations = $site->index()->filterBy('intendedTemplate', 'location');
