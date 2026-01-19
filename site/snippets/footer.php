@@ -50,7 +50,15 @@
           <?php
           $locationsPage = $site->find('locations');
           ?>
-          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations</a>
+          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">R/R Locations</a>
+          <a href="" target="_blank">
+            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            50 N Centennial Way, Mesa, AZ 85201
+          </a>
+
         </nav>
       </div>
 
@@ -58,7 +66,8 @@
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Join Us!</h3>
         <nav class="navblock-links">
-          <a href="https://newmediacaucus.org" target="_blank">New Media Caucus</a>
+          <a href="<https://www.tixtree.com/e/2026-symposium-restorationregeneration-1301fb9395e6>">Register for R/R</a>
+          <a href="https://newmediacaucus.org" target="_blank">newmediacaucus.org</a>
         </nav>
       </div>
     </div>
@@ -76,7 +85,7 @@
     <div class="mobile-menu-overlay" id="mobile-menu-overlay">
       <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
       <div class="mobile-menu-content">

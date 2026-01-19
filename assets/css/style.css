@@ -898,7 +898,7 @@ a:hover {
 }
 
 .navblock-links a {
-  color: hsla(260, 25%, 75%, 1);
+  color: hsl(142, 75%, 87%);
   text-decoration: none;
   font-size: var(--font-size-base);
   transition: color var(--transition-fast);
@@ -907,6 +907,10 @@ a:hover {
 .navblock-links a:hover {
   color: white;
   text-decoration: underline;
+}
+
+.navblock-links a .map-pin-icon {
+  color: hsl(142, 75%, 87%);
 }
 
 /* Mobile Menu Toggle (Hidden on Desktop) */
@@ -1052,7 +1056,7 @@ a:hover {
   }
 
   .mobile-navblock-links a {
-    color: hsla(260, 25%, 75%, 1);
+    color: hsl(142, 75%, 87%);
     text-decoration: none;
     font-size: var(--font-size-base);
     padding: var(--spacing-xs) 0;
@@ -1064,13 +1068,17 @@ a:hover {
     color: white;
   }
 
+  .mobile-navblock-links a .map-pin-icon {
+    color: hsl(142, 75%, 87%);
+  }
+
   .mobile-navblock-links a:last-child {
     border-bottom: none;
   }
 }
 
 /* Responsive adjustments for megafooter */
-@media (max-width: 1279px) {
+@media (max-width: 1279px) and (min-width: 1024px) {
   .megafooter {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-lg);
