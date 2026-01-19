@@ -134,11 +134,11 @@ h6 {
 }
 
 h1 {
-  font-size: var(--font-size-4xl);
+  font-size: var(--font-size-5xl);
 }
 
 h2 {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-4xl);
 }
 
 h3 {
@@ -374,11 +374,11 @@ a:hover {
   }
 
   h1 {
-    font-size: var(--font-size-5xl);
+    font-size: 3.5rem;
   }
 
   h2 {
-    font-size: var(--font-size-4xl);
+    font-size: 2.75rem;
   }
 
   h3 {
@@ -404,11 +404,11 @@ a:hover {
   }
 
   h1 {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-4xl);
   }
 
   h2 {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
   }
 
   h3 {
@@ -427,11 +427,11 @@ a:hover {
   }
 
   h1 {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
   }
 
   h2 {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
   }
 
   h3 {
@@ -455,11 +455,11 @@ a:hover {
   }
 
   h1 {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
   }
 
   h2 {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-3xl);
   }
 
   h3 {
