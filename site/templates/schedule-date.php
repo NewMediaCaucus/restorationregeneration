@@ -39,6 +39,8 @@
         <h1>Schedule for <?= $dateFormatted ?></h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all event types that can have dates
       $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
@@ -366,7 +368,7 @@
           </div>
         <?php endif ?>
       <?php else: ?>
-        <p>No events scheduled for this date.</p>
+        <p>We are still loading the schedule for this date. Come back soon to see what's happening!</p>
       <?php endif ?>
 
     </article>
