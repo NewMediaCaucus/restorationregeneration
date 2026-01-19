@@ -884,11 +884,17 @@ a:hover {
 }
 
 .navblock-header {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   color: white;
   margin: 0;
   text-decoration: none;
+}
+
+.navblock-description {
+  color: white;
+  font-size: var(--font-size-sm);
+  margin: 0;
 }
 
 .navblock-links {
@@ -1042,11 +1048,17 @@ a:hover {
   }
 
   .mobile-navblock-header {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-2xl);
     font-weight: 600;
     color: white;
     margin: 0 0 var(--spacing-xs) 0;
     text-decoration: none;
+  }
+
+  .mobile-navblock-description {
+    color: white;
+    font-size: var(--font-size-sm);
+    margin: 0 0 var(--spacing-xs) 0;
   }
 
   .mobile-navblock-links {
@@ -1061,7 +1073,6 @@ a:hover {
     font-size: var(--font-size-base);
     padding: var(--spacing-xs) 0;
     transition: color var(--transition-fast);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .mobile-navblock-links a:hover {
@@ -1256,7 +1267,7 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 767px) and (min-width: 480px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
   }
 
   .header-animation .hero-overlay .hero-subtitle {
@@ -1274,7 +1285,7 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 479px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 1.75rem;
+    font-size: 2.5rem;
   }
 
   .header-animation .hero-overlay .hero-subtitle {
@@ -2652,7 +2663,7 @@ body.is-touch .home-header-mobile {
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
   }
 
   .static-header .hero-overlay .hero-subtitle {
@@ -2674,7 +2685,7 @@ body.is-touch .home-header-mobile {
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 1.5rem;
+    font-size: 2.25rem;
   }
 
   .static-header .hero-overlay .hero-subtitle {
