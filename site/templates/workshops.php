@@ -8,6 +8,8 @@
         <h1>Workshops</h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all workshops
       $workshops = $site->index()->filterBy('intendedTemplate', 'workshop');

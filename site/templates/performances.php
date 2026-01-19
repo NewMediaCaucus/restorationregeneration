@@ -8,6 +8,8 @@
         <h1>Performances</h1>
       </div>
 
+      <?php snippet('construction-alert') ?>
+
       <?php
       // Get all performances
       $performances = $site->index()->filterBy('intendedTemplate', 'performance');

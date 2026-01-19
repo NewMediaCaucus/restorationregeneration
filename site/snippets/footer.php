@@ -26,7 +26,7 @@
       <!-- Second Block: Be Dazzled -->
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Become Dazzled</h3>
-        <p class="navblock-description">Discover the many artists, artforms, and activities gathering at the symposium.</p>
+        <p class="navblock-description">Discover the many artists, artforms, and activities converging at the symposium.</p>
 
         <nav class="navblock-links">
           <?php
@@ -49,7 +49,7 @@
       <!-- Third Block: Find Yourself -->
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Find Your Way</h3>
-        <p class="navblock-description">Learn about our venues inside the MIX Center.</p>
+        <p class="navblock-description">Locate our destinations inside the MIX Center.</p>
 
         <nav class="navblock-links">
           <?php
