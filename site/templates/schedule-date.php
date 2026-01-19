@@ -366,7 +366,7 @@
           </div>
         <?php endif ?>
       <?php else: ?>
-        <p>No events scheduled for this date.</p>
+        <p>We are still loading the schedule for this date. Come back soon to see what's happening!</p>
       <?php endif ?>
 
     </article>
