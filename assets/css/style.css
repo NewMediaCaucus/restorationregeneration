@@ -865,6 +865,219 @@ a:hover {
 }
 
 /* ==========================================================================
+   Megafooter Navigation Styles
+   ========================================================================== */
+
+.megafooter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xl);
+  padding-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+.megafooter-navblock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.navblock-header {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  text-decoration: none;
+}
+
+.navblock-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.navblock-links a {
+  color: hsla(260, 25%, 75%, 1);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  transition: color var(--transition-fast);
+}
+
+.navblock-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Mobile Menu Toggle (Hidden on Desktop) */
+.mobile-menu-toggle {
+  display: none;
+}
+
+/* Mobile Menu Overlay (Hidden on Desktop) */
+.mobile-menu-overlay {
+  display: none;
+}
+
+/* ==========================================================================
+   Mobile Menu Styles
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+
+  /* Make megafooter single column on mobile */
+  .megafooter {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  /* Show mobile menu toggle */
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #50fa7b;
+    border: none;
+    cursor: pointer;
+    z-index: 9998;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-menu-toggle:hover {
+    background-color: #45e169;
+    transform: scale(1.05);
+  }
+
+  /* Hide hamburger when menu is open */
+  body.mobile-menu-open .mobile-menu-toggle {
+    display: none;
+  }
+
+  .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+  }
+
+  .hamburger-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transition: all var(--transition-fast);
+    border-radius: 1px;
+  }
+
+  /* Mobile Menu Overlay */
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: hsla(0, 0%, 20%, 1);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: var(--spacing-lg) var(--spacing-md);
+    box-sizing: border-box;
+  }
+
+  .mobile-menu-overlay.active {
+    display: block;
+  }
+
+  .mobile-menu-close {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ff5555;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-menu-close:hover {
+    background-color: #ff3d3d;
+    transform: scale(1.05) rotate(90deg);
+  }
+
+  .mobile-menu-close svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-menu-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: var(--spacing-md);
+  }
+
+  .mobile-navblock {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .mobile-navblock:last-child {
+    margin-bottom: 0;
+  }
+
+  .mobile-navblock-header {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: white;
+    margin: 0 0 var(--spacing-xs) 0;
+    text-decoration: none;
+  }
+
+  .mobile-navblock-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-navblock-links a {
+    color: hsla(260, 25%, 75%, 1);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    padding: var(--spacing-xs) 0;
+    transition: color var(--transition-fast);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-navblock-links a:hover {
+    color: white;
+  }
+
+  .mobile-navblock-links a:last-child {
+    border-bottom: none;
+  }
+}
+
+/* Responsive adjustments for megafooter */
+@media (max-width: 1279px) {
+  .megafooter {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+/* ==========================================================================
    Header Animation Styles
    ========================================================================== */
 
