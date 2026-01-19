@@ -39,6 +39,37 @@ sections:
         placeholder: "Introductory text for the schedule section..."
         dragText: false
         buttons: ['link', 'email', 'ul', 'ol', 'bold', 'italic']
+      schedule_weather:
+        label: Schedule Weather
+        type: structure
+        fields:
+          date:
+            label: Date
+            type: select
+            required: true
+            options:
+              "2026-03-06": "Friday, March 6, 2026"
+              "2026-03-07": "Saturday, March 7, 2026"
+              "2026-03-08": "Sunday, March 8, 2026"
+          high_temp:
+            label: High Temperature (°F)
+            type: number
+            size: small
+            placeholder: "75"
+          low_temp:
+            label: Low Temperature (°F)
+            type: number
+            size: small
+            placeholder: "55"
+          condition:
+            label: Weather Condition
+            type: select
+            required: true
+            options:
+              "sunny": "Sunny"
+              "partly-cloudy": "Partly Cloudy"
+              "cloudy": "Cloudy"
+              "rainy": "Rainy"
       sudomagic_promo_image:
         label: SudoMagic Promo Image
         type: files
