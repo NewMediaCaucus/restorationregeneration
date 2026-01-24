@@ -2,6 +2,7 @@
 
 use Kirby\Panel\Lab\Doc;
 use Kirby\Panel\Lab\Docs;
+use Kirby\Panel\Lab\Responses;
 
 return [
 	'lab.docs' => [
@@ -16,14 +17,20 @@ return [
 				];
 			}
 
+			$doc = Doc::factory($component);
+
 			return [
 				'component' => 'k-lab-docs-drawer',
 				'props' => [
 					'icon' => 'book',
 					'title' => $component,
-					'docs'  => Doc::factory($component)->toArray()
+					'docs'  => $doc->toArray()
 				]
 			];
 		},
+	],
+	'lab.errors' => [
+		'pattern' => 'lab/errors/(:any?)',
+		'load'    => fn (string|null $type = null) => Responses::errorResponseByType($type)
 	],
 ];

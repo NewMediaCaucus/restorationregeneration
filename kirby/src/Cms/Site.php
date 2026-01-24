@@ -20,6 +20,8 @@ use Kirby\Toolkit\A;
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://getkirby.com/license
+ *
+ * @method \Kirby\Uuid\SiteUuid uuid()
  */
 class Site extends ModelWithContent
 {
@@ -212,7 +214,7 @@ class Site extends ModelWithContent
 	 */
 	public function errorPageId(): string
 	{
-		return $this->errorPageId ?? 'error';
+		return $this->errorPageId;
 	}
 
 	/**
@@ -236,7 +238,7 @@ class Site extends ModelWithContent
 	 */
 	public function homePageId(): string
 	{
-		return $this->homePageId ?? 'home';
+		return $this->homePageId;
 	}
 
 	/**

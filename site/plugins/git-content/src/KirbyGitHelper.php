@@ -53,15 +53,18 @@ class KirbyGitHelper
 
     public function log(int $limit = 10)
     {
+        $separator = "\|";
+        $format = implode($separator, ["%H", "%s", "%an", "%ae", "%cI"]);
+
 		try {
-			$log = $this->getRepo()->execute('log', '--pretty=format:%H|%s|%an|%ae|%cI', '--max-count=' . $limit);
+			$log = $this->getRepo()->execute('log', '--pretty=format:' . $format, '--max-count=' . $limit);
 		} catch (GitException $e) {
 			$this->catchGitException($e);
 		}
 
         $log = array_map(
-            function ($line) {
-                $entry = explode("|", $line);
+            function ($line) use ($separator) {
+                $entry = explode($separator, $line);
 
                 return [
                     'hash' => $entry[0],
@@ -161,9 +164,38 @@ class KirbyGitHelper
         $this->getRepo()->pull(null, ['--no-rebase']);
     }
 
+    public function fetch()
+    {
+        $this->getRepo()->fetch();
+    }
+
     public function reset()
     {
         $this->getRepo()->execute('reset', '--hard', 'HEAD');
+    }
+
+    public function resetToOrigin()
+    {
+        $remoteBranch = $this->getRepo()->execute('rev-parse', '--abbrev-ref', '@{u}');
+        $remoteBranch = $remoteBranch[0] ?? null;
+        if (empty($remoteBranch)) {
+            throw new Exception('No remote branch found. Please add a remote branch first.');
+        }
+        $this->getRepo()->execute('reset', '--hard', $remoteBranch);
+    }
+
+    public function removeIndexLock()
+    {
+        if (!$this->hasIndexLock()) {
+            return;
+        }
+
+        unlink($this->repoPath . '/.git/index.lock');
+    }
+
+    public function hasIndexLock()
+    {
+        return file_exists($this->repoPath . '/.git/index.lock');
     }
 
     public function clean()
