@@ -3,6 +3,7 @@
 namespace Kirby\Form\Mixin;
 
 use Kirby\Cms\Language;
+use ReflectionProperty;
 
 /**
  * @package   Kirby Form
@@ -13,7 +14,14 @@ use Kirby\Cms\Language;
  */
 trait Value
 {
+	/**
+	 * Default value for the field, which will be used when a page/file/user is created
+	 */
 	protected mixed $default = null;
+
+	/**
+	 * The value of the field
+	 */
 	protected mixed $value = null;
 
 	/**
@@ -42,6 +50,14 @@ trait Value
 		}
 
 		return $this->model->toString($this->default);
+	}
+
+	/**
+	 * Returns the fallback value when the field should be empty
+	 */
+	public function emptyValue(): mixed
+	{
+		return (new ReflectionProperty($this, 'value'))->getDefaultValue();
 	}
 
 	/**
@@ -109,10 +125,6 @@ trait Value
 	public function isSubmittable(Language $language): bool
 	{
 		if ($this->hasValue() === false) {
-			return false;
-		}
-
-		if ($this->isDisabled() === true) {
 			return false;
 		}
 

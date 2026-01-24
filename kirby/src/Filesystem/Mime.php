@@ -57,6 +57,7 @@ class Mime
 		'log'   => ['text/plain', 'text/x-log'],
 		'm4a'   => 'audio/mp4',
 		'm4v'   => 'video/mp4',
+		'md'    => 'text/markdown',
 		'mid'   => 'audio/midi',
 		'midi'  => 'audio/midi',
 		'mif'   => 'application/vnd.mif',
@@ -98,9 +99,9 @@ class Mime
 		'tgz'   => ['application/x-tar', 'application/x-gzip-compressed'],
 		'tif'   => 'image/tiff',
 		'tiff'  => 'image/tiff',
-		'wav'   => 'audio/x-wav',
+		'wav'   => ['audio/wav', 'audio/x-wav', 'audio/vnd.wave', 'audio/wave'],
 		'wbxml' => 'application/wbxml',
-		'webm'  => 'video/webm',
+		'webm'  => ['video/webm', 'audio/webm'],
 		'webp'  => 'image/webp',
 		'word'  => ['application/msword', 'application/octet-stream'],
 		'xhtml' => 'application/xhtml+xml',
@@ -124,6 +125,10 @@ class Mime
 		string|null $mime = null,
 		string|null $extension = null
 	): string|null {
+		if ($mime === null || $extension === null) {
+			return $mime;
+		}
+
 		// fixing map
 		$map = [
 			'text/html' => [
@@ -187,7 +192,6 @@ class Mime
 		) {
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$mime  = finfo_file($finfo, $file);
-			finfo_close($finfo);
 			return $mime;
 		}
 
