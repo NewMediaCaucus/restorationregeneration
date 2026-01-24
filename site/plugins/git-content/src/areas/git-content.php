@@ -26,6 +26,24 @@ return [
                 return true;
             }
         ],
+        'git-content.reset' => [
+            'pattern' => 'git-content/reset',
+            'load' => fn () => [
+                'component' => 'k-remove-dialog',
+                'props' => [
+                    'text' => "Are you sure you want to reset the content folder?<br><br>⚠️ Will remove all local changes and reset to the remote branch.",
+                    'submitButton' => 'Reset',
+                    'icon' => 'undo',
+                ]
+            ],
+            'submit' => function () {
+                $git = new KirbyGitHelper();
+                $git->resetToOrigin();
+                $git->clean();
+
+                return true;
+            }
+        ],
         'git-content.commit' => [
             'pattern' => 'git-content/commit',
             'load' => fn () => [
@@ -139,6 +157,41 @@ return [
             'action'  => function () {
                 $git = new Thathoff\GitContent\KirbyGitHelper();
 
+                $defaultButtons = [
+                    'revert' => true,
+                    'reset' => false,
+                    'commit' => true,
+                    'pull' => true,
+                    'push' => true,
+                    'fetch' => true,
+                    'createBranch' => true,
+                    'switchBranch' => true,
+                ];
+
+                $configuredButtons = option('thathoff.git-content.buttons', []);
+                if (!is_array($configuredButtons)) {
+                    $configuredButtons = [];
+                }
+
+                $normalizedButtons = [];
+                foreach ($configuredButtons as $key => $value) {
+                    if (array_key_exists($key, $defaultButtons)) {
+                        $normalizedButtons[$key] = (bool)$value;
+                    }
+                }
+
+                $buttons = array_merge($defaultButtons, $normalizedButtons);
+
+                if ($user = kirby()->user()) {
+                    $rolePermissions = $user->role()->permissions();
+
+                    foreach ($buttons as $key => $isEnabled) {
+                        if ($rolePermissions->for('thathoff.git-content', $key, true) === false) {
+                            $buttons[$key] = false;
+                        }
+                    }
+                }
+
                 $logFormatted = array_map(
                     function ($entry) {
                         return [
@@ -152,14 +205,23 @@ return [
                     $git->log()
                 );
 
+                $disableBranchManagement = (bool)option('thathoff.git-content.disableBranchManagement', false);
+
+                if ($disableBranchManagement) {
+                    $buttons['createBranch'] = false;
+                    $buttons['switchBranch'] = false;
+                }
+
                 return [
                     'component' => 'git-content',
                     'title' => 'Git Content',
                     'props' => [
-                        'disableBranchManagement' => (bool)option('thathoff.git-content.disableBranchManagement', false),
+                        'disableBranchManagement' => $disableBranchManagement,
+                        'buttons' => $buttons,
                         'log' => $logFormatted,
                         'helpText' => option('thathoff.git-content.helpText'),
                         'branch' => $git->getCurrentBranch(),
+                        'hasIndexLock' => $git->hasIndexLock(),
                         'status' => $git->status(), // is associative array consisting of changed files and whether repo is ahead/behind to origin
                     ],
                 ];

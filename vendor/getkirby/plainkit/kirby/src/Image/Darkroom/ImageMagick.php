@@ -8,13 +8,16 @@ use Kirby\Image\Darkroom;
 use Kirby\Image\Focus;
 
 /**
- * ImageMagick
+ * Legacy ImageMagick driver using the convert CLI
  *
  * @package   Kirby Image
  * @author    Bastian Allgeier <bastian@getkirby.com>
  * @link      https://getkirby.com
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
+ *
+ * @deprecated 5.1.0 Use `imagick` in the `thumbs.driver` config option instead
+ * @todo Remove in 7.0.0
  */
 class ImageMagick extends Darkroom
 {
@@ -157,22 +160,16 @@ class ImageMagick extends Darkroom
 	 */
 	protected function resize(string $file, array $options): string
 	{
-		// simple resize
-		if ($options['crop'] === false) {
-			return '-thumbnail ' . escapeshellarg(sprintf('%sx%s!', $options['width'], $options['height']));
-		}
-
-		// crop based on focus point
-		if (Focus::isFocalPoint($options['crop']) === true) {
+		if ($crop = $options['crop'] ?? null) {
 			if ($focus = Focus::coords(
-				$options['crop'],
+				$crop,
 				$options['sourceWidth'],
 				$options['sourceHeight'],
 				$options['width'],
 				$options['height']
 			)) {
 				return sprintf(
-					'-crop %sx%s+%s+%s -resize %sx%s^',
+					'-crop %sx%s+%s+%s -thumbnail %sx%s^',
 					$focus['width'],
 					$focus['height'],
 					$focus['x1'],
@@ -183,24 +180,7 @@ class ImageMagick extends Darkroom
 			}
 		}
 
-		// translate the gravity option into something imagemagick understands
-		$gravity = match ($options['crop'] ?? null) {
-			'top left'     => 'NorthWest',
-			'top'          => 'North',
-			'top right'    => 'NorthEast',
-			'left'         => 'West',
-			'right'        => 'East',
-			'bottom left'  => 'SouthWest',
-			'bottom'       => 'South',
-			'bottom right' => 'SouthEast',
-			default        => 'Center'
-		};
-
-		$command  = '-thumbnail ' . escapeshellarg(sprintf('%sx%s^', $options['width'], $options['height']));
-		$command .= ' -gravity ' . escapeshellarg($gravity);
-		$command .= ' -crop ' . escapeshellarg(sprintf('%sx%s+0+0', $options['width'], $options['height']));
-
-		return $command;
+		return '-thumbnail ' . escapeshellarg(sprintf('%sx%s^', $options['width'], $options['height']));
 	}
 
 	/**
