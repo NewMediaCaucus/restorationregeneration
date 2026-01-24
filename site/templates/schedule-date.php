@@ -218,10 +218,7 @@
                               </div>
                             <?php endif ?>
                             <?php if ($event->location()->isNotEmpty()): ?>
-                              <?php
-                              $location = $event->location()->toPage();
-                              if ($location):
-                              ?>
+                              <?php foreach ($event->location()->toPages() as $location): ?>
                                 <div class="event-location">
                                   <a href="<?= $location->url() ?>">
                                     <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -231,7 +228,7 @@
                                     <?= $location->title() ?>
                                   </a>
                                 </div>
-                              <?php endif ?>
+                              <?php endforeach ?>
                             <?php endif ?>
                           </div>
                         </div>
@@ -345,10 +342,7 @@
                         </div>
                       <?php endif ?>
                       <?php if ($event->location()->isNotEmpty()): ?>
-                        <?php
-                        $location = $event->location()->toPage();
-                        if ($location):
-                        ?>
+                        <?php foreach ($event->location()->toPages() as $location): ?>
                           <div class="event-location">
                             <a href="<?= $location->url() ?>">
                               <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -358,7 +352,7 @@
                               <?= $location->title() ?>
                             </a>
                           </div>
-                        <?php endif ?>
+                        <?php endforeach ?>
                       <?php endif ?>
                     </div>
                   </div>

@@ -113,13 +113,16 @@
         }
       }
 
-      // Filter events that are at this location
+      // Filter events that are at this location (videos can have multiple locations)
       $locationEvents = [];
       foreach ($allEvents as $event) {
         if ($event->location()->isNotEmpty()) {
-          $eventLocation = $event->location()->toPage();
-          if ($eventLocation && $eventLocation->id() === $page->id()) {
-            $locationEvents[] = $event;
+          $eventLocations = $event->location()->toPages();
+          foreach ($eventLocations as $loc) {
+            if ($loc->id() === $page->id()) {
+              $locationEvents[] = $event;
+              break;
+            }
           }
         }
       }
@@ -269,6 +272,19 @@
                         echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
                         ?>
                       </div>
+                    <?php endif ?>
+                    <?php if ($event->location()->isNotEmpty()): ?>
+                      <?php foreach ($event->location()->toPages() as $loc): ?>
+                        <div class="event-location">
+                          <a href="<?= $loc->url() ?>">
+                            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <?= $loc->title() ?>
+                          </a>
+                        </div>
+                      <?php endforeach ?>
                     <?php endif ?>
                   </div>
                 </div>
