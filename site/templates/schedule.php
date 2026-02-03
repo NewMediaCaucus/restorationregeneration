@@ -19,7 +19,7 @@
       ];
 
       // Get all event types that can have dates
-      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video', 'social-gathering'];
       $allEvents = [];
 
       foreach ($eventTemplates as $template) {
@@ -37,11 +37,16 @@
         "11:15AM to 1:15PM",
         "2:15PM to 4:15PM",
         "4:30PM to 6:30PM",
-        "8:00PM to 10:00PM"
+        "5:00PM to 7:00PM",
+        "6:00PM to 7:00PM",
+        "7:00PM to 8:00PM",
+        "8:00PM to 10:00PM",
+        "8:30PM to 10:00PM",
+        "10:00PM to 12:00AM"
       ];
 
       // Event type order
-      $eventTypeOrder = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $eventTypeOrder = ['presentation', 'workshop', 'expanded-media', 'performance', 'video', 'social-gathering'];
 
       // Process each date
       foreach ($dates as $dateValue => $dateFormatted):
@@ -128,7 +133,8 @@
                           'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
                           'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
                           'performance' => ['slug' => 'performances', 'template' => 'performances'],
-                          'video' => ['slug' => 'videos', 'template' => 'videos']
+                          'video' => ['slug' => 'videos', 'template' => 'videos'],
+                          'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
                         ];
                         $templateName = $event->intendedTemplate()->name();
                         $listingInfo = $templateToListing[$templateName] ?? null;
@@ -239,13 +245,14 @@
                 <?php foreach ($eventsWithoutTimeblock as $event): ?>
                   <?php
                   // Map event template names to listing page slugs and templates
-                  $templateToListing = [
-                    'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
-                    'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-                    'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
-                    'performance' => ['slug' => 'performances', 'template' => 'performances'],
-                    'video' => ['slug' => 'videos', 'template' => 'videos']
-                  ];
+            $templateToListing = [
+              'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+              'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+              'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
+              'performance' => ['slug' => 'performances', 'template' => 'performances'],
+              'video' => ['slug' => 'videos', 'template' => 'videos'],
+              'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
+            ];
                   $templateName = $event->intendedTemplate()->name();
                   $listingInfo = $templateToListing[$templateName] ?? null;
 

@@ -1,5 +1,16 @@
 title: Site
 sections:
+  gatherings:
+    label: Social Gatherings
+    type: pages
+    template: social-gathering
+    empty: "No social gatherings yet"
+    description: "Create a social gathering for the symposium. Each social gathering can have can have multiple presenters and specific details."
+    image:
+      cover: true
+    layout: list
+    limit: 80
+    sortBy: page.date asc
   videos:
     label: Single-Channel Videos
     type: pages
