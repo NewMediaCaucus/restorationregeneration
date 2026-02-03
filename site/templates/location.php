@@ -127,8 +127,16 @@
         }
       }
 
-      // Sort events by date (Friday, Saturday, Sunday)
+      // Sort events by date (Friday, Saturday, Sunday) then by timeblock
       $dateOrder = ['2026-03-06', '2026-03-07', '2026-03-08'];
+      $timeblockOrder = [
+        "8:30AM to 9:00AM",
+        "9:00AM to 11:00AM",
+        "11:15AM to 1:15PM",
+        "2:15PM to 4:15PM",
+        "4:30PM to 6:30PM",
+        "8:00PM to 10:00PM"
+      ];
       $sortedEvents = [];
       $eventsWithoutDate = [];
 
@@ -150,8 +158,8 @@
         }
       }
 
-      // Sort by date order
-      usort($sortedEvents, function ($a, $b) use ($dateOrder) {
+      // Sort by date then by timeblock (same day = order by time)
+      usort($sortedEvents, function ($a, $b) use ($dateOrder, $timeblockOrder) {
         try {
           $dateA = new DateTime($a->date()->value());
           $dateB = new DateTime($b->date()->value());
@@ -161,7 +169,17 @@
           $indexB = array_search($dateValueB, $dateOrder);
           if ($indexA === false) $indexA = 999;
           if ($indexB === false) $indexB = 999;
-          return $indexA - $indexB;
+          if ($indexA !== $indexB) {
+            return $indexA - $indexB;
+          }
+          // Same date: sort by timeblock
+          $timeblockA = $a->timeblock()->isNotEmpty() ? $a->timeblock()->value() : '';
+          $timeblockB = $b->timeblock()->isNotEmpty() ? $b->timeblock()->value() : '';
+          $timeIndexA = $timeblockA !== '' ? array_search($timeblockA, $timeblockOrder) : false;
+          $timeIndexB = $timeblockB !== '' ? array_search($timeblockB, $timeblockOrder) : false;
+          if ($timeIndexA === false) $timeIndexA = 9999;
+          if ($timeIndexB === false) $timeIndexB = 9999;
+          return $timeIndexA - $timeIndexB;
         } catch (Exception $e) {
           return 0;
         }
