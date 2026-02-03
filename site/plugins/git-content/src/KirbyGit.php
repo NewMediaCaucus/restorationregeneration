@@ -39,6 +39,27 @@ class KirbyGit
                 },
             ],
             [
+                'pattern' => 'git-content/fetch',
+                'method'  => 'POST',
+                'action'  => function () use ($kirbyGit) {
+                    return $kirbyGit->httpGitHelperAction('fetch', "successfully fetched remote changes");
+                },
+            ],
+			[
+                'pattern' => 'git-content/reset',
+                'method'  => 'POST',
+                'action'  => function () use ($kirbyGit) {
+                    return $kirbyGit->httpGitHelperAction('reset', "successfully reset the content folder");
+                },
+            ],
+            [
+                'pattern' => 'git-content/remove-index-lock',
+                'method'  => 'POST',
+                'action'  => function () use ($kirbyGit) {
+                    return $kirbyGit->httpGitHelperAction('removeIndexLock', "successfully removed the index lock");
+                },
+            ],
+            [
                 'pattern' => 'git-content/status',
                 'method' => 'GET',
                 'action' => function () use ($kirbyGit) {
@@ -75,10 +96,18 @@ class KirbyGit
             switch ($gitCommand) {
                 case "push":
                     return $helper->httpGitHelperAction('push', "successfully pushed the content folder");
-                    break;
                 case "pull":
                     return $helper->httpGitHelperAction('pull', "successfully pulled the content folder");
-                    break;
+                case "reset":
+                    if (!$secret) {
+                        return [
+                            "status" => "forbidden",
+                            "message" => "Please configure a cron hook secret for the reset command.",
+                        ];
+                    }
+
+                    $helper->httpGitHelperAction('fetch', "successfully fetched remote changes");
+                    return $helper->httpGitHelperAction('resetToOrigin', "successfully reset the content folder");
             }
 
             Header::missing();

@@ -110,8 +110,10 @@ class Url
 	/**
 	 * Convert a relative path into an absolute URL
 	 */
-	public static function makeAbsolute(string|null $path = null, string|null $home = null): string
-	{
+	public static function makeAbsolute(
+		string|null $path = null,
+		string|null $home = null
+	): string {
 		if ($path === '' || $path === '/' || $path === null) {
 			return $home ?? static::home();
 		}
@@ -120,7 +122,7 @@ class Url
 			return $path;
 		}
 
-		if (static::isAbsolute($path)) {
+		if (static::isAbsolute($path) === true) {
 			return $path;
 		}
 
@@ -128,11 +130,15 @@ class Url
 		$path   = ltrim($path, '/');
 		$home ??= static::home();
 
-		if (empty($path) === true) {
+		if ($path === '') {
 			return $home;
 		}
 
-		return $home === '/' ? '/' . $path : $home . '/' . $path;
+		if ($home === '/') {
+			return '/' . $path;
+		}
+
+		return $home . '/' . $path;
 	}
 
 	/**
@@ -175,15 +181,15 @@ class Url
 	): string {
 		$uri = static::toObject($url);
 
-		$uri->fragment = null;
-		$uri->query    = null;
-		$uri->password = null;
-		$uri->port     = null;
-		$uri->scheme   = null;
-		$uri->username = null;
+		$uri->setFragment(null);
+		$uri->setQuery(null);
+		$uri->setPassword(null);
+		$uri->setPort(null);
+		$uri->setScheme(null);
+		$uri->setUsername(null);
 
 		// remove the trailing slash from the path
-		$uri->slash = false;
+		$uri->setSlash(false);
 
 		$url = $base ? $uri->base() : $uri->toString();
 		$url = str_replace('www.', '', $url ?? '');

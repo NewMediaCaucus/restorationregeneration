@@ -477,7 +477,11 @@ class Str
 		if ($strip === true) {
 			// ensure that opening tags are preceded by a space, so that
 			// when tags are skipped we can be sure that words stay separate
-			$string = preg_replace('#\s*<([^\/])#', ' <${1}', $string);
+			// but only if there's a word character directly before it
+			$string = preg_replace('#(\w)<([^/][^>]*)>#', '${1} <${2}>', $string);
+
+			// add space after closing tag if there's a word character directly after it
+			$string = preg_replace('#</([^>]+)>(\w)#', '</${1}> ${2}', $string);
 
 			// in strip mode, we always return plain text
 			$string = strip_tags($string);
@@ -594,6 +598,40 @@ class Str
 			fn ($matches) => strtoupper($matches[1]),
 			$value ?? ''
 		));
+	}
+
+	/**
+	 * Converts keys or ids into human-readable labels by
+	 * normalizing punctuation, splitting camel- or kebab-case,
+	 * and title-casing the result.
+	 *
+	 * Example: `workEmailAddress` will turn into `Work email address`
+	 *
+	 * @since 5.2.0
+	 */
+	public static function label(string $value): string
+	{
+		// replace punctuation with spaces
+		$value = str_replace(['_', '-', '.'], ' ', $value);
+
+		// add a space before every uppercase character by matching
+		// all characters that are not Unicode lowercase or numbers
+		$value = preg_replace_callback('/[^\p{Ll}\p{Nd}]/u', fn ($match) => ' ' . $match[0], $value);
+
+		// add a space before every first number
+		$value = preg_replace('/([^\d])(\d)/', '$1 $2', $value);
+
+		// remove duplicate spaces
+		$value = preg_replace('/[\s]{2,}+/', ' ', $value);
+
+		// trim leading or trailing spaces
+		$value = trim($value);
+
+		// convert the entire string into lowercase
+		$value = static::lower($value);
+
+		// turn the first character into uppercase
+		return static::ucfirst($value);
 	}
 
 	/**
@@ -815,7 +853,7 @@ class Str
 
 		// without a limit we might as well use the built-in function
 		if ($limit === -1) {
-			return str_replace($search, $replace, $string ?? '');
+			return str_replace($search, $replace, $string);
 		}
 
 		// if the limit is zero, the result will be no replacements at all
@@ -1032,8 +1070,8 @@ class Str
 	 * ```
 	 *
 	 * @param string $string The string to be shortened
-	 * @param int $length The final number of characters the
-	 *                    string should have
+	 * @param int $length Final number of characters
+	 *                    the string (excl. appendix) should have
 	 * @param string $appendix The element, which should be added if the
 	 *                         string is too long. Ellipsis is the default.
 	 * @return string The shortened string

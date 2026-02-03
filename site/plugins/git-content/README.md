@@ -34,9 +34,8 @@ by setting the `commit` option to `true` or manually by visiting the panel view 
 `git submodule add https://github.com/thathoff/kirby-git-content.git site/plugins/git-content`
 
 #### Manual Installation
-- [download the source code](https://github.com/thathoff/kirby-git-content/archive/master.zip)
+- [download the source code](https://github.com/thathoff/kirby-git-content/archive/main.zip)
 - copy the folder to `site/plugins/git-content`.
-
 
 ### Create a new git repository for your content
 
@@ -92,8 +91,7 @@ return [
 - `push` (Boolean): Push your changes to remote? (default: `false`)
 - `commitMessage` (String): Configure the template for the commit message (default: `:action:(:item:): :url:`)
 - `cronHooksEnabled` (Boolean): Whether `/git-content/push` and `/git-content/pull` endpoints are enabled or not. (default: `true`)
-- `cronHooksSecret` (String): When set, this secret must be sent with the cronHooks as a get parameter.  Note: If you set
-  a secret, only the GET method will work on the webhooks.   `/git-content/(pull|push)?secret=S0up3rS3c3t`
+- `cronHooksSecret` (String): When set, this secret must be sent with the cronHooks as a get parameter, see [Cron / Webhooks](#cron--webhooks) for more details.
 - `displayErrors` (Boolean): Display git errors when saving pages (default: `true`)
 - `gitBin` (String): Path to the `git` binary
 - `disable` (Boolean): If set to `true`, the plugin won't initialize. (default: `false`)
@@ -101,6 +99,59 @@ return [
 - `helpText` (String): Supply a custom help text shown in the panel UI. (default: `null`)
 - `menuIcon` (String): Supply a custom icon for the panel menu item. (default: `sitemap`)
 - `menuLabel` (String): Supply a custom label for the panel menu item. (default: `Git Content`)
+- `buttons` (Array): Enable or disable buttons in the panel UI. See [Buttons & Permissions](#buttons--permissions) for options.
+
+### Cron / Webhooks
+
+The plugin provides three webhook that you can trigger via cron or webhooks in your CI/CD pipeline. You can
+enable or disable the webhooks by setting the `cronHooksEnabled` option.
+
+- `/git-content/push`: Pushes changes to the remote repository.
+- `/git-content/pull`: Fetches the latest changes from the remote repository.
+- `/git-content/reset`: Resets the local repository to the remote repository (requires a secret to be set).
+
+You can call the webhooks via HTTP GET or POST request. If you have a secret set, you can either provide the
+secret as a query parameter or as a body parameter.
+
+```bash
+curl https://example.com/git-content/pull?secret=S0up3rS3c3t"
+curl -X POST https://example.com/git-content/push --data "secret=S0up3rS3c3t"
+```
+
+### Buttons & Permissions
+
+The plugin allows you to enable or disable buttons in the panel UI either globally or per role.
+
+To enable or disable buttons globally, set the `buttons` option to an array of button names. The keys are:
+
+- `fetch`: Fetches the latest changes from the remote repository.
+- `commit`: Allows to commit changes to the repository.
+- `pull`: Allows to pull changes from the remote repository.
+- `push`: Allows to push changes to the remote repository.
+- `createBranch`: Allows to create a new branch.
+- `switchBranch`: Allows to switch to a different branch.
+- `removeIndexLock`: Removes the index lock file if it exists.
+- `reset`: Resets the local repository to the remote repository (disabled by default).
+
+```php
+return [
+  'thathoff.git-content.buttons' => [
+    'reset' => true, // enables the reset to origin button (default: false)
+    'fetch' => false, // disables the fetch button (default: true)
+  ],
+];
+```
+
+You also can enable or disable buttons per role by adding the permission to to users blueprint. For example to
+disable the fetch button for the role `editor`, add the following to the `editor` blueprint:
+
+```yaml
+permissions:
+  thathoff.git-content:
+    fetch: false
+```
+
+You can use the same keys as in the `buttons` option to enable or disable buttons per role.
 
 ### Custom Commit Message
 
@@ -147,6 +198,20 @@ cloning and updating your content repository can take a lot of time. If you are 
 *.jpeg filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
+```
+
+## Running on Shared Hosting
+
+Running this plugin on shared hosting can be tricky. You need to ensure that the PHP process has access to the Git binary,
+and that the repository is owned by the user running the PHP process.
+
+Accessing the repository via SSH may also be difficult. In these cases, it may be easier to use the HTTPS URL.
+Check out the repository using HTTPS, a personal access token or password, depending on your Git provider.
+
+When cloning the repository, you can include the username and password like this:
+
+```bash
+git clone https://username:personal-access-token@github.com/yourusername/yourrepository.git
 ```
 
 ## Authors
