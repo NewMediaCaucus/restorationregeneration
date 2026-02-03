@@ -7,7 +7,9 @@ The header animation system provides dynamic, mathematically-driven visual exper
 ## Animation Schedule
 
 ### Prime Number Days (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31)
+
 **Animation**: `tissue-regeneration-3d.js`
+
 - **Theme**: Biological tissue healing and regeneration
 - **Features**: Pink tissue cells that grow, divide, migrate, and form connections
 - **Visual Elements**: 
@@ -18,7 +20,9 @@ The header animation system provides dynamic, mathematically-driven visual exper
   - Dynamic background gradient
 
 ### Even Days (4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30)
+
 **Animation**: `obsidian-icebergs-3d.js`
+
 - **Theme**: Angular obsidian formations with subtle purple hints
 - **Features**: Sharp, geometric icebergs that multiply, divide, and give birth
 - **Visual Elements**:
