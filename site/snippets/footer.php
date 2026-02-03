@@ -31,18 +31,18 @@
         <nav class="navblock-links">
           <?php
           $artistsPage = $site->find('artists');
-          $presentationsPage = $site->find('presentations');
-          $workshopsPage = $site->find('workshops');
-          $performancesPage = $site->find('performances');
-          $videosPage = $site->find('videos');
           $expandedMediasPage = $site->find('expanded-medias');
+          $performancesPage = $site->find('performances');
+          $presentationsPage = $site->find('presentations');
+          $videosPage = $site->find('videos');
+          $workshopsPage = $site->find('workshops');
           ?>
           <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
-          <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
-          <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
-          <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
-          <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
           <a href="<?= $expandedMediasPage ? $expandedMediasPage->url() : $site->url() . '/expanded-medias' ?>">Expanded Media</a>
+          <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
+          <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
+          <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+          <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
         </nav>
       </div>
 
@@ -110,11 +110,11 @@
           <h3 class="mobile-navblock-header">Become Dazzled</h3>
           <nav class="mobile-navblock-links">
             <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
-            <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
-            <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
-            <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
-            <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
             <a href="<?= $expandedMediasPage ? $expandedMediasPage->url() : $site->url() . '/expanded-medias' ?>">Expanded Media</a>
+            <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
+            <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
+            <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+            <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
           </nav>
         </div>
 
