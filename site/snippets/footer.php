@@ -35,6 +35,7 @@
           $performancesPage = $site->find('performances');
           $presentationsPage = $site->find('presentations');
           $videosPage = $site->find('videos');
+          $socialGatheringsPage = $site->find('social-gatherings');
           $workshopsPage = $site->find('workshops');
           ?>
           <a href="<?= $artistsPage ? $artistsPage->url() : $site->url() . '/artists' ?>">Artists</a>
@@ -42,6 +43,7 @@
           <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
           <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
           <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+          <a href="<?= $socialGatheringsPage ? $socialGatheringsPage->url() : $site->url() . '/social-gatherings' ?>">Social Gatherings</a>
           <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
         </nav>
       </div>
@@ -114,6 +116,7 @@
             <a href="<?= $performancesPage ? $performancesPage->url() : $site->url() . '/performances' ?>">Performances</a>
             <a href="<?= $presentationsPage ? $presentationsPage->url() : $site->url() . '/presentations' ?>">Presentations</a>
             <a href="<?= $videosPage ? $videosPage->url() : $site->url() . '/videos' ?>">Single-Channel Videos</a>
+            <a href="<?= $socialGatheringsPage ? $socialGatheringsPage->url() : $site->url() . '/social-gatherings' ?>">Social Gatherings</a>
             <a href="<?= $workshopsPage ? $workshopsPage->url() : $site->url() . '/workshops' ?>">Workshops</a>
           </nav>
         </div>
