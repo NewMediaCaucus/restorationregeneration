@@ -111,8 +111,6 @@
           if (isset($groupedEvents[$timeblock]) && count($groupedEvents[$timeblock]) > 0):
         ?>
             <div class="timeblock-group">
-              <h2 class="timeblock-header"><?= $timeblock ?></h2>
-
               <?php
               // Sort event types within timeblock
               $eventTypeOrder = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
@@ -133,7 +131,7 @@
               foreach ($sortedTypes as $eventType => $typeData):
               ?>
                 <div class="event-type-group">
-                  <h3 class="event-type-header"><?= $timeblock ?> <?= $typeData['title'] ?>s</h3>
+                  <h2 class="event-type-header"><?= $timeblock ?> <?= $typeData['title'] ?>s</h2>
                   <div class="events-grid">
                     <?php foreach ($typeData['events'] as $event): ?>
                       <?php
@@ -249,7 +247,7 @@
         if (count($eventsWithoutTimeblock) > 0):
           ?>
           <div class="timeblock-group">
-            <h2 class="timeblock-header">Other Events</h2>
+            <h2 class="event-type-header">Other Events</h2>
             <div class="events-grid">
               <?php foreach ($eventsWithoutTimeblock as $event): ?>
                 <?php
