@@ -18,11 +18,13 @@ This project uses a Docker-based certbot container to automatically manage SSL c
 ## How It Works
 
 ### Certificate Generation
+
 1. **Initial certificate generation**: Uses webroot method for domain verification
 2. **Apache configuration**: VirtualHost blocks handle both HTTP and HTTPS
 3. **ACME challenge**: Let's Encrypt verifies domain ownership through `.well-known/acme-challenge/`
 
 ### Certificate Renewal
+
 1. **Automatic renewal**: Requires a cron job to be set up (see Automation section)
 2. **Manual renewal**: Can be triggered manually using the renewal scripts
 3. **Apache reload**: Apache is automatically reloaded after successful renewal
