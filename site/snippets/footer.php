@@ -5,7 +5,7 @@
       <!-- First Block: Arrive On Time -->
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Arrive On Time</h3>
-        <p class="navblock-description">Make sure you don't miss anything!</p>
+        <p class="navblock-description">Check our schedules to make sure you don't miss anything!</p>
         <nav class="navblock-links">
           <?php
           // Full Schedule
