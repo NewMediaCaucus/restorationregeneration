@@ -18,13 +18,13 @@ Always name a feature branch "feature-<description>". For example, "feature-add-
 - Media
   - Leave this alone too, contents are auto-generated
 - Site
-   - Blueprints
-     - Controls how the panel operates
-   - Snippets
-     - PHP code snippets
-   - Templates
-     - PHP page templates 
- 
+  - Blueprints
+    - Controls how the panel operates
+  - Snippets
+    - PHP code snippets
+  - Templates
+    - PHP page templates
+
 ## Workflow Proposal
 
 Kirby relies on four main folders: kirby, media, site, and content. In order to keep our repo from getting too big, we'll use .gitignore to exclude the media and content folders (with one or two individual file exceptions). 
@@ -43,12 +43,14 @@ The dev team should install:
 - php composer (used to update kirby and install/update plugins into the vendor folder)
 
 Set up local repository:
+
 - Clone the restorationregeneration repo at C://xampp/htdocs (win)
 - Clone the restorationregeneration-content repo. See the [README-content-folder.md](https://github.com/NewMediaCaucus/restorationregeneration/blob/dev/README-content-folder.md) for how-to
 - Changes focus on site operation and style, not content
 - All changes should have detailed notes
 
 Still needed:
+
 - Solution to back up content and media folders to offline storage
 
 ## Further Reading
