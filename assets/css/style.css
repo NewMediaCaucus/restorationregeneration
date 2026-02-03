@@ -2495,7 +2495,7 @@ body.is-touch .home-header-mobile {
 }
 
 .event-type-header {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   color: var(--color-text-primary);
   margin-bottom: var(--spacing-md);
