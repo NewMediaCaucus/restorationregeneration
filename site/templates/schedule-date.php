@@ -130,7 +130,7 @@
               foreach ($sortedTypes as $eventType => $typeData):
               ?>
                 <div class="event-type-group">
-                  <h3 class="event-type-header"><?= $typeData['title'] ?>s</h3>
+                  <h3 class="event-type-header"><?= $timeblock ?> <?= $typeData['title'] ?>s</h3>
                   <div class="events-grid">
                     <?php foreach ($typeData['events'] as $event): ?>
                       <?php
