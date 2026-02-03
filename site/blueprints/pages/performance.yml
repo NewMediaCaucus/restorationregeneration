@@ -20,7 +20,31 @@ fields:
     size: small
     width: 1/2
     required: false
-    help: "Example: Kinetic Installation, Virtual Reality, etc. This is just informational for attendees."
+    help: "Example: Ritual, etc. This is just informational for attendees."
+  duration:
+    label: Duration
+    type: text
+    size: small
+    width: 1/2
+    required: false
+    help: "Example: 2 hr. or 20 min. This is just informational for attendees."
+  date:
+    label: Date
+    type: select
+    width: 1/2
+    options:
+      "2026-03-06": "Friday, March 6, 2026"
+      "2026-03-07": "Saturday, March 7, 2026"
+      "2026-03-08": "Sunday, March 8, 2026"
+    required: true
+  timeblock:
+    label: Time Block
+    type: select
+    width: 1/2
+    required: true
+    options:
+      "8:30AM to 9:00AM": "8:30AM to 9:00AM"
+      "8:00PM to 10:00PM": "8:00PM to 10:00PM"
   location:
     label: Location
     type: pages
