@@ -191,31 +191,50 @@
         }
       });
 
-      // Combine sorted and unsorted events
-      $finalEvents = array_merge($sortedEvents, $eventsWithoutDate);
+      // Group sorted events by date for date headers
+      $eventsByDate = [];
+      foreach ($sortedEvents as $event) {
+        try {
+          $eventDate = new DateTime($event->date()->value());
+          $dateValue = $eventDate->format('Y-m-d');
+          $dateFormatted = $eventDate->format('l, F j, Y');
+          if (!isset($eventsByDate[$dateValue])) {
+            $eventsByDate[$dateValue] = ['formatted' => $dateFormatted, 'events' => []];
+          }
+          $eventsByDate[$dateValue]['events'][] = $event;
+        } catch (Exception $e) { }
+      }
 
-      if (count($finalEvents) > 0):
+      $templateToListing = [
+        'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+        'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+        'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
+        'performance' => ['slug' => 'performances', 'template' => 'performances'],
+        'video' => ['slug' => 'videos', 'template' => 'videos'],
+        'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
+      ];
+
+      if (count($sortedEvents) > 0 || count($eventsWithoutDate) > 0):
       ?>
         <div class="location-events">
           <h2>Events at This Location</h2>
-          <div class="events-grid">
-            <?php foreach ($finalEvents as $event): ?>
+          <?php
+          // Output events grouped by date (in date order)
+          foreach ($dateOrder as $dateValue) {
+            if (!isset($eventsByDate[$dateValue]) || count($eventsByDate[$dateValue]['events']) === 0) {
+              continue;
+            }
+            $dateData = $eventsByDate[$dateValue];
+          ?>
+          <div class="date-group">
+            <h3 class="location-date-header"><?= $dateData['formatted'] ?></h3>
+            <div class="events-grid">
+            <?php foreach ($dateData['events'] as $event): ?>
               <?php
-              // Map event template names to listing page slugs and templates
-              $templateToListing = [
-                'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
-                'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-                'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
-                'performance' => ['slug' => 'performances', 'template' => 'performances'],
-                'video' => ['slug' => 'videos', 'template' => 'videos'],
-                'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
-              ];
               $templateName = $event->intendedTemplate()->name();
               $listingInfo = $templateToListing[$templateName] ?? null;
-
               $listingPage = null;
               $listingUrl = null;
-
               if ($listingInfo) {
                 $listingPage = $site->find($listingInfo['slug']);
                 if (!$listingPage) {
@@ -315,7 +334,119 @@
                 </div>
               </div>
             <?php endforeach ?>
+            </div>
           </div>
+          <?php } ?>
+
+          <?php if (count($eventsWithoutDate) > 0): ?>
+          <div class="date-group">
+            <h3 class="location-date-header">Date TBA</h3>
+            <div class="events-grid">
+            <?php foreach ($eventsWithoutDate as $event): ?>
+              <?php
+              $templateName = $event->intendedTemplate()->name();
+              $listingInfo = $templateToListing[$templateName] ?? null;
+              $listingPage = null;
+              $listingUrl = null;
+              if ($listingInfo) {
+                $listingPage = $site->find($listingInfo['slug']);
+                if (!$listingPage) {
+                  $listingPage = $site->index()->filter(function ($page) use ($listingInfo) {
+                    return $page->intendedTemplate()->name() === $listingInfo['template'];
+                  })->first();
+                }
+                if (!$listingPage) {
+                  $listingUrl = $site->url() . '/' . $listingInfo['slug'];
+                } else {
+                  $listingUrl = $listingPage->url();
+                }
+              }
+              ?>
+              <div class="event-card">
+                <div class="event-info">
+                  <div class="event-type-container">
+                    <?php if ($listingUrl): ?>
+                      <div class="event-type">
+                        <a href="<?= $listingUrl ?>"><?= $event->blueprint()->title() ?></a>
+                      </div>
+                    <?php else: ?>
+                      <div class="event-type"><?= $event->blueprint()->title() ?></div>
+                    <?php endif ?>
+                    <?php if ($templateName === 'expanded-media' && $event->type()->isNotEmpty()): ?>
+                      <div class="event-work-type">
+                        <?= $event->type() ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($event->duration()->isNotEmpty()): ?>
+                      <div class="event-duration"><?= $event->duration() ?></div>
+                    <?php endif ?>
+                  </div>
+                  <h4 class="event-name">
+                    <a href="<?= $event->url() ?>"><?= $event->title() ?></a>
+                  </h4>
+                  <?php if ($event->presenters()->isNotEmpty()): ?>
+                    <div class="event-presenters">
+                      <?php
+                      $presenters = $event->presenters()->toPages();
+                      $presenterNames = [];
+                      foreach ($presenters as $presenter) {
+                        $presenterNames[] = '<a href="' . $presenter->url() . '">' . $presenter->title() . '</a>';
+                      }
+                      echo implode(', ', $presenterNames);
+                      ?>
+                    </div>
+                  <?php endif ?>
+                  <div class="event-footer">
+                    <?php if ($event->date()->isNotEmpty()): ?>
+                      <?php
+                      try {
+                        $eventDate = new DateTime($event->date()->value());
+                        $dateValue = $eventDate->format('Y-m-d');
+                        $dateFormatted = $eventDate->format('l, F j, Y');
+                        $scheduleDatePage = $site->find($dateValue);
+                        $scheduleDateUrl = $scheduleDatePage ? $scheduleDatePage->url() : $site->url() . '/' . $dateValue;
+                      ?>
+                        <div class="event-date">
+                          <a href="<?= $scheduleDateUrl ?>"><?= $dateFormatted ?></a>
+                        </div>
+                      <?php
+                      } catch (Exception $e) {
+                      }
+                      ?>
+                    <?php endif ?>
+                    <?php if ($event->timeblock()->isNotEmpty()): ?>
+                      <div class="event-timeblock">
+                        <?= $event->timeblock() ?>
+                      </div>
+                    <?php elseif ($event->start_time()->isNotEmpty() && $event->end_time()->isNotEmpty()): ?>
+                      <div class="event-time">
+                        <?php
+                        $start = new DateTime($event->start_time());
+                        $end = new DateTime($event->end_time());
+                        echo $start->format('g:i A') . ' - ' . $end->format('g:i A') . ' MST';
+                        ?>
+                      </div>
+                    <?php endif ?>
+                    <?php if ($event->location()->isNotEmpty()): ?>
+                      <?php foreach ($event->location()->toPages() as $loc): ?>
+                        <div class="event-location">
+                          <a href="<?= $loc->url() ?>">
+                            <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                              <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <?= $loc->title() ?>
+                          </a>
+                        </div>
+                      <?php endforeach ?>
+                    <?php endif ?>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach ?>
+            </div>
+          </div>
+          <?php endif ?>
         </div>
       <?php endif ?>
 
