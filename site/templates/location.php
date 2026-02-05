@@ -103,7 +103,7 @@
       <!-- Events at this Location -->
       <?php
       // Get all event types
-      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video'];
+      $eventTemplates = ['presentation', 'workshop', 'expanded-media', 'performance', 'video', 'social-gathering'];
       $allEvents = [];
 
       foreach ($eventTemplates as $template) {
@@ -127,15 +127,21 @@
         }
       }
 
-      // Sort events by date (Friday, Saturday, Sunday) then by timeblock
+      // Sort events by date (Friday, Saturday, Sunday) then by timeblock (match schedule.php order)
       $dateOrder = ['2026-03-06', '2026-03-07', '2026-03-08'];
       $timeblockOrder = [
         "8:30AM to 9:00AM",
         "9:00AM to 11:00AM",
+        "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
         "2:15PM to 4:15PM",
         "4:30PM to 6:30PM",
-        "8:00PM to 10:00PM"
+        "5:00PM to 7:00PM",
+        "6:00PM to 7:00PM",
+        "7:00PM to 8:00PM",
+        "8:00PM to 10:00PM",
+        "8:30PM to 10:00PM",
+        "10:00PM to 12:00AM"
       ];
       $sortedEvents = [];
       $eventsWithoutDate = [];
@@ -201,7 +207,8 @@
                 'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
                 'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
                 'performance' => ['slug' => 'performances', 'template' => 'performances'],
-                'video' => ['slug' => 'videos', 'template' => 'videos']
+                'video' => ['slug' => 'videos', 'template' => 'videos'],
+                'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
               ];
               $templateName = $event->intendedTemplate()->name();
               $listingInfo = $templateToListing[$templateName] ?? null;
