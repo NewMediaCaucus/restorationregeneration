@@ -51,13 +51,13 @@
       <!-- Third Block: Find Yourself -->
       <div class="megafooter-navblock">
         <h3 class="navblock-header">Find Your Way</h3>
-        <p class="navblock-description">Locate our destinations inside the MIX Center.</p>
+        <p class="navblock-description">Find all the great things happening at the symposium.</p>
 
         <nav class="navblock-links">
           <?php
           $locationsPage = $site->find('locations');
           ?>
-          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Our MIX Center Locations</a>
+          <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations in the MIX Center</a>
           <a href="https://maps.app.goo.gl/YwgmUCz7Z7hoTGZp9" target="_blank">
             <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -125,7 +125,7 @@
         <div class="mobile-navblock">
           <h3 class="mobile-navblock-header">Find Your Way</h3>
           <nav class="mobile-navblock-links">
-            <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Our MIX Center Locations</a>
+            <a href="<?= $locationsPage ? $locationsPage->url() : $site->url() . '/locations' ?>">Locations in the MIX Center</a>
             <a href="https://maps.app.goo.gl/YwgmUCz7Z7hoTGZp9" target="_blank">
               <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
