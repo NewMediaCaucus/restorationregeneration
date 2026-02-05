@@ -38,8 +38,8 @@ fields:
     dragText: false
     buttons: ['link', 'bold', 'italic']
     minlength: 20
-    maxlength: 750
-    info: "Minimum 20 characters, maximum 750 characters"
+    maxlength: 1200
+    info: "Minimum 20 characters, maximum 1200 characters"
   links:
     label: links
     type: structure
