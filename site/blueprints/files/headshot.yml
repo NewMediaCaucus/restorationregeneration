@@ -12,8 +12,8 @@ fields:
   alt:
     label: Alt Text
     type: text
-    placeholder: "Presenter's name and description"
-    info: "Important for accessibility. Ex: 'Lillian Schwartz, digital artist and professor'"
+    placeholder: "Description of the image"
+    info: "Important for accessibility. Ex: 'Headshot of Lillian Schwartz, digital artist and professor'"
   caption:
     label: Caption
     type: textarea
