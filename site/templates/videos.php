@@ -93,6 +93,14 @@
                   <div class="events-grid">
                     <?php foreach ($videosByTimeblock[$timeblock] as $video): ?>
                       <div class="event-card">
+                        <?php
+                        $imgField = $video->content()->get('image');
+                        $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                        if ($imgFile): ?>
+                          <a href="<?= $video->url() ?>" class="event-card-image">
+                            <?= $imgFile->html(['alt' => $imgFile->alt()->or($video->title())]) ?>
+                          </a>
+                        <?php endif ?>
                         <div class="event-info">
                           <div class="event-type-container">
                             <div class="event-type">
@@ -174,6 +182,14 @@
                 <div class="events-grid">
                   <?php foreach ($videosWithoutTimeblock as $video): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $video->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $video->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($video->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -250,6 +266,14 @@
             <div class="events-grid">
               <?php foreach ($videosWithoutDate as $video): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $video->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $video->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($video->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-container">
                       <div class="event-type">

@@ -95,6 +95,14 @@
                   <div class="events-grid">
                     <?php foreach ($workshopsByTimeblock[$timeblock] as $workshop): ?>
                       <div class="event-card">
+                        <?php
+                        $imgField = $workshop->content()->get('image');
+                        $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                        if ($imgFile): ?>
+                          <a href="<?= $workshop->url() ?>" class="event-card-image">
+                            <?= $imgFile->html(['alt' => $imgFile->alt()->or($workshop->title())]) ?>
+                          </a>
+                        <?php endif ?>
                         <div class="event-info">
                           <div class="event-type-container">
                             <div class="event-type">
@@ -179,6 +187,14 @@
                 <div class="events-grid">
                   <?php foreach ($workshopsWithoutTimeblock as $workshop): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $workshop->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $workshop->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($workshop->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -259,6 +275,14 @@
             <div class="events-grid">
               <?php foreach ($workshopsWithoutDate as $workshop): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $workshop->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $workshop->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($workshop->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-duration">
                       <div class="event-type">
