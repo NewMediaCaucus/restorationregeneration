@@ -1775,6 +1775,17 @@ body.is-touch .home-header-mobile {
   text-decoration: none;
 }
 
+.performance-image {
+  max-width: 800px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.performance-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .event-description {
   margin-bottom: var(--spacing-2xl);
 }
@@ -1911,6 +1922,21 @@ body.is-touch .home-header-mobile {
   gap: var(--spacing-lg);
   justify-content: start;
   padding-bottom: var(--spacing-2xl);
+}
+
+.event-card-image {
+  display: block;
+  max-width: 300px;
+  margin: calc(-1 * var(--spacing-lg)) calc(-1 * var(--spacing-lg)) var(--spacing-md) calc(-1 * var(--spacing-lg));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+}
+
+.event-card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
 }
 
 .event-card {

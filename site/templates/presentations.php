@@ -95,6 +95,14 @@
                   <div class="events-grid">
                     <?php foreach ($presentationsByTimeblock[$timeblock] as $presentation): ?>
                       <div class="event-card">
+                        <?php
+                        $imgField = $presentation->content()->get('image');
+                        $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                        if ($imgFile): ?>
+                          <a href="<?= $presentation->url() ?>" class="event-card-image">
+                            <?= $imgFile->html(['alt' => $imgFile->alt()->or($presentation->title())]) ?>
+                          </a>
+                        <?php endif ?>
                         <div class="event-info">
                           <div class="event-type-container">
                             <div class="event-type">
@@ -179,6 +187,14 @@
                 <div class="events-grid">
                   <?php foreach ($presentationsWithoutTimeblock as $presentation): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $presentation->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $presentation->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($presentation->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-duration">
                           <div class="event-type">
@@ -259,6 +275,14 @@
             <div class="events-grid">
               <?php foreach ($presentationsWithoutDate as $presentation): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $presentation->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $presentation->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($presentation->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-duration">
                       <div class="event-type">

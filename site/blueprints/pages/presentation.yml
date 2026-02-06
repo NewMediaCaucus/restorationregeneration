@@ -71,6 +71,22 @@ fields:
     sortBy: default
     size: small
     width: 1/2
+  image:
+    label: Image
+    type: files
+    multiple: false
+    query: "page.images"
+    uploads:
+      template: headshot
+    accept: "image/*"
+    info: "Minimum 960px width required. Images will be cropped to 16:9 aspect ratio."
+    layout: cards
+    size: medium
+    width: 1/2
+    image:
+      cover: true
+      query: "file.url"
+    template: headshot
   description:
     label: Description
     type: textarea

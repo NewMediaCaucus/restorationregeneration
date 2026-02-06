@@ -90,6 +90,14 @@
                 <div class="events-grid">
                   <?php foreach ($performancesByTimeblock[$timeblock] as $performance): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $performance->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $performance->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($performance->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -165,6 +173,14 @@
                 <div class="events-grid">
                   <?php foreach ($performancesWithoutTimeblock as $performance): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $performance->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $performance->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($performance->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -241,6 +257,14 @@
             <div class="events-grid">
               <?php foreach ($performancesWithoutDate as $performance): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $performance->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $performance->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($performance->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-container">
                       <div class="event-type">

@@ -99,6 +99,14 @@
           <div class="events-grid">
             <?php foreach ($events as $event): ?>
               <div class="event-card">
+                <?php
+                $imgField = $event->content()->get('image');
+                $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                if ($imgFile): ?>
+                  <a href="<?= $event->url() ?>" class="event-card-image">
+                    <?= $imgFile->html(['alt' => $imgFile->alt()->or($event->title())]) ?>
+                  </a>
+                <?php endif ?>
                 <div class="event-info">
                   <?php
                   // Map event template names to listing page slugs and templates
