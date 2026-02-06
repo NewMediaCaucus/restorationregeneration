@@ -108,43 +108,51 @@ Mac and Linux Users:
 #### Method 1: Official Docker Installation (Recommended)
 
 **1. Update package index and install prerequisites:**
+
 ```bash
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
 ```
 
 **2. Add Docker's official GPG key:**
+
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 ```
 
 **3. Add Docker repository:**
+
 ```bash
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
 **4. Update package index again:**
+
 ```bash
 sudo apt update
 ```
 
 **5. Install Docker Engine:**
+
 ```bash
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
 **6. Add your user to the docker group (so you don't need sudo):**
+
 ```bash
 sudo usermod -aG docker $USER
 ```
 
 **7. Start and enable Docker service:**
+
 ```bash
 sudo systemctl start docker
 sudo systemctl enable docker
 ```
 
 **8. Verify installation:**
+
 ```bash
 docker --version
 docker run hello-world
@@ -159,6 +167,7 @@ sudo usermod -aG docker $USER
 ```
 
 **After installation:**
+
 - **Log out and back in** for the docker group membership to take effect
 - **Or run:** `newgrp docker` to start a new shell with docker group
 
