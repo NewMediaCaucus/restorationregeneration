@@ -75,6 +75,7 @@ fields:
     info: "Minimum 960px width required. Images will be cropped to square format."
     layout: cards
     size: medium
+    width: 1/2
     image:
       cover: true
       query: "file.url"
