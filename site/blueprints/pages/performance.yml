@@ -72,7 +72,7 @@ fields:
     uploads:
       template: headshot
     accept: "image/*"
-    info: "Minimum 960px width required. Images will be cropped to square format."
+    info: "Minimum 960px width required. Images will be cropped to 16:9 aspect ratio."
     layout: cards
     size: medium
     width: 1/2

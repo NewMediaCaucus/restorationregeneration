@@ -94,6 +94,14 @@
                 <div class="events-grid">
                   <?php foreach ($gatheringsByTimeblock[$timeblock] as $gathering): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $gathering->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $gathering->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($gathering->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -169,6 +177,14 @@
                 <div class="events-grid">
                   <?php foreach ($gatheringsWithoutTimeblock as $gathering): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $gathering->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $gathering->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($gathering->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-container">
                           <div class="event-type">
@@ -245,6 +261,14 @@
             <div class="events-grid">
               <?php foreach ($gatheringsWithoutDate as $gathering): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $gathering->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $gathering->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($gathering->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-container">
                       <div class="event-type">

@@ -77,6 +77,15 @@
         </div>
       </div>
 
+      <?php
+      $imageField = $page->content()->get('image');
+      $imageFile = $imageField->isNotEmpty() ? $imageField->toFile() : null;
+      if ($imageFile): ?>
+        <div class="performance-image">
+          <?= $imageFile->html(['alt' => $imageFile->alt()->or($page->title())]) ?>
+        </div>
+      <?php endif ?>
+
       <!-- Event Description -->
       <?php if ($page->description()->isNotEmpty()): ?>
         <div class="event-description">

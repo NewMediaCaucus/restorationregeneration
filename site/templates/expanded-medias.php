@@ -93,6 +93,14 @@
                   <div class="events-grid">
                     <?php foreach ($expandedMediaByTimeblock[$timeblock] as $item): ?>
                       <div class="event-card">
+                        <?php
+                        $imgField = $item->content()->get('image');
+                        $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                        if ($imgFile): ?>
+                          <a href="<?= $item->url() ?>" class="event-card-image">
+                            <?= $imgFile->html(['alt' => $imgFile->alt()->or($item->title())]) ?>
+                          </a>
+                        <?php endif ?>
                         <div class="event-info">
                           <div class="event-type-container">
                             <div class="event-type">
@@ -182,6 +190,14 @@
                 <div class="events-grid">
                   <?php foreach ($expandedMediaWithoutTimeblock as $item): ?>
                     <div class="event-card">
+                      <?php
+                      $imgField = $item->content()->get('image');
+                      $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                      if ($imgFile): ?>
+                        <a href="<?= $item->url() ?>" class="event-card-image">
+                          <?= $imgFile->html(['alt' => $imgFile->alt()->or($item->title())]) ?>
+                        </a>
+                      <?php endif ?>
                       <div class="event-info">
                         <div class="event-type-duration">
                           <div class="event-type-container">
@@ -268,6 +284,14 @@
             <div class="events-grid">
               <?php foreach ($expandedMediaWithoutDate as $item): ?>
                 <div class="event-card">
+                  <?php
+                  $imgField = $item->content()->get('image');
+                  $imgFile = $imgField->isNotEmpty() ? $imgField->toFile() : null;
+                  if ($imgFile): ?>
+                    <a href="<?= $item->url() ?>" class="event-card-image">
+                      <?= $imgFile->html(['alt' => $imgFile->alt()->or($item->title())]) ?>
+                    </a>
+                  <?php endif ?>
                   <div class="event-info">
                     <div class="event-type-duration">
                       <div class="event-type-container">
