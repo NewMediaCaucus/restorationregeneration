@@ -1926,10 +1926,12 @@ body.is-touch .home-header-mobile {
 
 .event-card-image {
   display: block;
-  max-width: 300px;
+  width: calc(100% + 2 * var(--spacing-lg));
+  max-width: calc(100% + 2 * var(--spacing-lg));
   margin: calc(-1 * var(--spacing-lg)) calc(-1 * var(--spacing-lg)) var(--spacing-md) calc(-1 * var(--spacing-lg));
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .event-card-image img {
