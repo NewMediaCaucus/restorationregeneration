@@ -1,8 +1,7 @@
 /**
- * Conway's Game of Life animation for RR logo SVG.
- * Maps logo cells to a grid. Each cell is either on (opacity 1) or off (opacity 0).
- * Conway's rules: birth on 3 neighbors, survive on 2 or 3, else die.
- * GoL runs 40s, then original cells slowly reappear one-by-one over 8s (48s total).
+ * Glitch animation for RR logo SVG.
+ * Never more than 70% of cells off. Each tick toggles a small random number
+ * of cells on/off. After 20s glitch, logo fills in progressively then holds 4s. No fading.
  */
 (function () {
   const CELL = 22;
@@ -10,47 +9,18 @@
   const VIEWBOX_H = 533.35;
   const COLS = Math.ceil(VIEWBOX_W / CELL);
   const ROWS = Math.ceil(VIEWBOX_H / CELL);
-  const FRAME_MS = 180;
-  const GOL_DURATION_MS = 40000;
-  const REAPPEAR_MS = 8000;
-  const TOTAL_MS = GOL_DURATION_MS + REAPPEAR_MS;
+  const MAX_OFF_RATIO = 0.7;
+  const GLITCH_INTERVAL_MIN_MS = 40;
+  const GLITCH_INTERVAL_MAX_MS = 140;
+  const TOGGLE_PER_TICK_MIN = 1;
+  const TOGGLE_PER_TICK_MAX = 4;
+  const GLITCH_PHASE_MS = 20000;
+  const FILL_PHASE_MS = 3000;
+  const FULL_HOLD_MS = 4000;
   const DEAD_OPACITY = 0;
 
   function cellKey(c, r) {
     return c + ',' + r;
-  }
-
-  function getNeighbors(c, r) {
-    const out = [];
-    for (let dc = -1; dc <= 1; dc++) {
-      for (let dr = -1; dr <= 1; dr++) {
-        if (dc === 0 && dr === 0) continue;
-        const nc = c + dc;
-        const nr = r + dr;
-        if (nc >= 0 && nc < COLS && nr >= 0 && nr < ROWS) out.push(cellKey(nc, nr));
-      }
-    }
-    return out;
-  }
-
-  function nextGeneration(liveSet) {
-    const neighborCount = new Map();
-    const consider = new Set(liveSet);
-    liveSet.forEach(function (key) {
-      const [c, r] = key.split(',').map(Number);
-      getNeighbors(c, r).forEach(function (n) {
-        consider.add(n);
-        neighborCount.set(n, (neighborCount.get(n) || 0) + 1);
-      });
-    });
-    const next = new Set();
-    consider.forEach(function (key) {
-      const count = neighborCount.get(key) || 0;
-      const alive = liveSet.has(key);
-      if (alive && (count === 2 || count === 3)) next.add(key);
-      else if (!alive && count === 3) next.add(key);
-    });
-    return next;
   }
 
   function getElementCell(el) {
@@ -91,20 +61,22 @@
       elementByCell.get(cell.key).push(el);
     });
 
-    const initialLive = new Set(elementByCell.keys());
-    const initialLiveOrdered = Array.from(initialLive);
-    for (let i = initialLiveOrdered.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [initialLiveOrdered[i], initialLiveOrdered[j]] = [initialLiveOrdered[j], initialLiveOrdered[i]];
-    }
-    let genCount = 0;
-    let currentSet = new Set(initialLive);
-    let startTime = null;
+    const allCells = Array.from(elementByCell.keys());
+    const totalCells = allCells.length;
+    const maxOff = Math.max(0, Math.floor(totalCells * MAX_OFF_RATIO));
+    const currentOff = new Set();
+    const allVisible = new Set(allCells);
+    let lastGlitchTime = null;
+    let nextGlitchInMs = 0;
+    let cycleStartTime = null;
+    let phase = 'glitch';
+    let fillStartTime = null;
+    let fillOrder = null;
     let rafId = null;
 
-    function applyOpacities(set) {
+    function applyOpacities(visibleSet) {
       elementByCell.forEach(function (els, key) {
-        const opacity = set.has(key) ? 1 : DEAD_OPACITY;
+        const opacity = visibleSet.has(key) ? 1 : DEAD_OPACITY;
         els.forEach(function (el) {
           el.style.transition = 'none';
           el.style.opacity = opacity;
@@ -112,37 +84,88 @@
       });
     }
 
+    function pickRandomCell() {
+      return allCells[Math.floor(Math.random() * totalCells)];
+    }
+
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
     function tick(timestamp) {
-      if (startTime === null) startTime = timestamp;
-      const elapsed = timestamp - startTime;
+      if (cycleStartTime === null) cycleStartTime = timestamp;
+      const elapsedInPhase = timestamp - cycleStartTime;
 
-      if (elapsed >= TOTAL_MS) {
-        applyOpacities(initialLive);
-        elements.forEach(function (el) {
-          el.style.transition = '';
-          el.style.opacity = '';
-        });
-        return;
-      }
-
-      if (elapsed < GOL_DURATION_MS) {
-        const targetGen = Math.floor(elapsed / FRAME_MS);
-        while (genCount < targetGen) {
-          currentSet = nextGeneration(currentSet);
-          genCount++;
+      if (phase === 'full') {
+        if (elapsedInPhase >= FULL_HOLD_MS) {
+          phase = 'glitch';
+          cycleStartTime = timestamp;
+          lastGlitchTime = timestamp;
+          nextGlitchInMs = GLITCH_INTERVAL_MIN_MS + Math.random() * (GLITCH_INTERVAL_MAX_MS - GLITCH_INTERVAL_MIN_MS);
         }
-        applyOpacities(currentSet);
+      } else if (phase === 'filling') {
+        const fillElapsed = timestamp - fillStartTime;
+        const progress = Math.min(1, fillElapsed / FILL_PHASE_MS);
+        const numRevealed = Math.floor(progress * fillOrder.length);
+        currentOff.clear();
+        for (let i = numRevealed; i < fillOrder.length; i++) currentOff.add(fillOrder[i]);
+        const visible = new Set(allCells.filter(function (k) { return !currentOff.has(k); }));
+        applyOpacities(visible);
+        if (progress >= 1) {
+          phase = 'full';
+          cycleStartTime = timestamp;
+          currentOff.clear();
+          applyOpacities(allVisible);
+          fillOrder = null;
+        }
       } else {
-        const reappearElapsed = elapsed - GOL_DURATION_MS;
-        const t = Math.min(1, reappearElapsed / REAPPEAR_MS);
-        const numRevealed = Math.floor(initialLiveOrdered.length * t);
-        const revealed = new Set(initialLiveOrdered.slice(0, numRevealed));
-        applyOpacities(revealed);
-      }
+        if (elapsedInPhase >= GLITCH_PHASE_MS) {
+          const toFill = Array.from(currentOff);
+          if (toFill.length === 0) {
+            phase = 'full';
+            cycleStartTime = timestamp;
+            applyOpacities(allVisible);
+          } else {
+            phase = 'filling';
+            fillStartTime = timestamp;
+            fillOrder = shuffle(toFill);
+          }
+        } else {
+          if (lastGlitchTime === null) {
+            lastGlitchTime = timestamp;
+            nextGlitchInMs = GLITCH_INTERVAL_MIN_MS + Math.random() * (GLITCH_INTERVAL_MAX_MS - GLITCH_INTERVAL_MIN_MS);
+          }
+          if (timestamp - lastGlitchTime >= nextGlitchInMs) {
+            lastGlitchTime = timestamp;
+            nextGlitchInMs = GLITCH_INTERVAL_MIN_MS + Math.random() * (GLITCH_INTERVAL_MAX_MS - GLITCH_INTERVAL_MIN_MS);
 
+            const numToggles = TOGGLE_PER_TICK_MIN + Math.floor(Math.random() * (TOGGLE_PER_TICK_MAX - TOGGLE_PER_TICK_MIN + 1));
+            const tried = new Set();
+            for (let i = 0; i < numToggles; i++) {
+              const key = pickRandomCell();
+              if (tried.has(key)) continue;
+              tried.add(key);
+
+              if (currentOff.has(key)) {
+                currentOff.delete(key);
+              } else if (currentOff.size < maxOff) {
+                currentOff.add(key);
+              }
+            }
+            const visible = new Set(allCells.filter(function (k) { return !currentOff.has(k); }));
+            applyOpacities(visible);
+          }
+        }
+      }
       rafId = requestAnimationFrame(tick);
     }
 
+    applyOpacities(new Set(allCells));
     rafId = requestAnimationFrame(tick);
   }
 

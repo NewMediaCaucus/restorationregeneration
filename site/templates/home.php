@@ -336,60 +336,6 @@
     </section>
   <?php endif ?>
 
-  <!-- Save the Date Section -->
-  <?php if ($page->save_the_date()->isNotEmpty() || $page->memory_game_enabled()->isTrue()): ?>
-    <section class="save-the-date section">
-      <div class="container">
-        <h2>Save the Date!</h2>
-        <div class="save-the-date-grid">
-          <!-- Text Block -->
-          <?php if ($page->save_the_date()->isNotEmpty()): ?>
-            <div class="save-the-date-block text-block">
-              <div class="countdown-date">
-                March 6, 2026
-              </div>
-              <div class="content">
-                <?= $page->save_the_date()->kt() ?>
-              </div>
-              <div class="countdown-timer">
-                <div class="countdown-title">⏳ Countdown to the Symposium! </div>
-                <div class="countdown-single">
-                  <div class="countdown-item">
-                    <div class="countdown-number" id="days">--</div>
-                    <div class="countdown-label">Days</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <?php endif ?>
-
-          <!-- Memory Game Block -->
-          <?php if ($page->memory_game_enabled()->isTrue()): ?>
-            <div class="save-the-date-block game-block">
-              <div class="memory-game">
-                <div class="game-title">New Media Memory</div>
-                <div class="game-container">
-                  <div class="game-info">
-                    <div class="game-status">Time: <span id="game-time">216</span>s</div>
-                    <div class="game-score">Pairs: <span id="game-pairs">0</span>/8</div>
-                  </div>
-                  <div class="game-description">
-                    Need to burn off some nervous energy while waiting for start of the symposium?
-                  </div>
-                  <div class="game-board" id="memory-board"></div>
-                  <div class="game-controls">
-                    <button id="new-game-btn" class="btn btn-primary">New Game</button>
-                    <button id="shuffle-btn" class="btn btn-secondary">Shuffle</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <?php endif ?>
-        </div>
-      </div>
-    </section>
-  <?php endif ?>
-
   <!-- Sponsors -->
   <?php if ($page->sponsors()->isNotEmpty()): ?>
     <section class="sponsors section">
