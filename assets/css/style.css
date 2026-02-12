@@ -75,6 +75,8 @@
   /* 48px */
   --spacing-3xl: 4rem;
   /* 64px */
+  --spacing-hero-margin: 14rem;
+  --spacing-hero-subtitle-margin: 18rem;
 
   /* Border Radius */
   --radius-sm: 0rem;
@@ -1105,9 +1107,8 @@ body.mobile-menu-open .mobile-menu-toggle {
 .header-animation {
   position: relative;
   width: 100%;
-  height: 600px;
-  /* Fixed height for the animation */
-  background-color: var(--color-bg-primary);
+  height: 400px;
+  background-color: #000;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -1130,10 +1131,7 @@ body.is-touch .home-header-mobile {
 }
 
 #regeneration-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
+  display: none;
 }
 
 .hero-overlay {
@@ -1142,17 +1140,24 @@ body.is-touch .home-header-mobile {
   left: 0;
   right: 0;
   z-index: 10;
-  padding: var(--spacing-2xl) 0 var(--spacing-xl);
+  padding: var(--spacing-2xl) 0 var(--spacing-2xl);
   color: var(--color-text-inverse);
+}
+
+.hero-overlay .container {
+  position: relative;
 }
 
 .hero-overlay .hero-title {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-md);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .hero-overlay .hero-title a {
@@ -1168,84 +1173,102 @@ body.is-touch .home-header-mobile {
 .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .dates-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .university-name-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .hero-image {
   margin-top: var(--spacing-lg);
 }
 
+/* RR logo with Game of Life animation - home header only */
+.rr-logo-header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  max-width: 180px;
+}
+
+.rr-logo-header svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-overlay .hero-title,
+.hero-overlay .hero-subtitle,
+.hero-overlay .dates-subtitle,
+.hero-overlay .university-name-subtitle {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  .rr-logo-header {
+    max-width: 360px;
+  }
+}
+
 /* Responsive adjustments for the animation */
 @media (max-width: 1439px) and (min-width: 1024px) {
-  .header-animation {
-    height: 500px;
-  }
-}
-
-@media (max-width: 1023px) and (min-width: 768px) {
-  .header-animation {
-    height: 450px;
-  }
-}
-
-@media (max-width: 767px) and (min-width: 480px) {
   .header-animation {
     height: 400px;
   }
 }
 
+@media (max-width: 1023px) and (min-width: 768px) {
+  .header-animation {
+    height: 400px;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+  .header-animation {
+    height: 240px;
+  }
+}
+
 @media (max-width: 479px) {
   .header-animation {
-    height: 350px;
+    height: 240px;
   }
 }
 
-/* Responsive hero title sizes - Updated */
-@media (min-width: 1440px) {
+/* Responsive hero title sizes - Desktop (1024px+) */
+@media (min-width: 1024px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 6.5rem;
+    font-size: 4rem;
   }
 
-  .header-animation .hero-overlay .hero-subtitle {
-    font-size: 2rem;
-  }
-
-  .header-animation .hero-overlay .dates-subtitle {
-    font-size: 1.75rem;
-  }
-
+  .header-animation .hero-overlay .hero-subtitle,
+  .header-animation .hero-overlay .dates-subtitle,
   .header-animation .hero-overlay .university-name-subtitle {
-    font-size: 1.75rem;
-  }
-}
-
-@media (max-width: 1439px) and (min-width: 1024px) {
-  .header-animation .hero-overlay .hero-title {
-    font-size: 6rem;
-  }
-
-  .header-animation .hero-overlay .hero-subtitle {
-    font-size: 1.75rem;
-  }
-
-  .header-animation .hero-overlay .dates-subtitle {
-    font-size: 1.5rem;
-  }
-
-  .header-animation .hero-overlay .university-name-subtitle {
-    font-size: 1.5rem;
+    font-size: 1rem;
+    margin-left: var(--spacing-hero-subtitle-margin);
   }
 }
 
@@ -1287,7 +1310,7 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 479px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
   }
 
   .header-animation .hero-overlay .hero-subtitle {
@@ -1300,6 +1323,34 @@ body.is-touch .home-header-mobile {
 
   .header-animation .hero-overlay .university-name-subtitle {
     font-size: 0.75rem;
+  }
+}
+
+/* Mobile breakpoint: hero and logo layout */
+@media (max-width: 767px) {
+  .header-animation {
+    height: 240px;
+  }
+
+  .hero-overlay {
+    padding: var(--spacing-xl) 0 var(--spacing-xl);
+  }
+
+  .rr-logo-header {
+    max-width: 120px;
+    margin-left: 2rem;
+    bottom: 3rem;
+  }
+
+  .hero-overlay .hero-title {
+    margin-left: 6.4rem;
+    font-size: 1.8rem;
+  }
+
+  .hero-overlay .hero-subtitle,
+  .hero-overlay .dates-subtitle,
+  .hero-overlay .university-name-subtitle {
+    margin-left: 9rem;
   }
 }
 
@@ -2731,196 +2782,6 @@ body.is-touch .home-header-mobile {
 .location-link:hover {
   color: var(--color-primary-hover);
   text-decoration: underline;
-}
-
-/* ==========================================================================
-   Static Header Styles (for non-home pages)
-   ========================================================================== */
-
-.static-header {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  /* Significantly smaller than animated header */
-  background-color: var(--color-bg-primary);
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-.static-header-background {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.static-header .hero-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  padding: var(--spacing-lg) 0 var(--spacing-md);
-  /* Reduced bottom padding */
-  color: var(--color-text-inverse);
-}
-
-.static-header .hero-overlay .hero-title {
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-sm);
-  /* Reduced margin */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 2rem;
-  /* Much smaller than animated header */
-  line-height: 1.1;
-}
-
-.static-header .hero-overlay .hero-subtitle {
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-size: 1.25rem;
-  /* Smaller font */
-}
-
-.static-header .hero-overlay .dates-subtitle {
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-size: 1rem;
-  /* Smaller font */
-}
-
-.static-header .hero-overlay .university-name-subtitle {
-  color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-size: 1rem;
-  /* Smaller font */
-}
-
-.static-header .hero-overlay .hero-image {
-  margin-top: var(--spacing-sm);
-  /* Reduced margin */
-}
-
-/* Responsive adjustments for static header */
-@media (min-width: 1440px) {
-  .static-header {
-    height: 360px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 3rem;
-  }
-
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 1.5rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 1.25rem;
-  }
-
-  .static-header .hero-overlay .university-name-subtitle {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 1439px) and (min-width: 1024px) {
-  .static-header {
-    height: 360px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 2.75rem;
-  }
-
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 1.25rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 1rem;
-  }
-
-  .static-header .hero-overlay .university-name-subtitle {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 1023px) and (min-width: 768px) {
-  .static-header {
-    height: 320px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 1.125rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 0.875rem;
-  }
-
-  .static-header .hero-overlay .university-name-subtitle {
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 767px) and (min-width: 480px) {
-  .static-header {
-    height: 140px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 2.75rem;
-  }
-
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 0.875rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 0.75rem;
-  }
-
-  .static-header .hero-overlay .university-name-subtitle {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 479px) {
-  .static-header {
-    height: 240px;
-  }
-
-  .static-header .hero-overlay .hero-title {
-    font-size: 2.25rem;
-  }
-
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 0.75rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 0.625rem;
-  }
-
-  .static-header .hero-overlay .university-name-subtitle {
-    font-size: 0.625rem;
-  }
 }
 
 /* ==========================================================================
