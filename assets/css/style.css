@@ -1170,6 +1170,11 @@ body.is-touch .home-header-mobile {
   text-decoration: none;
 }
 
+.hero-title-line-2 {
+  display: block;
+  margin-left: 0.4rem;
+}
+
 .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
@@ -1345,6 +1350,10 @@ body.is-touch .home-header-mobile {
   .hero-overlay .hero-title {
     margin-left: 6.4rem;
     font-size: 1.8rem;
+  }
+
+  .hero-title-line-2 {
+    margin-left: 0.3rem;
   }
 
   .hero-overlay .hero-subtitle,

@@ -41,7 +41,7 @@
 
 <body>
   <script>
-    (function () {
+    (function() {
       const ua = navigator.userAgent || '';
       const isTouchPointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
       const isSmallViewport = window.innerWidth <= 1023;
@@ -79,9 +79,7 @@
           }
           ?>
         </a>
-        <?php if ($homePage->hero_title()->isNotEmpty()): ?>
-          <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
-        <?php endif ?>
+        <h1 class="hero-title"><a href="<?= url('home') ?>"><span class="hero-title-line-1">Restoration /</span><span class="hero-title-line-2">Regeneration</span></a></h1>
 
         <?php if ($homePage->hero_subtitle()->isNotEmpty()): ?>
           <h2 class="hero-subtitle"><?= $homePage->hero_subtitle() ?></h2>
@@ -117,9 +115,7 @@
           }
           ?>
         </a>
-        <?php if ($homePage->hero_title()->isNotEmpty()): ?>
-          <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
-        <?php endif ?>
+        <h1 class="hero-title"><a href="<?= url('home') ?>"><span class="hero-title-line-1">Restoration /</span><span class="hero-title-line-2">Regeneration</span></a></h1>
 
         <?php if ($homePage->hero_subtitle()->isNotEmpty()): ?>
           <h2 class="hero-subtitle"><?= $homePage->hero_subtitle() ?></h2>
