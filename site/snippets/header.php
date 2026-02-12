@@ -20,7 +20,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Rubik:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
   <?php if ($page->isHomePage()): ?>
     <!-- Three.js Library - Only on home page -->
@@ -29,6 +29,9 @@
 
     <!-- Animation Loader - Loads different animations based on the day -->
     <script src="<?= url('assets/js/animation-loader.js') ?>" defer></script>
+
+    <!-- RR Logo Game of Life animation -->
+    <script src="<?= url('assets/js/rr-logo-gol.js') ?>" defer></script>
   <?php endif ?>
 
   <!-- Countdown Timer -->
@@ -69,6 +72,16 @@
       <!-- Hero Section Overlay -->
       <div class="hero-overlay">
         <div class="container">
+          <a href="<?= url('home') ?>" class="rr-logo-header" aria-label="Restoration Regeneration home">
+            <?php
+            $logoPath = kirby()->root('assets') . '/icons/rr-logo.svg';
+            if (file_exists($logoPath)) {
+              $logoSvg = file_get_contents($logoPath);
+              $logoSvg = preg_replace('/<\?xml[^>]*\?>/', '', $logoSvg);
+              echo trim($logoSvg);
+            }
+            ?>
+          </a>
           <?php if ($homePage->hero_title()->isNotEmpty()): ?>
             <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
           <?php endif ?>
@@ -100,6 +113,16 @@
       <div class="static-header-background">
         <div class="hero-overlay">
           <div class="container">
+            <a href="<?= url('home') ?>" class="rr-logo-header" aria-label="Restoration Regeneration home">
+              <?php
+              $logoPath = kirby()->root('assets') . '/icons/rr-logo.svg';
+              if (file_exists($logoPath)) {
+                $logoSvg = file_get_contents($logoPath);
+                $logoSvg = preg_replace('/<\?xml[^>]*\?>/', '', $logoSvg);
+                echo trim($logoSvg);
+              }
+              ?>
+            </a>
             <?php if ($homePage->hero_title()->isNotEmpty()): ?>
               <h1 class="hero-title"><a href="<?= url('home') ?>"><?= $homePage->hero_title() ?></a></h1>
             <?php endif ?>

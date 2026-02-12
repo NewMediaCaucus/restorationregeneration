@@ -75,6 +75,8 @@
   /* 48px */
   --spacing-3xl: 4rem;
   /* 64px */
+  --spacing-hero-margin: 10rem;
+  --spacing-hero-subtitle-margin: 18rem;
 
   /* Border Radius */
   --radius-sm: 0rem;
@@ -1106,8 +1108,7 @@ body.mobile-menu-open .mobile-menu-toggle {
   position: relative;
   width: 100%;
   height: 600px;
-  /* Fixed height for the animation */
-  background-color: var(--color-bg-primary);
+  background-color: #000;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -1130,10 +1131,7 @@ body.is-touch .home-header-mobile {
 }
 
 #regeneration-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
+  display: none;
 }
 
 .hero-overlay {
@@ -1146,13 +1144,20 @@ body.is-touch .home-header-mobile {
   color: var(--color-text-inverse);
 }
 
+.hero-overlay .container {
+  position: relative;
+}
+
 .hero-overlay .hero-title {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-md);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .hero-overlay .hero-title a {
@@ -1168,23 +1173,64 @@ body.is-touch .home-header-mobile {
 .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .dates-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .university-name-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .hero-overlay .hero-image {
   margin-top: var(--spacing-lg);
+}
+
+/* RR logo with Game of Life animation - home header only */
+.rr-logo-header {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  max-width: 180px;
+}
+
+.rr-logo-header svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-overlay .hero-title,
+.hero-overlay .hero-subtitle,
+.hero-overlay .dates-subtitle,
+.hero-overlay .university-name-subtitle {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  .rr-logo-header {
+    max-width: 360px;
+  }
 }
 
 /* Responsive adjustments for the animation */
@@ -1212,40 +1258,17 @@ body.is-touch .home-header-mobile {
   }
 }
 
-/* Responsive hero title sizes - Updated */
-@media (min-width: 1440px) {
+/* Responsive hero title sizes - Desktop (1024px+) */
+@media (min-width: 1024px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 6.5rem;
+    font-size: 4rem;
   }
 
-  .header-animation .hero-overlay .hero-subtitle {
-    font-size: 2rem;
-  }
-
-  .header-animation .hero-overlay .dates-subtitle {
-    font-size: 1.75rem;
-  }
-
+  .header-animation .hero-overlay .hero-subtitle,
+  .header-animation .hero-overlay .dates-subtitle,
   .header-animation .hero-overlay .university-name-subtitle {
-    font-size: 1.75rem;
-  }
-}
-
-@media (max-width: 1439px) and (min-width: 1024px) {
-  .header-animation .hero-overlay .hero-title {
-    font-size: 6rem;
-  }
-
-  .header-animation .hero-overlay .hero-subtitle {
-    font-size: 1.75rem;
-  }
-
-  .header-animation .hero-overlay .dates-subtitle {
-    font-size: 1.5rem;
-  }
-
-  .header-animation .hero-overlay .university-name-subtitle {
-    font-size: 1.5rem;
+    font-size: 1rem;
+    margin-left: var(--spacing-hero-subtitle-margin);
   }
 }
 
@@ -2771,40 +2794,47 @@ body.is-touch .home-header-mobile {
 .static-header .hero-overlay .hero-title {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-sm);
-  /* Reduced margin */
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   font-size: 2rem;
-  /* Much smaller than animated header */
   line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .static-header .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   font-size: 1.25rem;
-  /* Smaller font */
 }
 
 .static-header .hero-overlay .dates-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   font-size: 1rem;
-  /* Smaller font */
 }
 
 .static-header .hero-overlay .university-name-subtitle {
   color: var(--color-text-inverse);
   margin-bottom: var(--spacing-xs);
-  /* Reduced margin */
+  margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-style: italic;
   font-size: 1rem;
-  /* Smaller font */
 }
 
 .static-header .hero-overlay .hero-image {
@@ -2813,25 +2843,33 @@ body.is-touch .home-header-mobile {
 }
 
 /* Responsive adjustments for static header */
+@media (min-width: 1024px) {
+  .static-header .hero-overlay .hero-title {
+    font-size: 4rem;
+  }
+
+  .static-header .hero-overlay .hero-subtitle,
+  .static-header .hero-overlay .dates-subtitle,
+  .static-header .hero-overlay .university-name-subtitle {
+    font-size: 1rem;
+    margin-left: var(--spacing-hero-subtitle-margin);
+  }
+}
+
 @media (min-width: 1440px) {
   .static-header {
     height: 360px;
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 3rem;
+    font-size: 4rem;
   }
 
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 1.5rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 1.25rem;
-  }
-
+  .static-header .hero-overlay .hero-subtitle,
+  .static-header .hero-overlay .dates-subtitle,
   .static-header .hero-overlay .university-name-subtitle {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    margin-left: var(--spacing-hero-subtitle-margin);
   }
 }
 
@@ -2841,19 +2879,14 @@ body.is-touch .home-header-mobile {
   }
 
   .static-header .hero-overlay .hero-title {
-    font-size: 2.75rem;
+    font-size: 4rem;
   }
 
-  .static-header .hero-overlay .hero-subtitle {
-    font-size: 1.25rem;
-  }
-
-  .static-header .hero-overlay .dates-subtitle {
-    font-size: 1rem;
-  }
-
+  .static-header .hero-overlay .hero-subtitle,
+  .static-header .hero-overlay .dates-subtitle,
   .static-header .hero-overlay .university-name-subtitle {
     font-size: 1rem;
+    margin-left: var(--spacing-hero-subtitle-margin);
   }
 }
 
