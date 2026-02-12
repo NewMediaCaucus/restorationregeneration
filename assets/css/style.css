@@ -1248,13 +1248,13 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 767px) and (min-width: 480px) {
   .header-animation {
-    height: 270px;
+    height: 240px;
   }
 }
 
 @media (max-width: 479px) {
   .header-animation {
-    height: 270px;
+    height: 240px;
   }
 }
 
@@ -1310,7 +1310,7 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 479px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
   }
 
   .header-animation .hero-overlay .hero-subtitle {
@@ -1329,7 +1329,11 @@ body.is-touch .home-header-mobile {
 /* Mobile breakpoint: hero and logo layout */
 @media (max-width: 767px) {
   .header-animation {
-    height: 270px;
+    height: 240px;
+  }
+
+  .hero-overlay {
+    padding: var(--spacing-xl) 0 var(--spacing-xl);
   }
 
   .rr-logo-header {
@@ -1340,7 +1344,7 @@ body.is-touch .home-header-mobile {
 
   .hero-overlay .hero-title {
     margin-left: 6.4rem;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
   }
 
   .hero-overlay .hero-subtitle,

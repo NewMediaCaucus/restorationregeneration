@@ -48,17 +48,18 @@
   }
 
   function run() {
-    const svg = document.getElementById('rr-logo');
-    if (!svg) return;
+    const svgs = document.querySelectorAll('.rr-logo-header svg');
+    if (!svgs.length) return;
 
-    const elements = [].slice.call(svg.querySelectorAll('rect, path'));
     const elementByCell = new Map();
-
-    elements.forEach(function (el) {
-      const cell = getElementCell(el);
-      if (!cell) return;
-      if (!elementByCell.has(cell.key)) elementByCell.set(cell.key, []);
-      elementByCell.get(cell.key).push(el);
+    svgs.forEach(function (svg) {
+      const elements = [].slice.call(svg.querySelectorAll('rect, path'));
+      elements.forEach(function (el) {
+        const cell = getElementCell(el);
+        if (!cell) return;
+        if (!elementByCell.has(cell.key)) elementByCell.set(cell.key, []);
+        elementByCell.get(cell.key).push(el);
+      });
     });
 
     const allCells = Array.from(elementByCell.keys());
