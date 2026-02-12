@@ -1248,13 +1248,13 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 767px) and (min-width: 480px) {
   .header-animation {
-    height: 400px;
+    height: 270px;
   }
 }
 
 @media (max-width: 479px) {
   .header-animation {
-    height: 400px;
+    height: 270px;
   }
 }
 
@@ -1310,7 +1310,7 @@ body.is-touch .home-header-mobile {
 
 @media (max-width: 479px) {
   .header-animation .hero-overlay .hero-title {
-    font-size: 2.5rem;
+    font-size: 1.7rem;
   }
 
   .header-animation .hero-overlay .hero-subtitle {
@@ -1323,6 +1323,30 @@ body.is-touch .home-header-mobile {
 
   .header-animation .hero-overlay .university-name-subtitle {
     font-size: 0.75rem;
+  }
+}
+
+/* Mobile breakpoint: hero and logo layout */
+@media (max-width: 767px) {
+  .header-animation {
+    height: 270px;
+  }
+
+  .rr-logo-header {
+    max-width: 120px;
+    margin-left: 2rem;
+    bottom: 3rem;
+  }
+
+  .hero-overlay .hero-title {
+    margin-left: 6.4rem;
+    font-size: 1.7rem;
+  }
+
+  .hero-overlay .hero-subtitle,
+  .hero-overlay .dates-subtitle,
+  .hero-overlay .university-name-subtitle {
+    margin-left: 9rem;
   }
 }
 
