@@ -372,7 +372,7 @@ a:hover {
 /* Large Desktop (1440px and up) */
 @media (min-width: 1440px) {
   .container {
-    max-width: 1400px;
+    max-width: 1080px;
   }
 
   h1 {
@@ -1177,22 +1177,22 @@ body.is-touch .home-header-mobile {
 
 .hero-overlay .hero-subtitle {
   color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.25rem;
   margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
 }
 
 .hero-overlay .dates-subtitle {
   color: var(--color-text-inverse);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.25rem;
   margin-left: var(--spacing-hero-margin);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
 }
 
 .hero-overlay .university-name-subtitle {
@@ -1202,7 +1202,7 @@ body.is-touch .home-header-mobile {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'Rubik', sans-serif;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
 }
 
 .hero-overlay .hero-image {
@@ -2412,7 +2412,7 @@ body.is-touch .home-header-mobile {
 /* Schedule Days Grid (Home Page) */
 .schedule-days-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-lg);
   margin-top: var(--spacing-xl);
 }
@@ -2441,7 +2441,7 @@ body.is-touch .home-header-mobile {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-md);
   background: hsla(0, 0%, 20%, 1);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-border-primary);
@@ -2459,11 +2459,11 @@ body.is-touch .home-header-mobile {
   color: hsl(142, 75%, 87%);
 }
 
-.schedule-day-card h3 {
+.schedule-day-wrapper .schedule-day-card h3 {
   font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-weight: 500;
   margin: 0;
-  color: hsl(142, 75%, 87%);
+  color: white;
 }
 
 .schedule-day-card p {
@@ -2498,7 +2498,7 @@ body.is-touch .home-header-mobile {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-xs);
+  gap: 0.125rem;
   font-size: var(--font-size-xs);
   color: white;
 }
@@ -2509,6 +2509,11 @@ body.is-touch .home-header-mobile {
 
 .temp-low {
   opacity: 0.8;
+}
+
+.full-schedule-tagline {
+  color: white;
+  opacity: 1;
 }
 
 /* Responsive styles for schedule-days-grid */
