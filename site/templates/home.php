@@ -121,6 +121,32 @@
             </a>
           </div>
         <?php endforeach ?>
+        <?php
+        $schedulePage = $site->find('schedule');
+        $scheduleUrl = $schedulePage ? $schedulePage->url() : url('schedule');
+        $partyIconPath = kirby()->root('assets') . '/icons/noun-party-6928014-FFFFFF.svg';
+        ?>
+        <div class="schedule-day-wrapper">
+          <a href="<?= $scheduleUrl ?>" class="schedule-day-card">
+            <h3>Full Schedule</h3>
+            <div class="schedule-weather-box">
+              <div class="weather-icon">
+                <?php
+                if (file_exists($partyIconPath)) {
+                  $svgContent = file_get_contents($partyIconPath);
+                  $svgContent = preg_replace('/<\?xml[^>]*\?>/', '', $svgContent);
+                  $svgContent = str_replace('viewBox="0 0 128 128"', 'viewBox="0 0 128 128" preserveAspectRatio="xMidYMid meet"', $svgContent);
+                  echo trim($svgContent);
+                }
+                ?>
+              </div>
+              <div class="weather-temps">
+                <span class="temp-high">DAZZLING</span>
+                <span class="full-schedule-tagline">AWESOMENESS</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
