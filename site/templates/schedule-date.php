@@ -71,6 +71,8 @@
       // Group events by timeblock, then by event type (include performance timeblocks)
       $timeblockOrder = [
         "8:30AM to 9:00AM",
+        "9:00AM to 10:00AM",
+        "10:00AM to 11:00AM",
         "9:00AM to 11:00AM",
         "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
