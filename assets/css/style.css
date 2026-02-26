@@ -2121,6 +2121,11 @@ body.is-touch .home-header-mobile {
   line-height: 1.4;
 }
 
+/* On full event pages (white background), use primary color for timeblock */
+.event-page .event-meta .event-timeblock {
+  color: var(--color-primary);
+}
+
 .event-duration {
   font-size: var(--font-size-xs);
   color: var(--color-text-inverse);

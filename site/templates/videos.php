@@ -48,6 +48,7 @@
         "9:00AM to 11:00AM",
         "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
+        "1:00PM to 2:00PM",
         "01:00PM to 5:00PM",
         "2:15PM to 4:15PM",
         "4:30PM to 6:30PM"
@@ -91,7 +92,7 @@
               if (isset($videosByTimeblock[$timeblock]) && count($videosByTimeblock[$timeblock]) > 0):
             ?>
                 <div class="timeblock-group">
-                  <h3 class="timeblock-header"><?= $timeblock ?></h3>
+                  <h3 class="timeblock-header"><?= $dateData['formatted'] ?> — <?= $timeblock ?></h3>
                   <div class="events-grid">
                     <?php foreach ($videosByTimeblock[$timeblock] as $video): ?>
                       <div class="event-card">
@@ -265,6 +266,7 @@
         if (count($videosWithoutDate) > 0):
         ?>
           <div class="date-group">
+            <h3 class="timeblock-header">On Loop at Locations</h3>
             <div class="events-grid">
               <?php foreach ($videosWithoutDate as $video): ?>
                 <div class="event-card">
