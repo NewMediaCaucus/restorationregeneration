@@ -56,6 +56,18 @@ fields:
       cover: true
       query: "file.url"
     template: headshot
+  date:
+    label: Date
+    type: select
+    width: 1/2
+    options:
+      "2026-03-07": "Saturday, March 7, 2026"
+  timeblock:
+    label: Time Block
+    type: select
+    width: 1/2
+    options:
+      "1:00PM to 2:00PM": "1:00PM to 2:00PM"
   description:
     label: Description
     type: textarea

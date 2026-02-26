@@ -47,6 +47,12 @@
             </div>
           <?php endif ?>
 
+          <?php if ($page->timeblock()->isNotEmpty()): ?>
+            <div class="event-timeblock">
+              <?= $page->timeblock() ?>
+            </div>
+          <?php endif ?>
+
           <?php if ($page->location()->isNotEmpty()): ?>
             <div class="event-location">
               <?php
