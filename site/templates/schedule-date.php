@@ -74,6 +74,7 @@
         "9:00AM to 11:00AM",
         "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
+        "1:00PM to 2:00PM",
         "01:00PM to 5:00PM",
         "2:15PM to 4:15PM",
         "4:30PM to 6:30PM",
@@ -267,14 +268,14 @@
               <?php foreach ($eventsWithoutTimeblock as $event): ?>
                 <?php
                 // Map event template names to listing page slugs and templates
-            $templateToListing = [
-              'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
-              'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
-              'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
-              'performance' => ['slug' => 'performances', 'template' => 'performances'],
-              'video' => ['slug' => 'videos', 'template' => 'videos'],
-              'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
-            ];
+                $templateToListing = [
+                  'presentation' => ['slug' => 'presentations', 'template' => 'presentations'],
+                  'workshop' => ['slug' => 'workshops', 'template' => 'workshops'],
+                  'expanded-media' => ['slug' => 'expanded-medias', 'template' => 'expanded-medias'],
+                  'performance' => ['slug' => 'performances', 'template' => 'performances'],
+                  'video' => ['slug' => 'videos', 'template' => 'videos'],
+                  'social-gathering' => ['slug' => 'social-gatherings', 'template' => 'social-gatherings']
+                ];
                 $templateName = $event->intendedTemplate()->name();
                 $listingInfo = $templateToListing[$templateName] ?? null;
 
