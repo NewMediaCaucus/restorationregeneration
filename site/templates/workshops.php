@@ -43,9 +43,10 @@
       // Sort dates chronologically
       ksort($workshopsByDate);
 
-      // Timeblock order
+      // Timeblock order (matches workshop.yml)
       $timeblockOrder = [
         "9:00AM to 11:00AM",
+        "9:00AM to 12:15PM",
         "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
         "01:00PM to 5:00PM",
