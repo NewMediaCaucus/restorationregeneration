@@ -29,18 +29,24 @@
         }
       }
 
-      // Timeblock order
+      // Timeblock order (matches workshop + presentation blueprints + other event types)
       $timeblockOrder = [
         "8:30AM to 9:00AM",
         "9:00AM to 10:00AM",
-        "10:00AM to 11:00AM",
         "9:00AM to 11:00AM",
+        "9:00AM to 12:15PM",
+        "10:00AM to 11:00AM",
         "11:15AM to 12:15PM",
         "11:15AM to 1:15PM",
+        "12:15PM to 1:15PM",
         "1:00PM to 2:00PM",
         "01:00PM to 5:00PM",
+        "2:15PM to 3:15PM",
         "2:15PM to 4:15PM",
+        "3:15PM to 4:15PM",
+        "4:30PM to 5:30PM",
         "4:30PM to 6:30PM",
+        "5:30PM to 6:30PM",
         "5:00PM to 7:00PM",
         "6:00PM to 7:00PM",
         "7:00PM to 8:00PM",
