@@ -8,8 +8,6 @@
         <h1>Single-Channel Videos</h1>
       </div>
 
-      <?php snippet('construction-alert') ?>
-
       <?php
       // Get all videos
       $videos = $site->index()->filterBy('intendedTemplate', 'video');
