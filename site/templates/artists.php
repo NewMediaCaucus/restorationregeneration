@@ -8,8 +8,6 @@
         <h1>Artists</h1>
       </div>
 
-      <?php snippet('construction-alert') ?>
-
       <?php
       // Get all presenters
       $presenters = $site->index()->filterBy('intendedTemplate', 'presenter');

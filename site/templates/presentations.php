@@ -8,8 +8,6 @@
         <h1>Presentations</h1>
       </div>
 
-      <?php snippet('construction-alert') ?>
-
       <?php
       // Get all presentations
       $presentations = $site->index()->filterBy('intendedTemplate', 'presentation');

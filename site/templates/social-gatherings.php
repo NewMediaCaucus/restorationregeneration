@@ -8,8 +8,6 @@
         <h1>Social Gatherings</h1>
       </div>
 
-      <?php snippet('construction-alert') ?>
-
       <?php
       // Get all social gatherings
       $socialGatherings = $site->index()->filterBy('intendedTemplate', 'social-gathering');
