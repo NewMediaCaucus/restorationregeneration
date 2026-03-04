@@ -21,7 +21,8 @@
               "place" => "Place",
               "ritual-belonging" => "Ritual / Belonging",
               "ritual-healing" => "Ritual / Healing",
-              "slow-servers-media" => "Slow Servers / Media"
+              "slow-servers-media" => "Slow Servers / Media",
+              "slow-servers-belonging" => "Slow Servers / Belonging"
             ];
             $themeValue = $themeOptions[$themeKey] ?? $themeKey;
             ?>
