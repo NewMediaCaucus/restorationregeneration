@@ -13,11 +13,11 @@
             <?php
             $themeKey = $page->theme()->value();
             $themeOptions = [
-              "body-weather" => "Body / Weather",
-              "data-performance" => "Data / Performance",
+              "body-media" => "Body / Media",
+              "data-weather" => "Data / Weather",
               "gender-fiction" => "Gender / Fiction",
               "place" => "Place",
-              "ritual-belonging" => "Ritual / Belonging",
+              "ritual-belonging" => "Ritual / Healing",
               "slow-servers-media" => "Slow Servers / Media"
             ];
             $themeValue = $themeOptions[$themeKey] ?? $themeKey;
