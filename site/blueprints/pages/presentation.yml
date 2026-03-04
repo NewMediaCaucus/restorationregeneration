@@ -20,11 +20,15 @@ fields:
     required: true
     options:
       "body-weather": "Body / Weather"
+      "body-media": "Body / Media"
+      "data-weather": "Data / Weather"
       "data-performance": "Data / Performance"
       "gender-fiction": "Gender / Fiction"
       "place": "Place"
       "ritual-belonging": "Ritual / Belonging"
+      "ritual-healing": "Ritual / Healing"
       "slow-servers-media": "Slow Servers / Media"
+      "slow-servers-belonging": "Slow Servers / Belonging"
   duration:
     label: Duration
     type: text
