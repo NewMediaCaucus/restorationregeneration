@@ -24,6 +24,7 @@ Always name a feature branch "feature/<description>". For example, "feature/add-
      - PHP code snippets
    - Templates
      - PHP page templates 
+
  
 ## Workflow Proposal
 
