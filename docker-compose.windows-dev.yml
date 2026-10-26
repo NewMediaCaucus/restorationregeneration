@@ -9,7 +9,7 @@ services:
       - "8888:80"
     volumes:
       - .:/var/www/html/ # Mount the current directory to the container
-      - ./custom-php.dev.ini:/etc/php/8.3/apache2/conf.d/custom-php.ini
+      - ./custom-php.dev.ini:/usr/local/etc/php/conf.d/custom-php.ini
       - ./php-logs:/var/log/php-logs
       - ./apache-logs:/var/log/apache2
     # env_file:
