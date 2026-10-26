@@ -37,7 +37,7 @@ if docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --fo
     
     echo ""
     echo "Checking certificate expiry dates:"
-    for domain in rr.newmediacaucus.org rr.shimmeringtrashpile.com; do
+    for domain in rr.newmediacaucus.org; do
         if docker exec certbot test -f /etc/letsencrypt/live/$domain/fullchain.pem; then
             echo -n "$domain: "
             docker exec certbot openssl x509 -in /etc/letsencrypt/live/$domain/fullchain.pem -text -noout | grep "Not After" | sed 's/^[[:space:]]*Not After[[:space:]]*: //'

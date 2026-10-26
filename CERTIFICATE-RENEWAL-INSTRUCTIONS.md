@@ -1,14 +1,11 @@
 # Certificate Renewal Instructions
 
-## Problem Fixed
-Your Let's Encrypt certificate has expired. The issue was that the certbot container was configured to run the renewal command once and exit, preventing automatic renewals from working.
+## Why certificates stopped updating
+The certbot container is intentionally idle (`sleep infinity`) so you can `docker exec` into it. **It never runs `certbot renew` on its own.** Automatic renewal requires a **host cron job** that runs `docker exec certbot certbot renew ...` and reloads Apache.
 
-## What Was Changed
+A common mistake is scheduling **`docker restart certbot`** only—that restarts the container but **does not** renew certificates.
 
-1. **docker-compose.prod.yml**: Changed certbot container to use `sleep infinity` so it stays running
-2. **certbot-renew.sh**: Fixed to properly execute renewal inside the running container
-3. **certbot-force-renew.sh**: New script for force-renewing expired certificates
-4. **README-certbot.md**: Updated with correct procedures
+See **README-certbot.md** for the full guide (cron examples, dry-run, troubleshooting).
 
 ## Steps to Renew Your Expired Certificate
 
@@ -52,17 +49,14 @@ This script will:
 # Check certificate status
 sudo docker exec certbot certbot certificates
 
-# Check expiry dates for both domains
+# Check expiry for the primary lineage
 sudo docker exec certbot openssl x509 -in /etc/letsencrypt/live/rr.newmediacaucus.org/fullchain.pem -text -noout | grep "Not After"
-sudo docker exec certbot openssl x509 -in /etc/letsencrypt/live/rr.shimmeringtrashpile.com/fullchain.pem -text -noout | grep "Not After"
 ```
 
 ### Step 4: Test HTTPS Access
 
 ```bash
-# Test both domains
 curl -I https://rr.newmediacaucus.org
-curl -I https://rr.shimmeringtrashpile.com
 ```
 
 ### Step 5: Set Up Automatic Renewal (Important!)
@@ -76,8 +70,8 @@ sudo crontab -e
 # Add this line to run renewal twice daily (at 2 AM and 2 PM)
 0 2,14 * * * cd /home/rrnmc/restorationregeneration && /usr/bin/docker exec certbot certbot renew --webroot --webroot-path=/var/www/html --quiet && /usr/bin/docker exec restorationregeneration-prod-container apache2ctl graceful >/dev/null 2>&1
 
-# Or use the renewal script (recommended)
-0 2,14 * * * cd /home/rrnmc/restorationregeneration && sudo ./certbot-renew.sh >/dev/null 2>&1
+# Or use the renewal script (in root's crontab, omit sudo)
+0 2,14 * * * cd /home/rrnmc/restorationregeneration && ./certbot-renew.sh >>/var/log/certbot-cron.log 2>&1
 ```
 
 ## Troubleshooting
